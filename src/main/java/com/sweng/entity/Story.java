@@ -5,16 +5,14 @@ import java.util.List;
 public class Story {
     private String title;
     private String description;
-    private List<Scenario> scenarios;
+    private Scenario initialScenario;
 
-    // Costruttore
-    public Story(String title, String description, List<Scenario> scenarios) {
+    public Story(String title, String description, Scenario initialScenario) {
         this.title = title;
         this.description = description;
-        this.scenarios = scenarios;
+        this.initialScenario = initialScenario;
     }
 
-    // Metodi getter e setter
     public String getTitle() {
         return title;
     }
@@ -31,12 +29,13 @@ public class Story {
         this.description = description;
     }
 
-    public List<Scenario> getScenarios() {
-        return scenarios;
+    public Scenario getInitialScenario() {
+        return initialScenario;
     }
 
-    public void setScenarios(List<Scenario> scenarios) {
-        this.scenarios = scenarios;
+    public void setInitialScenario(Scenario initialScenario) {
+        this.initialScenario = initialScenario;
     }
 }
+
 

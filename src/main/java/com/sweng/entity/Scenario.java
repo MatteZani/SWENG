@@ -1,8 +1,13 @@
 package com.sweng.entity;
 
+import java.util.List;
+
 public class Scenario {
+
+    private String title;
     private String description;
-    //private List<Option> options;
+
+    private List<Scenario> options;
 
     // Costruttore
     public Scenario(String description){ //,List<Option> options) {
@@ -19,13 +24,13 @@ public class Scenario {
         this.description = description;
     }
 
-    /*public List<Option> getOptions() {
+    public List<Scenario> getOptions() {
         return options;
     }
 
-    public void setOptions(List<Option> options) {
+    public void setOptions(List<Scenario> options) {
         this.options = options;
-    }*/
+    }
 
 }
 

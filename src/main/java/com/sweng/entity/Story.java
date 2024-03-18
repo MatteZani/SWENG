@@ -1,3 +1,5 @@
+package com.sweng.entity;
+
 import java.util.List;
 
 public class Story {

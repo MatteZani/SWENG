@@ -1,3 +1,5 @@
+package com.sweng.entity;
+
 public class Scenario {
     private String description;
     //private List<Option> options;

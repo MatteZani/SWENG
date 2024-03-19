@@ -10,9 +10,9 @@ public class Scenario {
     private List<Scenario> options;
 
     // Costruttore
-    public Scenario(String description){ //,List<Option> options) {
+    public Scenario(String description,List<Scenario> options) {
         this.description = description;
-        //this.options = options;
+        this.options = options;
     }
 
     // Metodi getter e setter

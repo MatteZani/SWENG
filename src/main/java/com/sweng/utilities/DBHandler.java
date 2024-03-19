@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -16,6 +17,9 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class DBHandler {
@@ -24,6 +28,12 @@ public class DBHandler {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
+
+    public ArrayList<User> getUsers(){
+        String sql = "SELECT * FROM CREDENZIALI";
+        //TODO tornare una response entity che contiene come body le informazioni relative agli user
+        return new ArrayList<>();
+    }
 
     public ResponseEntity<Object> saveUser(User user){
         try {

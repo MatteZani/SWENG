@@ -30,32 +30,33 @@ public class RestController {
 
     @GetMapping("/user")
     public ResponseEntity<List<User>> getUsers(){
-        User pippo = new User("pippo", "pippo");
-        User pluto = new User("pluto", "pluto");
 
-        List<User> users = new ArrayList<>();
-        users.add(pippo);
-        users.add(pluto);
-
+        ArrayList<User> users = dbHandler.getUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
+
     }
 
-    @GetMapping("/user/username")
-    public ResponseEntity<Object> getUserByName(@RequestParam String username){
-        if(username.equals("pippo")){
-            User pippo = new User("pippo", "pippo");
-            return new ResponseEntity<>(pippo, HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<>("Utente non trovato", HttpStatus.NOT_FOUND);
-        }
-    }
+//    @GetMapping("/user/username")
+//    public ResponseEntity<Object> getUserByName(@RequestParam String username){
+////        if(username.equals("pippo")){
+////            User pippo = new User("pippo", "pippo");
+////            return new ResponseEntity<>(pippo, HttpStatus.OK);
+////        }
+////        else{
+////            return new ResponseEntity<>("Utente non trovato", HttpStatus.NOT_FOUND);
+////        }
+//    }
 
     @PostMapping("/user")
     public ResponseEntity<Object> postUser(@RequestBody User user){
 
         return dbHandler.saveUser(user);
     }
+
+//    @GetMapping("/story")
+//    public ResponseEntity<Object> getStories(){
+//
+//    }
 
     @PostMapping("/story")
     public ResponseEntity<Object> postStory(@RequestBody Story story){

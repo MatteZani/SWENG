@@ -2,10 +2,11 @@ package com.sweng;
 
 import com.sweng.entity.User;
 import com.sweng.utilities.DBHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ public class RestController {
 
     @Autowired
     private DBHandler dbHandler;
+
+    Logger logger = LoggerFactory.getLogger(RestController.class);
 
     @GetMapping("")
     public ResponseEntity<String> helloWorld(){
@@ -36,8 +39,8 @@ public class RestController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping("/user/prova")
-    public ResponseEntity<User> getUser(@RequestParam String username){
+    @GetMapping("/user/{username}")
+    public ResponseEntity<User> getUserByName(@RequestParam String username){
         if(username.equals("pippo")){
             User pippo = new User("pippo", "pippo");
             return new ResponseEntity<User>(pippo, HttpStatus.OK);
@@ -47,9 +50,8 @@ public class RestController {
         }
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<String> postUser(@RequestBody User user){
-        System.out.println("sono qui");
+    @PostMapping("/user")
+    public ResponseEntity<User> postUser(@RequestBody User user){
 
         return dbHandler.saveUser(user);
     }

@@ -1,7 +1,5 @@
 package com.sweng.entity;
 
-import java.util.List;
-
 public class Story {
     private String title;
     private String description;

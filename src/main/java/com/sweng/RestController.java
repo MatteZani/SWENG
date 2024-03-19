@@ -39,19 +39,19 @@ public class RestController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping("/user/{username}")
-    public ResponseEntity<User> getUserByName(@RequestParam String username){
+    @GetMapping("/user/username")
+    public ResponseEntity<Object> getUserByName(@RequestParam String username){
         if(username.equals("pippo")){
             User pippo = new User("pippo", "pippo");
-            return new ResponseEntity<User>(pippo, HttpStatus.OK);
+            return new ResponseEntity<>(pippo, HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Utente non trovato", HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping("/user")
-    public ResponseEntity<User> postUser(@RequestBody User user){
+    public ResponseEntity<Object> postUser(@RequestBody User user){
 
         return dbHandler.saveUser(user);
     }

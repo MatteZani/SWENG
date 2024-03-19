@@ -23,14 +23,14 @@ public class DBHandler {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
-    public ResponseEntity<User> saveUser(User user){
+    public ResponseEntity<Object> saveUser(User user){
         try {
             String sql = "INSERT INTO CREDENZIALI (USERNAME, PASSWORD) VALUES (?, ?)";
             jdbcTemplate.update(sql, user.getUsername(), user.getPassword());
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (DataAccessException e) {
             logger.error("Lanciata eccezione di tipo {}. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getClass(), e.getCause(), e.getMessage());
-            return new ResponseEntity<>(null, HttpStatus.valueOf(400));
+            return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
         }
 
 

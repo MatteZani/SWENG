@@ -1,5 +1,6 @@
 package com.sweng;
 
+import com.sweng.entity.Story;
 import com.sweng.entity.User;
 import com.sweng.utilities.DBHandler;
 import org.slf4j.Logger;
@@ -54,6 +55,13 @@ public class RestController {
     public ResponseEntity<Object> postUser(@RequestBody User user){
 
         return dbHandler.saveUser(user);
+    }
+
+    @PostMapping("/story")
+    public ResponseEntity<Object> postStory(@RequestBody Story story){
+
+        return dbHandler.createStory(story);
+
     }
 
 

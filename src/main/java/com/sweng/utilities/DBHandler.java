@@ -1,6 +1,7 @@
 package com.sweng.utilities;
 
 import com.sweng.RestController;
+import com.sweng.entity.Story;
 import com.sweng.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,12 +31,19 @@ public class DBHandler {
             jdbcTemplate.update(sql, user.getUsername(), user.getPassword());
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione di tipo {}. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getClass(), e.getCause(), e.getMessage());
+            logger.error("Lanciata eccezione nel metodo postUser della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
         }
+    }
 
-
-
-
+    public ResponseEntity<Object> createStory(Story story){
+        try {
+            String sql = "INSERT INTO STORIE(TITOLO, TRAMA, GENERE, ID_CREATORE) VALUES (?, ?, ?, ?)";
+            jdbcTemplate.update(sql, story.getTitle(), story.getPlot(), story.getCategory(), story.getCreatorId());
+            return new ResponseEntity<>(story, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            logger.error("Lanciata eccezione nel metodo createStory della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+            return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
+        }
     }
 }

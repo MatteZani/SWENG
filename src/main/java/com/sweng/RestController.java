@@ -23,11 +23,6 @@ public class RestController {
 
     Logger logger = LoggerFactory.getLogger(RestController.class);
 
-    @GetMapping("")
-    public ResponseEntity<String> helloWorld(){
-        return new ResponseEntity<>("Hello World", HttpStatus.OK);
-    }
-
     @GetMapping("/user")
     public ResponseEntity<List<User>> getUsers(){
 
@@ -62,7 +57,12 @@ public class RestController {
     public ResponseEntity<Object> postStory(@RequestBody Story story){
 
         return dbHandler.createStory(story);
+    }
 
+    @PostMapping("/object")
+    public ResponseEntity<Object> postObject(@RequestBody String name){
+
+        return dbHandler.createObject(name);
     }
 
 

@@ -56,4 +56,18 @@ public class DBHandler {
             return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
         }
     }
+
+    public ResponseEntity<Object> createObject(String name){
+        try {
+            String sql = "INSERT INTO OGGETTI(NOME) VALUES (?)";
+            jdbcTemplate.update(sql, name);
+            return new ResponseEntity<>(name, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            logger.error("Lanciata eccezione nel metodo createObject della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+            return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
+        }
+    }
+
+
+
 }

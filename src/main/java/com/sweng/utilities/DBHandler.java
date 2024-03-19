@@ -23,6 +23,7 @@ public class DBHandler {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
+
     public ResponseEntity<Object> saveUser(User user){
         try {
             String sql = "INSERT INTO CREDENZIALI (USERNAME, PASSWORD) VALUES (?, ?)";

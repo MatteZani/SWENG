@@ -1,0 +1,106 @@
+Titolo: Scrivere storie
+Attore: Utente
+Pre condizioni: Utente deve essere registrato
+Main path: 
+- Utente seleziona creare storia
+- Sistema mostra interfaccia per inserire i dati dello scenario iniziale
+- Utente inserisce il testo dello scenario
+- Sistema mostra interfaccia per inserire scelte e collegare nuovi scenari
+- Utente inserisce scelte e collega scenario
+- Sistema notifica la creazione dello scenario 
+
+Post condizione: La nuova storia viene aggiunta al catalogo
+
+
+Titolo: Giocare storie
+Attore: Utente
+Pre condizioni: Utente deve essere registrato e, se richiesto, deve aver effettuato il pagamento
+Main path:
+- Utente seleziona la storia che desidera giocare dal catalogo.
+- Sistema presenta il primo scenario e le possibili azioni.
+- Utente effettua una scelta tra le opzioni disponibili.
+- Sistema elabora la scelta e presenta il prossimo scenario.
+- processo si ripete fino al raggiungimento di un finale.
+Post-condizioni: L'Utente ha completato o interrotto una partita della storia
+
+
+Titolo: Gestire storie
+Attore: Utente
+Pre condizioni: Utente deve essere registrato e deve avere storie precedentemente create
+Main path:
+- Utente accede alla gestione delle sue storie.
+- Sistema presenta le opzioni per la modifica, eliminazione o visualizzazione delle storie.
+- Utente seleziona e completa un'azione di gestione.
+- Sistema effettua l'operazione richiesta e fornisce un feedback.
+
+Post condizioni: La storia è stata modificata, eliminata o è stata eseguita un'azione di gestione.
+
+
+
+Titolo: Effettuare registrazione
+Attore: Visitatore
+Pre-condizioni: Visitatore non è ancora registrato
+Main path:
+
+- Visitatore seleziona l'opzione per registrarsi.
+- Sistema mostra il modulo di registrazione.
+- Visitatore inserisce le informazioni richieste.
+- Sistema processa la registrazione e crea l'account.
+Post condizioni: Il Visitatore è ora un Utente registrato.
+
+
+Titolo: Visualizzare storie
+Attore: Visitatore
+Flusso principale:
+
+- Visitatore naviga il catalogo delle storie
+disponibili.
+- Sistema mostra le storie con la possibilità di leggere il primo scenario.
+- Visitatore seleziona una storia per la visualizzazione.
+- Sistema presenta il primo scenario della storia scelta.
+Post-condizioni: Il Visitatore ha visualizzato il primo scenario di una storia.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+specificare alternative
+- collegare scenari
+Post-condizioni:
+
+
+Titolo: 
+Attore
+Pre-condizioni:
+Main path
+Post-condizioni:

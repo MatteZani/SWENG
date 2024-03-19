@@ -1,5 +1,7 @@
 package com.sweng;
 
+import com.sweng.entity.Riddle;
+import com.sweng.entity.Scenario;
 import com.sweng.entity.Story;
 import com.sweng.entity.User;
 import com.sweng.utilities.DBHandler;
@@ -22,11 +24,6 @@ public class RestController {
     private DBHandler dbHandler;
 
     Logger logger = LoggerFactory.getLogger(RestController.class);
-
-    @GetMapping("")
-    public ResponseEntity<String> helloWorld(){
-        return new ResponseEntity<>("Hello World", HttpStatus.OK);
-    }
 
     @GetMapping("/user")
     public ResponseEntity<List<User>> getUsers(){
@@ -62,7 +59,24 @@ public class RestController {
     public ResponseEntity<Object> postStory(@RequestBody Story story){
 
         return dbHandler.createStory(story);
+    }
 
+    @PostMapping("/object")
+    public ResponseEntity<Object> postObject(@RequestBody String name){
+
+        return dbHandler.createObject(name);
+    }
+
+    @PostMapping("/scenario")
+    public ResponseEntity<Object> postScenario(@RequestBody Scenario scenario){
+
+        return dbHandler.createScenario(scenario);
+    }
+
+    @PostMapping("/riddle")
+    public ResponseEntity<Object> postRiddle(@RequestBody Riddle riddle){
+
+        return dbHandler.createRiddle(riddle);
     }
 
 

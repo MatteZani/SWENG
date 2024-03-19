@@ -1,6 +1,7 @@
 package com.sweng.utilities;
 
-import com.sweng.RestController;
+import com.sweng.entity.Riddle;
+import com.sweng.entity.Scenario;
 import com.sweng.entity.Story;
 import com.sweng.entity.User;
 import org.slf4j.Logger;
@@ -9,17 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class DBHandler {
@@ -56,4 +50,39 @@ public class DBHandler {
             return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
         }
     }
+
+    public ResponseEntity<Object> createObject(String name){
+        try {
+            String sql = "INSERT INTO OGGETTI(NOME) VALUES (?)";
+            jdbcTemplate.update(sql, name);
+            return new ResponseEntity<>(name, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            logger.error("Lanciata eccezione nel metodo createObject della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+            return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
+        }
+    }
+
+    public ResponseEntity<Object> createScenario(Scenario scenario){
+        try {
+            String sql = "INSERT INTO SCENARI(DESCRIZIONE,ID_STORIA) VALUES (?,?)";
+            jdbcTemplate.update(sql, scenario.getDescription(), scenario.getStoryId() );
+            return new ResponseEntity<>(scenario, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            logger.error("Lanciata eccezione nel metodo createScenario della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+            return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
+        }
+    }
+    public ResponseEntity<Object> createRiddle(Riddle riddle){
+        try {
+            String sql = "INSERT INTO INDOVINELLI(DOMANDA, RISPOSTA) VALUES (?,?)";
+            jdbcTemplate.update(sql, riddle.getQuestion(), riddle.getAnswer() );
+            return new ResponseEntity<>(riddle, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            logger.error("Lanciata eccezione nel metodo createRiddle della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+            return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
+        }
+    }
+
+
+
 }

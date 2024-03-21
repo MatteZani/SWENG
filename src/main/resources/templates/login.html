@@ -41,12 +41,12 @@
 </head>
 <body>
     <h2>Accedi</h2>
-        <form th:action="@{/login/process}" method="get">
+        <form th:action="@{/login/process}" method="post">
             <input type="text" th:name="username" placeholder="Username" required><br>
             <input type="password" th:name="password" placeholder="Password" required><br>
             <input type="submit" value="Accedi">
         </form>
-        <p> Non sei registrato? <a href="registrazione.html">Registrati</a> </p>
+        <p> Non sei registrato? <a th:href="@{/registration}">Registrati</a> </p>
 
 </body>
 </html>

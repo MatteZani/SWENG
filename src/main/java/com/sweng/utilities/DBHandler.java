@@ -83,6 +83,12 @@ public class DBHandler {
         }
     }
 
+    public boolean verifyCredentials(String username, String password) {
+        String sql = "SELECT COUNT(*) FROM CREDENZIALI WHERE USERNAME = ? AND PASSWORD = ?";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, username, password);
+        return count > 0;
+    }
+
 
 
 }

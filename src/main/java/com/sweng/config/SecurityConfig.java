@@ -21,9 +21,6 @@ public class SecurityConfig {
                 .httpBasic(withDefaults());
         http.csrf().disable();
 
-        http.csrf()
-                .csrfTokenRepository(new HttpSessionCsrfTokenRepository());
-
         return http.build();
     }
 

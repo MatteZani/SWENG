@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Catalogo</title>
@@ -48,6 +48,8 @@
       <p>Descrizione della storia 3...</p>
       <a href="storia3.html">Leggi di più</a>
     </div>
+
+    <p> Per giocare effettua la <a th:href="@{/registration}">registrazione</a></p>
 
 </body>
 </html>

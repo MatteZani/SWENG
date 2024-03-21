@@ -23,27 +23,33 @@ public class InterfaceController {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    @GetMapping("/menu")
+    public String menu(Model model){
+        return "menu";
+    }
 
     @GetMapping("/login")
     public String login() {
         return "login";
     }
 
-    @GetMapping("/menu")
-    public String menu(Model model){
-        return "menu";
-    }
-
-    @GetMapping("/login/process")
-    public String processLogin(@RequestParam("username") String username, @RequestParam("password") String password, Model model){
-        //TODO controllare se l'utente è correttamente registrato
-
-        return "catalogo";
+    @PostMapping("/login/process")
+    public String processLogin(@RequestParam("username") String username, @RequestParam("password") String password,
+                               Model model) {
+        boolean isValidCredentials = dbHandler.verifyCredentials(username, password);
+        if (isValidCredentials) {
+            // Reindirizza alla pagina "catalogo" se le credenziali sono valide
+            return "homepage";
+        } else {
+            // Reindirizza alla pagina di login con un messaggio di errore se le credenziali non sono valide
+            model.addAttribute("error", "Credenziali non valide");
+            return "login-failed"; // Assicurati che "login" sia il nome corretto della tua pagina di login
+        }
     }
 
     @GetMapping("/registration")
     public String registration(Model model){
-        return "registrazione";
+        return "registration";
     }
 
 
@@ -54,6 +60,11 @@ public class InterfaceController {
 
         // Reindirizzamento alla pagina "avvenuta registrazione"
         return "homepage";
+    }
+
+    @GetMapping("/catalog")
+    public String catalog() {
+        return "catalog";
     }
 
 

@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class DBHandler {
@@ -23,10 +25,8 @@ public class DBHandler {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public ArrayList<User> getUsers(){
-        String sql = "SELECT * FROM CREDENZIALI";
-        //TODO tornare una response entity che contiene come body le informazioni relative agli user
-        return new ArrayList<>();
+    public List<Map<String, Object>> getUsers() {
+        return jdbcTemplate.queryForList("SELECT * FROM CREDENZIALI");
     }
 
     public ResponseEntity<Object> saveUser(User user){

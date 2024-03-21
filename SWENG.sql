@@ -48,4 +48,4 @@ ENGINE = INNODB;
 
 -- -------------------------------------------------
 SELECT * FROM CREDENZIALI;
-SELECT * FROM STORIE;
+-- SELECT * FROM STORIE;

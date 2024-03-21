@@ -88,8 +88,20 @@ public class InterfaceController {
         User user = new User(username, password);
         dbHandler.saveUser(user);
 
-        return "catalogo";
+        //return "catalogo";
+        // Reindirizzamento alla pagina "avvenuta registrazione"
+        return "redirect:/homepage.html";
 
     }
+    /*@PostMapping("/registration/process")
+    public String processRegistration(@RequestParam("username") String username, @RequestParam("password") String password, Model model) {
+        User user = new User(username, password);
+        dbHandler.saveUser(user);
+        //return "redirect:/catalogo";
+
+        // Reindirizzamento alla pagina "avvenuta registrazione"
+        return "redirect:/homepage.html";
+    }*/
+
 
 }

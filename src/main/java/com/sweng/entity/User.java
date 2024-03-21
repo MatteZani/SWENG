@@ -22,7 +22,6 @@ public class User {
     }
 
 
-
     // Metodi getter e setter
 
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
@@ -36,9 +36,9 @@
 <body>
     <h1>SWENG</h1>
         <div class="choices">
-            <a href="login.html">Accedi</a>
-            <a href="registrazione.html">Registrati</a>
-            <a href="catalogo.html">Continua come Visitatore</a>
+            <a th:href="@{/login}">Accedi</a>
+            <a th:href="@{/registration}">Registrati</a>
+            <a th:href="@{/catalogo}">Continua come Visitatore</a>
         </div>
 </body>
 </html>

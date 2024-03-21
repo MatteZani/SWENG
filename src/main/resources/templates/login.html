@@ -1,51 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-        form {
-            width: 300px;
-            margin: 0 auto;
-        }
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-        input[type="submit"] {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-    </style>
 
 </head>
 <body>
     <h2>Accedi</h2>
-        <form action="InterfaceController.java" method="post">
-            <input type="text" name="username" placeholder="Username" required><br>
-            <input type="password" name="password" placeholder="Password" required><br>
+        <form th:action="@{/login/process}" method="get">
+            <input type="text" th:name="username" placeholder="Username" required><br>
+            <input type="password" th:name="password" placeholder="Password" required><br>
             <input type="submit" value="Accedi">
         </form>
-        <p> Non sei registrato? <a href="registrazione.html">Registrati</a> </p>
+<!--        <p> Non sei registrato? <a href="registrazione.html">Registrati</a> </p>-->
+<!---->
+    <a th:href="@{/registration}">Registrati</a>
 </body>
 </html>

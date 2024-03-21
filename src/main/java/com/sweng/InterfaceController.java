@@ -1,6 +1,10 @@
 package com.sweng;
 
 
+import com.sweng.entity.User;
+import com.sweng.utilities.DBHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +17,11 @@ import java.sql.*;
 public class InterfaceController {
 
     // URL di connessione al database
-    static final String DB_URL = "jdbc:mysql://localhost:3306/nome_database";
-    static final String USER = "SWENG";
-    static final String PASS = "ProgettiGiga";
+    @Autowired
+    private DBHandler dbHandler;
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
 
     @GetMapping("/greeting")
     public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
@@ -23,49 +29,67 @@ public class InterfaceController {
         return "index";
     }
 
-    @PostMapping("/login")
-    public String login(@RequestParam(name="username") String username, @RequestParam(name="password") String password,
-                        Model model) {
+    @GetMapping("/login")
+    public String login() {
 
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
 
-        try {
-            // Connessione al database
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-            // Query per verificare le credenziali
-            String sql = "SELECT * FROM CREDENZIALI WHERE USERNAME=? AND PASSWORD=?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, username);
-            stmt.setString(2, password);
-            rs = stmt.executeQuery();
+//        try {
+//            // Connessione al database
+//            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+//
+//            // Query per verificare le credenziali
+//            String sql = "SELECT COUNT(*) FROM CREDENZIALI WHERE USERNAME=? AND PASSWORD=?";
+//            stmt = conn.prepareStatement(sql);
+//
+//            jdbcTemplate.update(sql, )
+//
+//            if (rs.next()) {
+//                // Le credenziali sono corrette, reindirizza alla home o ad un'altra pagina
+//                return "redirect:/home";
+//            } else {
+//                // Le credenziali sono errate, mostra un messaggio di errore
+//                model.addAttribute("error", "Credenziali non valide. Riprova.");
+//                return "login"; // Torna alla pagina di login
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            // Gestione degli errori
+//            model.addAttribute("error", "Si è verificato un errore durante la verifica delle " +
+//                    "credenziali. Riprova più tardi.");
+//            return "login"; // Torna alla pagina di login
+//        } finally {
+//            try {
+//                // Chiusura delle risorse
+//                if (rs != null) rs.close();
+//                if (stmt != null) stmt.close();
+//                if (conn != null) conn.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
-            if (rs.next()) {
-                // Le credenziali sono corrette, reindirizza alla home o ad un'altra pagina
-                return "redirect:/home";
-            } else {
-                // Le credenziali sono errate, mostra un messaggio di errore
-                model.addAttribute("error", "Credenziali non valide. Riprova.");
-                return "login"; // Torna alla pagina di login
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Gestione degli errori
-            model.addAttribute("error", "Si è verificato un errore durante la verifica delle " +
-                    "credenziali. Riprova più tardi.");
-            return "login"; // Torna alla pagina di login
-        } finally {
-            try {
-                // Chiusura delle risorse
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+        return "login";
+    }
+
+    @GetMapping("/login/process")
+    public String processLogin(@RequestParam("username") String username, @RequestParam("password") String password, Model model){
+        //TODO controllare se l'utente è correttamente registrato
+        return "catalogo";
+    }
+
+    @GetMapping("/registration")
+    public String registration(Model model){
+        return "registrazione";
+    }
+
+    @GetMapping("/registration/process")
+    public String processRegistration(@RequestParam("username") String username, @RequestParam("password") String password, Model model){
+        User user = new User(username, password);
+        dbHandler.saveUser(user);
+
+        return "catalogo";
+
     }
 
 }

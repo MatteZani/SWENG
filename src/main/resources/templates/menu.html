@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3em;
+            margin-top: 50px;
+        }
+        .choices {
+            margin-top: 30px;
+        }
+        .choices a {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 30px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            transition: background-color 0.3s ease;
+        }
+        .choices a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>SWENG</h1>
+        <div class="choices">
+            <a th:href="@{/login}">Accedi</a>
+            <a th:href="@{/registration}">Registrati</a>
+            <a th:href="@{/catalog}">Continua come Visitatore</a>
+        </div>
+</body>
+</html>

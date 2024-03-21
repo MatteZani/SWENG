@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Catalogo</title>
+
+    <style>
+          body {
+              font-family: Arial, sans-serif;
+              text-align: center;
+              margin-top: 50px;
+          }
+          h2 {
+              margin-bottom: 20px;
+          }
+          .story {
+              border: 1px solid #ccc;
+              border-radius: 5px;
+              padding: 20px;
+              margin-bottom: 20px;
+              text-align: left;
+          }
+          .story h3 {
+              margin-top: 0;
+          }
+          .story p {
+              margin-top: 10px;
+          }
+      </style>
+</head>
+<body>
+    <h2>Catalogo delle Storie</h2>
+
+    <div class="story">
+      <h3>Titolo della Storia 1</h3>
+      <p>Descrizione della storia 1...</p>
+      <a href="storia1.html">Leggi di più</a>
+    </div>
+
+    <div class="story">
+      <h3>Titolo della Storia 2</h3>
+      <p>Descrizione della storia 2...</p>
+      <a href="storia2.html">Leggi di più</a>
+    </div>
+
+    <div class="story">
+      <h3>Titolo della Storia 3</h3>
+      <p>Descrizione della storia 3...</p>
+      <a href="storia3.html">Leggi di più</a>
+    </div>
+
+    <p> Per giocare effettua la <a th:href="@{/registration}">registrazione</a></p>
+
+</body>
+</html>

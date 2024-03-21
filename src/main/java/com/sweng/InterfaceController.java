@@ -1,18 +1,71 @@
 package com.sweng;
 
 
+import com.sweng.entity.User;
+import com.sweng.utilities.DBHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.sql.*;
 
 @Controller
 public class InterfaceController {
 
-    @GetMapping("/greeting")
-    public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-        model.addAttribute("name", name);
-        return "index";
+    // URL di connessione al database
+    @Autowired
+    private DBHandler dbHandler;
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+
+    @GetMapping("/menu")
+    public String menu(Model model){
+        return "menu";
     }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @PostMapping("/login/process")
+    public String processLogin(@RequestParam("username") String username, @RequestParam("password") String password,
+                               Model model) {
+        boolean isValidCredentials = dbHandler.verifyCredentials(username, password);
+        if (isValidCredentials) {
+            // Reindirizza alla pagina "catalogo" se le credenziali sono valide
+            return "homepage";
+        } else {
+            // Reindirizza alla pagina di login con un messaggio di errore se le credenziali non sono valide
+            model.addAttribute("error", "Credenziali non valide");
+            return "login-failed"; // Assicurati che "login" sia il nome corretto della tua pagina di login
+        }
+    }
+
+    @GetMapping("/registration")
+    public String registration(Model model){
+        return "registration";
+    }
+
+
+    @PostMapping("/registration/process")
+    public String processRegistration(@RequestParam("username") String username, @RequestParam("password") String password, Model model) {
+        User user = new User(username, password);
+        dbHandler.saveUser(user);
+
+        // Reindirizzamento alla pagina "avvenuta registrazione"
+        return "homepage";
+    }
+
+    @GetMapping("/catalog")
+    public String catalog() {
+        return "catalog";
+    }
+
 
 }

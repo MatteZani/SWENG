@@ -23,10 +23,11 @@ dependencies {
 	implementation group: 'org.springframework', name: 'spring-jdbc', version: '6.1.5'
 	implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.1.0'
 	implementation group: 'log4j', name: 'log4j', version: '1.2.16'
+	testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.11.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 }
 
-tasks.named('test') {
+test{
 	useJUnitPlatform()
 }

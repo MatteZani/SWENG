@@ -10,10 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/home")
@@ -26,11 +28,9 @@ public class RestController {
     Logger logger = LoggerFactory.getLogger(RestController.class);
 
     @GetMapping("/user")
-    public ResponseEntity<List<User>> getUsers(){
-
-        ArrayList<User> users = dbHandler.getUsers();
+    public ResponseEntity<List<Map<String, Object>>> getUsers() {
+        List<Map<String, Object>> users = dbHandler.getUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
-
     }
 
 //    @GetMapping("/user/username")

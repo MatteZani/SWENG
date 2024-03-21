@@ -23,58 +23,21 @@ public class InterfaceController {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    @GetMapping("/greeting")
-    public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-        model.addAttribute("name", name);
-        return "index";
-    }
 
     @GetMapping("/login")
     public String login() {
-
-
-
-//        try {
-//            // Connessione al database
-//            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-//
-//            // Query per verificare le credenziali
-//            String sql = "SELECT COUNT(*) FROM CREDENZIALI WHERE USERNAME=? AND PASSWORD=?";
-//            stmt = conn.prepareStatement(sql);
-//
-//            jdbcTemplate.update(sql, )
-//
-//            if (rs.next()) {
-//                // Le credenziali sono corrette, reindirizza alla home o ad un'altra pagina
-//                return "redirect:/home";
-//            } else {
-//                // Le credenziali sono errate, mostra un messaggio di errore
-//                model.addAttribute("error", "Credenziali non valide. Riprova.");
-//                return "login"; // Torna alla pagina di login
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            // Gestione degli errori
-//            model.addAttribute("error", "Si è verificato un errore durante la verifica delle " +
-//                    "credenziali. Riprova più tardi.");
-//            return "login"; // Torna alla pagina di login
-//        } finally {
-//            try {
-//                // Chiusura delle risorse
-//                if (rs != null) rs.close();
-//                if (stmt != null) stmt.close();
-//                if (conn != null) conn.close();
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
         return "login";
+    }
+
+    @GetMapping("/menu")
+    public String menu(Model model){
+        return "menu";
     }
 
     @GetMapping("/login/process")
     public String processLogin(@RequestParam("username") String username, @RequestParam("password") String password, Model model){
         //TODO controllare se l'utente è correttamente registrato
+
         return "catalogo";
     }
 
@@ -83,25 +46,15 @@ public class InterfaceController {
         return "registrazione";
     }
 
-    @GetMapping("/registration/process")
-    public String processRegistration(@RequestParam("username") String username, @RequestParam("password") String password, Model model){
-        User user = new User(username, password);
-        dbHandler.saveUser(user);
 
-        //return "catalogo";
-        // Reindirizzamento alla pagina "avvenuta registrazione"
-        return "redirect:/homepage.html";
-
-    }
-    /*@PostMapping("/registration/process")
+    @PostMapping("/registration/process")
     public String processRegistration(@RequestParam("username") String username, @RequestParam("password") String password, Model model) {
         User user = new User(username, password);
         dbHandler.saveUser(user);
-        //return "redirect:/catalogo";
 
         // Reindirizzamento alla pagina "avvenuta registrazione"
-        return "redirect:/homepage.html";
-    }*/
+        return "homepage";
+    }
 
 
 }

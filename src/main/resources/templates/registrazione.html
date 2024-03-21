@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Registrazione</title>
@@ -40,11 +40,13 @@
 </head>
 <body>
     <h2>Registrati</h2>
-        <form action="InterfaceController.java" method="post">
-            <input type="text" name="username" placeholder="Username" required><br>
-            <input type="password" name="password" placeholder="Password" required><br>
+        <form th:action="@{/registration/process}" method="get">
+            <input type="text" th:name="username" placeholder="Username" required><br>
+            <input type="password" th:name="password" placeholder="Password" required><br>
             <input type="submit" value="Registrati">
         </form>
+
+
 
 </body>
 </html>

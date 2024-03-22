@@ -1,6 +1,8 @@
 package com.sweng;
 
 
+import com.sweng.entity.Scenario;
+import com.sweng.entity.Story;
 import com.sweng.entity.User;
 import com.sweng.utilities.DBHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +67,34 @@ public class InterfaceController {
     @GetMapping("/catalog")
     public String catalog() {
         return "catalog";
+    }
+
+    @GetMapping("/createStory")
+    public String createStory(){
+        return "create-story";
+    }
+
+    @PostMapping("/create-story/process")
+    public String processCreateStory(
+            @RequestParam("title") String title,
+            @RequestParam("plot") String plot,
+            @RequestParam("category") String category,
+            @RequestParam("creatorId") int creatorId,
+            @RequestParam("initialScenario") String initialScenario) {
+
+        // Creazione dello scenario iniziale
+        Scenario initial = new Scenario("Inizio", initialScenario);
+
+        // Creazione della storia con lo scenario iniziale
+        Story story = new Story(title, plot, initial, creatorId, category);
+        dbHandler.createStory(story).getBody().toString();
+
+        // Chiamata al metodo createStory di DBHandler per salvare la storia nel database
+        return "catalog";
+    }
+    @GetMapping("/play")
+    public String play(){
+        return "play";
     }
 
 

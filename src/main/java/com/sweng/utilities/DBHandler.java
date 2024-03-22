@@ -89,6 +89,12 @@ public class DBHandler {
         return count > 0;
     }
 
+    // Metodo per aggiungere uno scenario alla storia nel database
+    public void addScenarioToStory(int storyId, String description) {
+        String sql = "INSERT INTO SCENARI (DESCRIZIONE, ID_STORIA) VALUES (?, ?)";
+        jdbcTemplate.update(sql, description, storyId);
+    }
+
 
 
 }

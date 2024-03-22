@@ -5,6 +5,7 @@ import com.sweng.entity.Scenario;
 import com.sweng.entity.Story;
 import com.sweng.entity.User;
 import com.sweng.utilities.DBHandler;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,9 @@ import java.sql.*;
 
 @Controller
 public class InterfaceController {
+
+    @Autowired
+    private HttpSession httpSession;
 
     // URL di connessione al database
     @Autowired
@@ -40,7 +44,8 @@ public class InterfaceController {
                                Model model) {
         boolean isValidCredentials = dbHandler.verifyCredentials(username, password);
         if (isValidCredentials) {
-            // Reindirizza alla pagina "catalogo" se le credenziali sono valide
+            httpSession.setAttribute("username", username);
+            httpSession.setAttribute("password", password);
             return "homepage";
         } else {
             // Reindirizza alla pagina di login con un messaggio di errore se le credenziali non sono valide
@@ -60,6 +65,9 @@ public class InterfaceController {
         User user = new User(username, password);
         dbHandler.saveUser(user);
 
+        httpSession.setAttribute("username", username);
+        httpSession.setAttribute("password", password);
+
         // Reindirizzamento alla pagina "avvenuta registrazione"
         return "homepage";
     }
@@ -69,8 +77,10 @@ public class InterfaceController {
         return "catalog";
     }
 
-    @GetMapping("/createStory")
-    public String createStory(){
+    @GetMapping("/create-story")
+    public String createStory(Model model){
+
+
         return "create-story";
     }
 
@@ -79,21 +89,57 @@ public class InterfaceController {
             @RequestParam("title") String title,
             @RequestParam("plot") String plot,
             @RequestParam("category") String category,
-            @RequestParam("creatorId") int creatorId,
-            @RequestParam("initialScenario") String initialScenario) {
+            Model model) {
 
-        // Creazione dello scenario iniziale
-        Scenario initial = new Scenario("Inizio", initialScenario);
+//        // Creazione dello scenario iniziale
+//        Scenario initial = new Scenario("Inizio", initialScenario);
 
         // Creazione della storia con lo scenario iniziale
-        Story story = new Story(title, plot, initial, creatorId, category);
-        dbHandler.createStory(story).getBody().toString();
+        Story story = new Story(title, plot, null, (String) httpSession.getAttribute("username"), category);
+        dbHandler.createStory(story);
+        model.addAttribute("message", "Storia creata con successo, aggiungi lo scenario iniziale");
 
         // Chiamata al metodo createStory di DBHandler per salvare la storia nel database
-        return "catalog";
+        return "create-initial-scenario";
     }
+
+
+    @PostMapping("/create-initial-scenario/process")
+    public String createInitialScenario(@RequestParam String initialScenarioDescription, Model model){
+
+        dbHandler.createScenario((Integer) httpSession.getAttribute("currentStoryId"), initialScenarioDescription);
+        dbHandler.addScenarioToStory((Integer) httpSession.getAttribute("currentStoryId"));
+
+        return "add-scenario";
+    }
+
+    @PostMapping("add-scenario/process")
+    public String addScenarioToStory(@RequestParam String scenarioDescription, Model model){
+        dbHandler.createScenario((Integer) httpSession.getAttribute("currentStoryId"), scenarioDescription);
+
+        return "add-scenario";
+    }
+
+    @PostMapping("connect-scenarios")
+    public String connectScenarios(Model model){
+        model.addAttribute("message", "Connetti gli scenari che hai creato");
+
+        return "connect-scenarios";
+
+    }
+
+    @PostMapping("connect-scenarios/process")
+    public String processConnection(Model model){
+        //TODO implementare metodo per fare inserire gli scenari da collegare all'utente
+        dbHandler.connectScenarios(6, 7, 8);
+
+        return "connect-scenarios";
+    }
+
     @GetMapping("/play")
-    public String play(){
+    public String play(Model model){
+
+
         return "play";
     }
 

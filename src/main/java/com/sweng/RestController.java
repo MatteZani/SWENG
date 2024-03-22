@@ -44,6 +44,13 @@ public class RestController {
 ////        }
 //    }
 
+    /**
+     * inserisce un nuovo utente nel database
+     * @param user l'utente da inserire
+     * @return response entity con codice 200 e l'utente nel body se l'inserimento è andato a buon fide
+     * response entity 400 con messaggio di errore se si verifica un errore nell'inserimento
+     *
+     **/
     @PostMapping("/user")
     public ResponseEntity<Object> postUser(@RequestBody User user){
 

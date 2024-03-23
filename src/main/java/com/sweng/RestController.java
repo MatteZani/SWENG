@@ -96,7 +96,12 @@ public class RestController {
 
     @GetMapping("/scenario")
     public ResponseEntity<Object> getScenariosByStoryId(@RequestParam("storyId") int storyId){
-        return dbHandler.getScenariosByStoryId(storyId);
+        List<Map<String, Object>> scenarios = dbHandler.getScenariosByStoryId(storyId);
+        if(scenarios == null){
+            return new ResponseEntity<>("Errore nella ricerca degli scenari", HttpStatusCode.valueOf(400));
+        }
+        else
+            return new ResponseEntity<>(scenarios, HttpStatus.OK);
     }
 
 }

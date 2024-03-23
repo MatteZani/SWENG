@@ -113,13 +113,25 @@ public class DBHandler {
             String sql = "INSERT INTO SCENARI (DESCRIZIONE, ID_STORIA) VALUES (?, ?)";
             jdbcTemplate.update(sql, description, storyId);
 
-            String getScenarioId = "SELECT MAX(ID) FROM SCENARI";
-            int currentScenarioId = jdbcTemplate.queryForObject(getScenarioId, Integer.class);
-            httpSession.setAttribute("currentScenarioId", currentScenarioId);
+
+            httpSession.setAttribute("currentScenarioId", this.getMaxScenarioId());
 
         }
         catch (DataAccessException e) {
             logger.error("Lanciata eccezione nel metodo createScenario della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+        }
+
+    }
+
+    public int getMaxScenarioId(){
+
+        try {
+            String getScenarioId = "SELECT MAX(ID) FROM SCENARI";
+            int maxScenarioId = jdbcTemplate.queryForObject(getScenarioId, Integer.class);
+
+            return maxScenarioId;
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -150,6 +162,17 @@ public class DBHandler {
         String sql = "INSERT INTO COLLEGAMENTI(SCENARIO_PARTENZA, SCENARIO_ARRIVO, STORIA_APPARTENENZA, DESCRIZIONE) VALUES (?, ?, ?, 'Collegamento di prova')";
 
         jdbcTemplate.update(sql, start, end, story);
+    }
+
+    public List<Map<String, Object>> getLinksByStoryId(int storyId){
+        try{
+            return jdbcTemplate.queryForList("SELECT * FROM COLLEGAMENTI WHERE STORIA_APPARTENENZA = ?", storyId);
+
+        } catch (DataAccessException e) {
+            logger.error("Lanciata eccezione nel metodo getLinksByStoryId della classe DBHandler. Causa dell'" +
+                    "eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+            return null;
+        }
     }
 
 

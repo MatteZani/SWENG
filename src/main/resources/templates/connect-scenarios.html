@@ -8,6 +8,14 @@
     <p th:text="${message}"></p>
 
     <form th:action="@{/connect-scenarios/process}" method="post">
+
+        <select th:name = "start">
+            <option th:each="scenario : ${scenarios}" th:value="${scenario.id}" th:text="${scenario.description}"></option>
+        </select>
+
+        <select th:name = "end">
+            <option th:each="scenario : ${scenarios}" th:value="${scenario.id}" th:text="${scenario.description}"></option>
+        </select>
         <input type="submit" value="Connetti">
     </form>
 

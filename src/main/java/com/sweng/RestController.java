@@ -104,4 +104,15 @@ public class RestController {
             return new ResponseEntity<>(scenarios, HttpStatus.OK);
     }
 
+    @GetMapping("/links")
+    public ResponseEntity<Object> getLinksByStoryId(@RequestParam("storyId") int storyId){
+        List<Map<String, Object>> links = dbHandler.getLinksByStoryId(storyId);
+        if(links == null){
+            return new ResponseEntity<>("Errore nella ricerca degli scenari", HttpStatusCode.valueOf(400));
+        }
+        else
+            return new ResponseEntity<>(links, HttpStatus.OK);
+
+    }
+
 }

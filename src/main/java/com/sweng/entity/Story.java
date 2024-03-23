@@ -5,13 +5,13 @@ public class Story {
     private String plot;
     private Scenario initialScenario;
     private String category;
-    private int creatorId;
+    private String creator;
 
-    public Story(String title, String plot, Scenario initialScenario, int creatorId, String category) {
+    public Story(String title, String plot, Scenario initialScenario, String creator, String category) {
         this.title = title;
         this.plot = plot;
         this.initialScenario = initialScenario;
-        this.creatorId = creatorId;
+        this.creator = creator;
         this.category = category;
     }
 
@@ -47,12 +47,12 @@ public class Story {
         this.category = category;
     }
 
-    public int getCreatorId() {
-        return creatorId;
+    public String getCreator() {
+        return creator;
     }
 
-    public void setCreatorId(int creatorId) {
-        this.creatorId = creatorId;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 }
 

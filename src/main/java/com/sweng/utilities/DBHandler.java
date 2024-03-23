@@ -4,21 +4,24 @@ import com.sweng.entity.Riddle;
 import com.sweng.entity.Scenario;
 import com.sweng.entity.Story;
 import com.sweng.entity.User;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class DBHandler {
+
+    @Autowired
+    private HttpSession httpSession;
 
     Logger logger = LoggerFactory.getLogger(DBHandler.class);
 
@@ -40,16 +43,32 @@ public class DBHandler {
         }
     }
 
-    public ResponseEntity<Object> createStory(Story story){
+    public void createStory(Story story){
         try {
-            String sql = "INSERT INTO STORIE(TITOLO, TRAMA, GENERE, ID_CREATORE) VALUES (?, ?, ?, ?)";
-            jdbcTemplate.update(sql, story.getTitle(), story.getPlot(), story.getCategory(), story.getCreatorId());
-            return new ResponseEntity<>(story, HttpStatus.OK);
+            String sql = "INSERT INTO STORIE(TITOLO, TRAMA, GENERE, CREATORE, SCENARIO_INIZIALE) VALUES (?, ?, ?, ?, ?)";
+            jdbcTemplate.update(sql, story.getTitle(), story.getPlot(), story.getCategory(), story.getCreator(), null);
+            String maxId = "SELECT MAX(ID) FROM STORIE";
+            int currentStoryId = jdbcTemplate.queryForObject(maxId, Integer.class);
+            httpSession.setAttribute("currentStoryId", currentStoryId);
+
         } catch (DataAccessException e) {
             logger.error("Lanciata eccezione nel metodo createStory della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
-            return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
+            throw e;
         }
     }
+
+/*    public List<Story> getStories(){
+        try{
+
+            return jdbcTemplate.queryForObject("SELECT * FROM STORIE", Story.class);
+
+
+        } catch (DataAccessException e) {
+            logger.error("Lanciata eccezione nel metodo getStories della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+            return new ArrayList<Story>();
+
+        }
+    }*/
 
     public ResponseEntity<Object> createObject(String name){
         try {
@@ -87,6 +106,50 @@ public class DBHandler {
         String sql = "SELECT COUNT(*) FROM CREDENZIALI WHERE USERNAME = ? AND PASSWORD = ?";
         int count = jdbcTemplate.queryForObject(sql, Integer.class, username, password);
         return count > 0;
+    }
+
+    public void createScenario(int storyId, String description){
+        try {
+            String sql = "INSERT INTO SCENARI (DESCRIZIONE, ID_STORIA) VALUES (?, ?)";
+            jdbcTemplate.update(sql, description, storyId);
+
+            String getScenarioId = "SELECT MAX(ID) FROM SCENARI";
+            int currentScenarioId = jdbcTemplate.queryForObject(getScenarioId, Integer.class);
+            httpSession.setAttribute("currentScenarioId", currentScenarioId);
+
+        }
+        catch (DataAccessException e) {
+            logger.error("Lanciata eccezione nel metodo createScenario della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+        }
+
+    }
+
+    // Metodo per aggiungere uno scenario alla storia nel database
+    public void addScenarioToStory(int storyId) {
+        try {
+            String addScenario = "UPDATE STORIE SET SCENARIO_INIZIALE = ? WHERE ID = ?";
+            jdbcTemplate.update(addScenario, httpSession.getAttribute("currentScenarioId"), storyId);
+        } catch (DataAccessException e) {
+            logger.error("Lanciata eccezione nel metodo addScenarioToStory della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+        }
+    }
+
+
+    public List<Map<String, Object>> getScenariosByStoryId(int storyId){
+        try{
+            return jdbcTemplate.queryForList("SELECT * FROM SCENARI WHERE ID_STORIA = ?", storyId);
+
+        } catch (DataAccessException e) {
+            logger.error("Lanciata eccezione nel metodo getScenariosByStoryId della classe DBHandler. Causa dell'" +
+                    "eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+            return null;
+        }
+    }
+
+    public void connectScenarios(int start, int end, int story){
+        String sql = "INSERT INTO COLLEGAMENTI(SCENARIO_PARTENZA, SCENARIO_ARRIVO, STORIA_APPARTENENZA, DESCRIZIONE) VALUES (?, ?, ?, 'Collegamento di prova')";
+
+        jdbcTemplate.update(sql, start, end, story);
     }
 
 

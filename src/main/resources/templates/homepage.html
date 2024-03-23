@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>homepage</title>
 </head>
 <body>
-        <h2>FUNZIONA</h2>
+    <h1>Che cosa vuoi fare?</h1>
+    <div class="choices">
+
+<!--        <input type="hidden" th:value="${creator}">-->
+        <a th:href="@{/create-story}">Creare una nuova storia</a>
+        <a th:href="@{/play}">Giocare una storia</a>
+
+    </div>
 </body>
 </html>

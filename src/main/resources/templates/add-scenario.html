@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Aggiungi scenario</title>
+</head>
+<body>
+
+    <form th:action="@{/add-scenario/process}" method="post">
+
+        <label th:for="scenarioDescription">Descrivi il nuovo scenario:</label><br>
+        <textarea id="scenarioDescription" th:name="scenarioDescription" rows="4" cols="50"
+                  placeholder="Tanto tempo fa in una galassia lontana lontana..." required></textarea><br><br>
+
+        <input type="submit" value="Aggiungi scenario alla storia">
+    </form>
+
+<!--    <a th:href="@{/connect-scenarios}">Termina creazione scenari</a>-->
+
+    <form th:action="@{/connect-scenarios}" method="post">
+        <input type="submit" value="Vai a collegare gli scenari inseriti">
+    </form>
+
+</body>
+</html>

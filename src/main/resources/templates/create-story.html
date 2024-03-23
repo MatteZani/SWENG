@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Story</title>
+</head>
+<body>
+    <h2>Crea una nuova storia</h2>
+    <form th:action="@{/create-story/process}" method="post">
+        <label for="title">Titolo:</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+
+        <label for="plot">Trama:</label><br>
+        <textarea id="plot" name="plot" rows="4" cols="50" required></textarea><br><br>
+
+        <label for="category">Genere:</label><br>
+        <select id="category" name="category" required>
+            <option value="Horror">Horror</option>
+            <option value="Azione">Azione</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Comica">Comica</option>
+            <option value="Drammatica">Drammatica</option>
+        </select><br><br>
+
+<!--        <input type="hidden" id="creatorId" name="creatorId" value="123"> &lt;!&ndash; Aggiungi l'ID del creatore &ndash;&gt;-->
+
+        <input type="submit" value="Crea storia">
+    </form>
+</body>
+</html>

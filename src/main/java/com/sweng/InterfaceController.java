@@ -79,17 +79,12 @@ public class InterfaceController {
 
     @GetMapping("/create-story")
     public String createStory(Model model){
-
-
         return "create-story";
     }
 
     @PostMapping("/create-story/process")
-    public String processCreateStory(
-            @RequestParam("title") String title,
-            @RequestParam("plot") String plot,
-            @RequestParam("category") String category,
-            Model model) {
+    public String processCreateStory(@RequestParam("title") String title, @RequestParam("plot") String plot,
+            @RequestParam("category") String category, Model model) {
 
 //        // Creazione dello scenario iniziale
 //        Scenario initial = new Scenario("Inizio", initialScenario);
@@ -131,6 +126,8 @@ public class InterfaceController {
     @PostMapping("connect-scenarios/process")
     public String processConnection(Model model){
         //TODO implementare metodo per fare inserire gli scenari da collegare all'utente
+        model.addAllAttributes(dbHandler.getScenariosByStoryId((Integer) httpSession.getAttribute("currentStoryId")));
+
         dbHandler.connectScenarios(6, 7, 8);
 
         return "connect-scenarios";
@@ -138,8 +135,6 @@ public class InterfaceController {
 
     @GetMapping("/play")
     public String play(Model model){
-
-
         return "play";
     }
 

@@ -57,18 +57,18 @@ public class DBHandler {
         }
     }
 
-//    public List<Story> getStories(){
-//        try{
-//
-//            return jdbcTemplate.queryForObject("SELECT * FROM STORIE", Story.class);
-//
-//
-//        } catch (DataAccessException e) {
-//            logger.error("Lanciata eccezione nel metodo getStories della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
-//            return new ArrayList<Story>();
-//
-//        }
-//    }
+/*    public List<Story> getStories(){
+        try{
+
+            return jdbcTemplate.queryForObject("SELECT * FROM STORIE", Story.class);
+
+
+        } catch (DataAccessException e) {
+            logger.error("Lanciata eccezione nel metodo getStories della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+            return new ArrayList<Story>();
+
+        }
+    }*/
 
     public ResponseEntity<Object> createObject(String name){
         try {
@@ -135,15 +135,14 @@ public class DBHandler {
     }
 
 
-    public ResponseEntity<Object> getScenariosByStoryId(int storyId){
+    public List<Map<String, Object>> getScenariosByStoryId(int storyId){
         try{
-
-            return new ResponseEntity<>(jdbcTemplate.queryForList("SELECT * FROM SCENARI WHERE ID_STORIA = ?", storyId), HttpStatus.OK);
-
+            return jdbcTemplate.queryForList("SELECT * FROM SCENARI WHERE ID_STORIA = ?", storyId);
 
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo getScenariosByStoryId della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
-            return new ResponseEntity<>("Errore nella ricerca degli scenari", HttpStatusCode.valueOf(400));
+            logger.error("Lanciata eccezione nel metodo getScenariosByStoryId della classe DBHandler. Causa dell'" +
+                    "eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+            return null;
         }
     }
 

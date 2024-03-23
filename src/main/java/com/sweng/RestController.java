@@ -5,10 +5,13 @@ import com.sweng.entity.Scenario;
 import com.sweng.entity.Story;
 import com.sweng.entity.User;
 import com.sweng.utilities.DBHandler;
+import jakarta.websocket.server.PathParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +47,13 @@ public class RestController {
 ////        }
 //    }
 
+    /**
+     * inserisce un nuovo utente nel database
+     * @param user l'utente da inserire
+     * @return response entity con codice 200 e l'utente nel body se l'inserimento è andato a buon fide
+     * response entity 400 con messaggio di errore se si verifica un errore nell'inserimento
+     *
+     **/
     @PostMapping("/user")
     public ResponseEntity<Object> postUser(@RequestBody User user){
 
@@ -58,7 +68,12 @@ public class RestController {
     @PostMapping("/story")
     public ResponseEntity<Object> postStory(@RequestBody Story story){
 
-        return dbHandler.createStory(story);
+        try {
+            dbHandler.createStory(story);
+            return new ResponseEntity<>(story, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>("Errore nel salvataggio della storia", HttpStatusCode.valueOf(400));
+        }
     }
 
     @PostMapping("/object")
@@ -79,5 +94,9 @@ public class RestController {
         return dbHandler.createRiddle(riddle);
     }
 
+    @GetMapping("/scenario")
+    public ResponseEntity<Object> getScenariosByStoryId(@RequestParam("storyId") int storyId){
+        return dbHandler.getScenariosByStoryId(storyId);
+    }
 
 }

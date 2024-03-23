@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Aggiungi scenario iniziale</title>
+</head>
+<body>
+    <p th:text="${messaggio}"></p>
+    <form th:action="@{/create-initial-scenario/process}" method="post">
+
+        <label th:for="initialScenarioDescription">Descrivi lo scenario iniziale:</label><br>
+        <textarea id="initialScenario" th:name="initialScenarioDescription" rows="4" cols="50"
+                  placeholder="Tanto tempo fa in una galassia lontana lontana..." required></textarea><br><br>
+
+<!--        <input type="hidden" id="storyId" th:name="storyId" value="${storyId}"> &lt;!&ndash; Aggiungi l'ID del creatore &ndash;&gt;-->
+        <input type="submit" value="Aggiungi scenario iniziale">
+    </form>
+
+
+</body>
+</html>

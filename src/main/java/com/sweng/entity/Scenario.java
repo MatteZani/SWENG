@@ -4,20 +4,28 @@ import java.util.List;
 
 public class Scenario {
 
-    private String title;
+    private int id;
     private String description;
     private List<Scenario> nextScenarios;
     private int storyId;
 
     // Costruttore
-    public Scenario(String title, String description, List<Scenario> nextScenarios, int storyId) {
-        this.title = title;
+    public Scenario(String description, List<Scenario> nextScenarios, int storyId) {
+
         this.description = description;
         this.nextScenarios = nextScenarios;
         this.storyId = storyId;
     }
 
-    public Scenario(String inizio, String initialScenario) {
+    public Scenario(String description, int storyId) {
+        this.description = description;
+        this.storyId = storyId;
+    }
+
+    public Scenario(int id, String description, int storyId) {
+        this.id = id;
+        this.description = description;
+        this.storyId = storyId;
     }
 
     // Metodi getter e setter
@@ -45,6 +53,14 @@ public class Scenario {
     }
     public void setStoryId(int storyId) {
         this.storyId = storyId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
 

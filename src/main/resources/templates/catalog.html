@@ -30,24 +30,32 @@
 </head>
 <body>
     <h2>Catalogo delle Storie</h2>
+    <ul>
+        <li th:each="story : ${stories}">
+            <div class="story">
 
-    <div class="story">
-      <h3>Titolo della Storia 1</h3>
-      <p>Descrizione della storia 1...</p>
-      <a href="storia1.html">Leggi di più</a>
-    </div>
+                <h3 th:text="${story.title}"></h3> <!-- Accedi all'oggetto con chiave 'chiave' -->
+                <p th:text="${story.plot}"></p> <!-- Accedi all'oggetto con chiave 'chiave' -->
+                <a href="storia1.html">Leggi di più</a>
+            </div>
+        </li>
+    </ul>
 
-    <div class="story">
-      <h3>Titolo della Storia 2</h3>
-      <p>Descrizione della storia 2...</p>
-      <a href="storia2.html">Leggi di più</a>
-    </div>
+<!--      <p>Descrizione della storia 1...</p>-->
+<!--      -->
+<!--    -->
 
-    <div class="story">
-      <h3>Titolo della Storia 3</h3>
-      <p>Descrizione della storia 3...</p>
-      <a href="storia3.html">Leggi di più</a>
-    </div>
+<!--    <div class="story">-->
+<!--      <h3>Titolo della Storia 2</h3>-->
+<!--      <p>Descrizione della storia 2...</p>-->
+<!--      <a href="storia2.html">Leggi di più</a>-->
+<!--    </div>-->
+
+<!--    <div class="story">-->
+<!--      <h3>Titolo della Storia 3</h3>-->
+<!--      <p>Descrizione della storia 3...</p>-->
+<!--      <a href="storia3.html">Leggi di più</a>-->
+<!--    </div>-->
 
     <p> Per giocare effettua la <a th:href="@{/registration}">registrazione</a></p>
 

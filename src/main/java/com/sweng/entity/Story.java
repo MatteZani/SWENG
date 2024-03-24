@@ -1,18 +1,29 @@
 package com.sweng.entity;
 
 public class Story {
+
+    private int id;
     private String title;
     private String plot;
-    private Scenario initialScenario;
+    private int initialScenario;
     private String category;
     private String creator;
 
-    public Story(String title, String plot, Scenario initialScenario, String creator, String category) {
+    public Story(String title, String plot, int initialScenario, String creator, String category) {
         this.title = title;
         this.plot = plot;
         this.initialScenario = initialScenario;
         this.creator = creator;
         this.category = category;
+    }
+
+    public Story(int id, String title, String plot, int initialScenario, String category, String creator) {
+        this.id = id;
+        this.title = title;
+        this.plot = plot;
+        this.initialScenario = initialScenario;
+        this.category = category;
+        this.creator = creator;
     }
 
     public String getTitle() {
@@ -31,11 +42,11 @@ public class Story {
         this.plot = plot;
     }
 
-    public Scenario getInitialScenario() {
+    public int getInitialScenario() {
         return initialScenario;
     }
 
-    public void setInitialScenario(Scenario initialScenario) {
+    public void setInitialScenario(int initialScenario) {
         this.initialScenario = initialScenario;
     }
 

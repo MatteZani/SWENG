@@ -3,6 +3,7 @@ package com.sweng;
 
 import com.sweng.entity.Scenario;
 import com.sweng.entity.Story;
+import com.sweng.entity.StoryBuilder;
 import com.sweng.entity.User;
 import com.sweng.utilities.DBHandler;
 import jakarta.servlet.http.HttpSession;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.sql.*;
+import java.util.ArrayList;
 
 @Controller
 public class InterfaceController {
@@ -73,7 +74,8 @@ public class InterfaceController {
     }
 
     @GetMapping("/catalog")
-    public String catalog() {
+    public String catalog(Model model) {
+        model.addAttribute("stories", dbHandler.getStories());
         return "catalog";
     }
 
@@ -90,7 +92,7 @@ public class InterfaceController {
 //        Scenario initial = new Scenario("Inizio", initialScenario);
 
         // Creazione della storia con lo scenario iniziale
-        Story story = new Story(title, plot, null, (String) httpSession.getAttribute("username"), category);
+        Story story = new StoryBuilder().setTitle(title).setPlot(plot).setInitialScenario(0).setCreator((String) httpSession.getAttribute("username")).setCategory(category).build();
         dbHandler.createStory(story);
         model.addAttribute("message", "Storia creata con successo, aggiungi lo scenario iniziale");
 
@@ -104,6 +106,9 @@ public class InterfaceController {
 
         dbHandler.createScenario((Integer) httpSession.getAttribute("currentStoryId"), initialScenarioDescription);
         dbHandler.addScenarioToStory((Integer) httpSession.getAttribute("currentStoryId"));
+        ArrayList<Scenario> scenarios = new ArrayList<>();
+        scenarios.add(new Scenario(dbHandler.getMaxScenarioId(), initialScenarioDescription, (Integer) httpSession.getAttribute("currentStoryId")));
+        httpSession.setAttribute("scenarios", scenarios);
 
         return "add-scenario";
     }
@@ -112,6 +117,10 @@ public class InterfaceController {
     public String addScenarioToStory(@RequestParam String scenarioDescription, Model model){
         dbHandler.createScenario((Integer) httpSession.getAttribute("currentStoryId"), scenarioDescription);
 
+        ArrayList<Scenario> scenarios = (ArrayList<Scenario>) httpSession.getAttribute("scenarios");
+        scenarios.add(new Scenario(dbHandler.getMaxScenarioId(), scenarioDescription, (Integer) httpSession.getAttribute("currentStoryId")));
+
+        httpSession.setAttribute("scenarios", scenarios);
         return "add-scenario";
     }
 
@@ -119,17 +128,20 @@ public class InterfaceController {
     public String connectScenarios(Model model){
         model.addAttribute("message", "Connetti gli scenari che hai creato");
 
+        model.addAttribute("scenarios", httpSession.getAttribute("scenarios"));
+
         return "connect-scenarios";
 
     }
 
     @PostMapping("connect-scenarios/process")
-    public String processConnection(Model model){
+    public String processConnection(@RequestParam("start") int startingScenario, @RequestParam("end") int endingScenario, Model model){
         //TODO implementare metodo per fare inserire gli scenari da collegare all'utente
-        model.addAllAttributes(dbHandler.getScenariosByStoryId((Integer) httpSession.getAttribute("currentStoryId")));
 
-        dbHandler.connectScenarios(6, 7, 8);
 
+        dbHandler.connectScenarios(startingScenario, endingScenario,(Integer) httpSession.getAttribute("currentStoryId"));
+
+        model.addAttribute("scenarios", httpSession.getAttribute("scenarios"));
         return "connect-scenarios";
     }
 

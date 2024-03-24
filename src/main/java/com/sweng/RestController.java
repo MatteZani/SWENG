@@ -60,10 +60,18 @@ public class RestController {
         return dbHandler.saveUser(user);
     }
 
-//    @GetMapping("/story")
-//    public ResponseEntity<Object> getStories(){
-//
-//    }
+    @GetMapping("/story")
+    public ResponseEntity<Object> getStories(){
+
+
+        List<Story> stories = dbHandler.getStories();
+
+        if(stories == null) {
+            return new ResponseEntity<>("Errore nel recupero delle storie", HttpStatusCode.valueOf(400));
+        }
+        else
+            return new ResponseEntity<>(stories, HttpStatus.OK);
+    }
 
     @PostMapping("/story")
     public ResponseEntity<Object> postStory(@RequestBody Story story){

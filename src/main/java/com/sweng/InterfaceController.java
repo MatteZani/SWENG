@@ -3,6 +3,7 @@ package com.sweng;
 
 import com.sweng.entity.Scenario;
 import com.sweng.entity.Story;
+import com.sweng.entity.StoryBuilder;
 import com.sweng.entity.User;
 import com.sweng.utilities.DBHandler;
 import jakarta.servlet.http.HttpSession;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.sql.*;
 import java.util.ArrayList;
 
 @Controller
@@ -74,7 +74,8 @@ public class InterfaceController {
     }
 
     @GetMapping("/catalog")
-    public String catalog() {
+    public String catalog(Model model) {
+        model.addAttribute("stories", dbHandler.getStories());
         return "catalog";
     }
 
@@ -91,7 +92,7 @@ public class InterfaceController {
 //        Scenario initial = new Scenario("Inizio", initialScenario);
 
         // Creazione della storia con lo scenario iniziale
-        Story story = new Story(title, plot, null, (String) httpSession.getAttribute("username"), category);
+        Story story = new StoryBuilder().setTitle(title).setPlot(plot).setInitialScenario(0).setCreator((String) httpSession.getAttribute("username")).setCategory(category).build();
         dbHandler.createStory(story);
         model.addAttribute("message", "Storia creata con successo, aggiungi lo scenario iniziale");
 

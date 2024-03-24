@@ -1,10 +1,7 @@
 package com.sweng;
 
 
-import com.sweng.entity.Scenario;
-import com.sweng.entity.Story;
-import com.sweng.entity.StoryBuilder;
-import com.sweng.entity.User;
+import com.sweng.entity.*;
 import com.sweng.utilities.DBHandler;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,29 +93,47 @@ public class InterfaceController {
         dbHandler.createStory(story);
         model.addAttribute("message", "Storia creata con successo, aggiungi lo scenario iniziale");
 
+
+        model.addAttribute("objectCreationMessage", "Vuoi creare un oggetto relativo a questo scenario?" + "\n" + "Questo oggetto sarà aggiunto all'inventario dei giocatori che passeranno per questo scenario");
         // Chiamata al metodo createStory di DBHandler per salvare la storia nel database
         return "create-initial-scenario";
     }
 
 
     @PostMapping("/create-initial-scenario/process")
-    public String createInitialScenario(@RequestParam String initialScenarioDescription, Model model){
+    public String createInitialScenario(@RequestParam String initialScenarioDescription, @RequestParam(required = false) String objectTitle , @RequestParam(required = false) String objectDescription , Model model){
+        int storyObjectId = 0;
+        StoryObject storyObject = null;
+        if(objectTitle != null && objectDescription != null){
+            storyObject = new StoryObject(objectTitle, objectDescription);
+            storyObjectId = dbHandler.createObject(storyObject);
+        }
 
-        dbHandler.createScenario((Integer) httpSession.getAttribute("currentStoryId"), initialScenarioDescription);
+        dbHandler.createScenario((Integer) httpSession.getAttribute("currentStoryId"), initialScenarioDescription, storyObjectId);
         dbHandler.addScenarioToStory((Integer) httpSession.getAttribute("currentStoryId"));
         ArrayList<Scenario> scenarios = new ArrayList<>();
-        scenarios.add(new Scenario(dbHandler.getMaxScenarioId(), initialScenarioDescription, (Integer) httpSession.getAttribute("currentStoryId")));
+
+        scenarios.add(new ScenarioBuilder().setId(dbHandler.getMaxScenarioId()).setDescription(initialScenarioDescription).setStoryId((Integer) httpSession.getAttribute("currentStoryId")).setStoryObject(storyObjectId).build());
         httpSession.setAttribute("scenarios", scenarios);
 
+        model.addAttribute("objectCreationMessage", "Vuoi creare un oggetto relativo a questo scenario?" + "\n" + "Questo oggetto sarà aggiunto all'inventario dei giocatori che passeranno per questo scenario");
         return "add-scenario";
     }
 
     @PostMapping("add-scenario/process")
-    public String addScenarioToStory(@RequestParam String scenarioDescription, Model model){
-        dbHandler.createScenario((Integer) httpSession.getAttribute("currentStoryId"), scenarioDescription);
+    public String addScenarioToStory(@RequestParam String scenarioDescription, @RequestParam(required = false) String objectTitle , @RequestParam(required = false) String objectDescription , Model model){
+
+        int storyObjectId = 0;
+        StoryObject storyObject = null;
+        if(objectTitle != null && objectDescription != null){
+            storyObject = new StoryObject(objectTitle, objectDescription);
+            storyObjectId = dbHandler.createObject(storyObject);
+        }
+
+        dbHandler.createScenario((Integer) httpSession.getAttribute("currentStoryId"), scenarioDescription, storyObjectId);
 
         ArrayList<Scenario> scenarios = (ArrayList<Scenario>) httpSession.getAttribute("scenarios");
-        scenarios.add(new Scenario(dbHandler.getMaxScenarioId(), scenarioDescription, (Integer) httpSession.getAttribute("currentStoryId")));
+        scenarios.add(new ScenarioBuilder().setId(dbHandler.getMaxScenarioId()).setDescription(scenarioDescription).setStoryId((Integer) httpSession.getAttribute("currentStoryId")).build());
 
         httpSession.setAttribute("scenarios", scenarios);
         return "add-scenario";

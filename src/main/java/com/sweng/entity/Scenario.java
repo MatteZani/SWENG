@@ -9,12 +9,15 @@ public class Scenario {
     private List<Scenario> nextScenarios;
     private int storyId;
 
+    private int storyObjectId;
+
     // Costruttore
-    public Scenario(String description, List<Scenario> nextScenarios, int storyId) {
+    public Scenario(String description, List<Scenario> nextScenarios, int storyId, int storyObjectId) {
 
         this.description = description;
         this.nextScenarios = nextScenarios;
         this.storyId = storyId;
+        this.storyObjectId = storyObjectId;
     }
 
     public Scenario(String description, int storyId) {
@@ -62,5 +65,7 @@ public class Scenario {
     public void setId(int id) {
         this.id = id;
     }
+
+
 }
 

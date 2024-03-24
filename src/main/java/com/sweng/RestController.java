@@ -1,9 +1,6 @@
 package com.sweng;
 
-import com.sweng.entity.Riddle;
-import com.sweng.entity.Scenario;
-import com.sweng.entity.Story;
-import com.sweng.entity.User;
+import com.sweng.entity.*;
 import com.sweng.utilities.DBHandler;
 import jakarta.websocket.server.PathParam;
 import org.slf4j.Logger;
@@ -85,9 +82,18 @@ public class RestController {
     }
 
     @PostMapping("/object")
-    public ResponseEntity<Object> postObject(@RequestBody String name){
+    public ResponseEntity<Object> postObject(@RequestBody String name, @RequestBody String description){
 
-        return dbHandler.createObject(name);
+        try {
+            StoryObject storyObject = new StoryObject(name, description);
+            dbHandler.createObject(storyObject);
+
+            return new ResponseEntity<>(storyObject, HttpStatus.OK);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>("Errore nella creazione dell'oggetto", HttpStatusCode.valueOf(400));
+        }
+
     }
 
     @PostMapping("/scenario")

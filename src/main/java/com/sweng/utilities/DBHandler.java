@@ -1,9 +1,6 @@
 package com.sweng.utilities;
 
-import com.sweng.entity.Riddle;
-import com.sweng.entity.Scenario;
-import com.sweng.entity.Story;
-import com.sweng.entity.User;
+import com.sweng.entity.*;
 import com.sweng.mapper.StoryRowMapper;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -70,14 +67,16 @@ public class DBHandler {
         }
     }
 
-    public ResponseEntity<Object> createObject(String name){
+    public int createObject(StoryObject storyObject){
         try {
-            String sql = "INSERT INTO OGGETTI(NOME) VALUES (?)";
-            jdbcTemplate.update(sql, name);
-            return new ResponseEntity<>(name, HttpStatus.OK);
+            String sql = "INSERT INTO OGGETTI(NOME, DESCRIZIONE) VALUES (?, ?)";
+            jdbcTemplate.update(sql, storyObject.getName(), storyObject.getDescription());
+            String maxIdQuery = "SELECT MAX(ID) FROM OGGETTI";
+            int maxId = jdbcTemplate.queryForObject(maxIdQuery, Integer.class);
+            return maxId;
         } catch (DataAccessException e) {
             logger.error("Lanciata eccezione nel metodo createObject della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
-            return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
+            return -1;
         }
     }
 
@@ -108,10 +107,10 @@ public class DBHandler {
         return count > 0;
     }
 
-    public void createScenario(int storyId, String description){
+    public void createScenario(int storyId, String description, int storyObjectId){
         try {
-            String sql = "INSERT INTO SCENARI (DESCRIZIONE, ID_STORIA) VALUES (?, ?)";
-            jdbcTemplate.update(sql, description, storyId);
+            String sql = "INSERT INTO SCENARI (DESCRIZIONE, ID_STORIA, ID_OGGETTO) VALUES (?, ?, ?)";
+            jdbcTemplate.update(sql, description, storyId, storyObjectId);
 
 
             httpSession.setAttribute("currentScenarioId", this.getMaxScenarioId());

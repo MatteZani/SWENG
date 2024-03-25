@@ -104,7 +104,7 @@ public class InterfaceController {
     public String createInitialScenario(@RequestParam String initialScenarioDescription, @RequestParam(required = false) String objectTitle , @RequestParam(required = false) String objectDescription , Model model){
         int storyObjectId = 0;
         StoryObject storyObject = null;
-        if(objectTitle != null && objectDescription != null){
+        if(!objectTitle.equals("") && !objectDescription.equals("")){
             storyObject = new StoryObject(objectTitle, objectDescription);
             storyObjectId = dbHandler.createObject(storyObject);
         }

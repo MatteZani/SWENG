@@ -125,7 +125,7 @@ public class InterfaceController {
 
         int storyObjectId = 0;
         StoryObject storyObject = null;
-        if(objectTitle != null && objectDescription != null){
+        if(!objectTitle.equals("") && !objectDescription.equals("")){
             storyObject = new StoryObject(objectTitle, objectDescription);
             storyObjectId = dbHandler.createObject(storyObject);
         }

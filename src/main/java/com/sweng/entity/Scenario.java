@@ -10,15 +10,6 @@ public class Scenario {
     private int storyId;
     private int storyObjectId;
 
-    // Costruttore
-    public Scenario(String description, List<Scenario> nextScenarios, int storyId, int storyObjectId) {
-
-        this.description = description;
-        this.nextScenarios = nextScenarios;
-        this.storyId = storyId;
-        this.storyObjectId = storyObjectId;
-    }
-
     public Scenario(String description, int storyId) {
         this.description = description;
         this.storyId = storyId;
@@ -29,6 +20,15 @@ public class Scenario {
         this.description = description;
         this.storyId = storyId;
     }
+
+    public Scenario(int id, String description, List<Scenario> nextScenarios, int storyId, int storyObjectId) {
+        this.id = id;
+        this.description = description;
+        this.nextScenarios = nextScenarios;
+        this.storyId = storyId;
+        this.storyObjectId = storyObjectId;
+    }
+
 
     // Metodi getter e setter
     public String getDescription() {

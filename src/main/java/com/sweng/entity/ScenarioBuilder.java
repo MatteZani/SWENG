@@ -36,6 +36,6 @@ public class ScenarioBuilder {
     }
 
     public Scenario build() {
-        return new Scenario(description, nextScenarios, storyId, storyObjectId);
+        return new Scenario(id, description, nextScenarios, storyId, storyObjectId);
     }
 }

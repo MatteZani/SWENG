@@ -92,49 +92,65 @@ public class InterfaceController {
         // Creazione della storia con lo scenario iniziale
         Story story = new StoryBuilder().setTitle(title).setPlot(plot).setInitialScenario(0).setCreator((String) httpSession.getAttribute("username")).setCategory(category).build();
         dbHandler.createStory(story);
-        model.addAttribute("message", "Storia creata con successo, aggiungi lo scenario iniziale");
+        model.addAttribute("message", "Storia creata con successo, crea un oggetto che potrà essere utilizzato all'interno della storia");
+        httpSession.setAttribute("currentStoryObjects", new ArrayList<StoryObject>());
 
-
-        model.addAttribute("objectCreationMessage", "Vuoi creare un oggetto relativo a questo scenario?" + "\n" + "Questo oggetto sarà aggiunto all'inventario dei giocatori che passeranno per questo scenario");
+        //model.addAttribute("objectCreationMessage", "Vuoi creare un oggetto relativo a questo scenario?" + "\n" + "Questo oggetto sarà necessario per entrare in questo scenario");
         // Chiamata al metodo createStory di DBHandler per salvare la storia nel database
+        return "create-object";
+
+    }
+
+    @PostMapping("create-object/process")
+    public String processCreateObject(@RequestParam("title") String title, @RequestParam("description") String description, Model model){
+        StoryObject storyObject = new StoryObject(title, description);
+        dbHandler.createObject(storyObject);
+        storyObject.setId(dbHandler.getMaxObjectId());
+
+        ArrayList<StoryObject> objects = (ArrayList<StoryObject>) httpSession.getAttribute("currentStoryObjects");
+        objects.add(storyObject);
+        httpSession.setAttribute("currentStoryObjects", objects);
+
+        model.addAttribute("message", "Storia creata con successo, crea un oggetto che potrà essere utilizzato all'interno della storia");
+
+        return "create-object";
+    }
+
+    @GetMapping("/create-initial-scenario")
+    public String createInitialScenario(Model model){
+        model.addAttribute("message", "Crea lo scenario iniziale della storia");
+
+        model.addAttribute("necessaryObjectMessage", "Vuoi rendere un oggetto necessario per entrare in questo scenario?");
+        model.addAttribute("gainObjectMessage", "Vuoi aggiungere un oggetto all'inventario dei giocatori che entrano in questo scenario?");
+        model.addAttribute("currentStoryObjects", httpSession.getAttribute("currentStoryObjects") );
         return "create-initial-scenario";
     }
 
 
     @PostMapping("/create-initial-scenario/process")
-    public String createInitialScenario(@RequestParam String initialScenarioDescription, @RequestParam(required = false) String objectTitle , @RequestParam(required = false) String objectDescription , Model model){
-        int storyObjectId = 0;
-        StoryObject storyObject = null;
-        if(!objectTitle.equals("") && !objectDescription.equals("")){
-            storyObject = new StoryObject(objectTitle, objectDescription);
-            storyObjectId = dbHandler.createObject(storyObject);
-        }
+    public String createInitialScenario(@RequestParam String initialScenarioDescription, @RequestParam(required = false) int necessaryObject , Model model){
+        //TODO cambiare valore 0 passato nella creazione dello scenario, relativo all'oggetto della storia
 
-        dbHandler.createScenario((Integer) httpSession.getAttribute("currentStoryId"), initialScenarioDescription, storyObjectId);
+        dbHandler.createScenario((Integer) httpSession.getAttribute("currentStoryId"), initialScenarioDescription, 0);
         dbHandler.addScenarioToStory((Integer) httpSession.getAttribute("currentStoryId"));
         ArrayList<Scenario> scenarios = new ArrayList<>();
 
-        scenarios.add(new ScenarioBuilder().setId(dbHandler.getMaxScenarioId()).setDescription(initialScenarioDescription).setStoryId((Integer) httpSession.getAttribute("currentStoryId")).setStoryObject(storyObjectId).build());
+        scenarios.add(new ScenarioBuilder().setId(dbHandler.getMaxScenarioId()).setDescription(initialScenarioDescription).setStoryId((Integer) httpSession.getAttribute("currentStoryId")).setStoryObject(0).build());
         httpSession.setAttribute("scenarios", scenarios);
 
-        model.addAttribute("objectCreationMessage", "Vuoi creare un oggetto relativo a questo scenario?" + "\n" + "Questo oggetto sarà aggiunto all'inventario dei giocatori che passeranno per questo scenario");
+        model.addAttribute("objectCreationMessage", "Vuoi creare un oggetto relativo a questo scenario?" + "\n" + "Questo oggetto sarà necessario per entrare in questo scenario");
         return "add-scenario";
     }
 
     @PostMapping("add-scenario/process")
-    public String addScenarioToStory(@RequestParam String scenarioDescription, @RequestParam(required = false) String objectTitle , @RequestParam(required = false) String objectDescription , Model model){
+    public String addScenarioToStory(@RequestParam String scenarioDescription, @RequestParam(required = false) int necessaryObject, Model model){
 
-        int storyObjectId = 0;
-        StoryObject storyObject = null;
-        if(!objectTitle.equals("") && !objectDescription.equals("")){
-            storyObject = new StoryObject(objectTitle, objectDescription);
-            storyObjectId = dbHandler.createObject(storyObject);
-        }
-
-        dbHandler.createScenario((Integer) httpSession.getAttribute("currentStoryId"), scenarioDescription, storyObjectId);
+        //TODO cambiare valore 0 passato nella creazione dello scenario, relativo all'oggetto della storia
+        dbHandler.createScenario((Integer) httpSession.getAttribute("currentStoryId"), scenarioDescription, 0);
 
         ArrayList<Scenario> scenarios = (ArrayList<Scenario>) httpSession.getAttribute("scenarios");
-        scenarios.add(new ScenarioBuilder().setId(dbHandler.getMaxScenarioId()).setDescription(scenarioDescription).setStoryId((Integer) httpSession.getAttribute("currentStoryId")).build());
+        Scenario scenario = new ScenarioBuilder().setId(dbHandler.getMaxScenarioId()).setDescription(scenarioDescription).setStoryId((Integer) httpSession.getAttribute("currentStoryId")).build();
+        scenarios.add(scenario);
 
         httpSession.setAttribute("scenarios", scenarios);
         return "add-scenario";
@@ -146,18 +162,20 @@ public class InterfaceController {
 
         model.addAttribute("scenarios", httpSession.getAttribute("scenarios"));
 
+        System.out.println(httpSession.getAttribute("scenarios"));
+
         return "connect-scenarios";
 
     }
 
     @PostMapping("connect-scenarios/process")
     public String processConnection(@RequestParam("start") int startingScenario, @RequestParam("end") int endingScenario, Model model){
-        //TODO implementare metodo per fare inserire gli scenari da collegare all'utente
 
 
         dbHandler.connectScenarios(startingScenario, endingScenario,(Integer) httpSession.getAttribute("currentStoryId"));
 
         model.addAttribute("scenarios", httpSession.getAttribute("scenarios"));
+
         return "connect-scenarios";
     }
 

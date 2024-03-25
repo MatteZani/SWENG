@@ -135,6 +135,18 @@ public class DBHandler {
 
     }
 
+    public int getMaxObjectId(){
+        try {
+            String getScenarioId = "SELECT MAX(ID) FROM OGGETTI";
+            int maxObjectId = jdbcTemplate.queryForObject(getScenarioId, Integer.class);
+
+            return maxObjectId;
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     // Metodo per aggiungere uno scenario alla storia nel database
     public void addScenarioToStory(int storyId) {
         try {

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Crea oggetti</title>
+</head>
+<body>
+<form th:action="@{/create-object/process}" method="post">
+    <p th:text="${message}"></p>
+    <label th:for="title">Inserisci il titolo dell'oggetto:</label><br>
+    <textarea id="title" th:name="title" rows="1" cols="50"
+              placeholder="Una gamba del Garpez"></textarea><br><br>
+
+    <label th:for="description">Inserisci la descrizione dell'oggetto:</label><br>
+    <textarea id="description" th:name="description" rows="3" cols="50"
+              placeholder="Pezzo d'arte dal valore inestimabbile"></textarea><br><br>
+    <input type="submit" value="Aggiungi oggetto alla storia">
+</form>
+
+<a th:href="@{/create-initial-scenario}">Vai alla creazione scenari</a>
+
+</body>
+</html>

@@ -30,16 +30,17 @@
 </head>
 <body>
     <h2>Catalogo delle Storie</h2>
-    <ul>
+    <ol>
         <li th:each="story : ${stories}">
             <div class="story">
 
                 <h3 th:text="${story.title}"></h3> <!-- Accedi all'oggetto con chiave 'chiave' -->
                 <p th:text="${story.plot}"></p> <!-- Accedi all'oggetto con chiave 'chiave' -->
-                <a href="storia1.html">Leggi di più</a>
+<!--                <a th:href="@{catalog/${story.id}}">Leggi di più</a>-->
+                <a th:href="@{/catalog/{storyId}(storyId=${story.id})}">Leggi di più</a>
             </div>
         </li>
-    </ul>
+    </ol>
 
 <!--      <p>Descrizione della storia 1...</p>-->
 <!--      -->

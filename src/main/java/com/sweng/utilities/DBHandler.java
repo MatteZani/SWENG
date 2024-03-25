@@ -174,6 +174,14 @@ public class DBHandler {
         }
     }
 
+    public Story getStoryById(int storyId){
+        String sql = "SELECT * FROM STORIE WHERE ID = ?";
+        Story story = jdbcTemplate.queryForObject(sql, new StoryRowMapper(), storyId);
+
+        return story;
+
+    }
+
 
 
 }

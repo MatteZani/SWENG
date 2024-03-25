@@ -8,7 +8,6 @@ public class Scenario {
     private String description;
     private List<Scenario> nextScenarios;
     private int storyId;
-
     private int storyObjectId;
 
     // Costruttore

@@ -4,6 +4,7 @@ package com.sweng;
 import com.sweng.entity.*;
 import com.sweng.utilities.DBHandler;
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -163,6 +164,16 @@ public class InterfaceController {
     @GetMapping("/play")
     public String play(Model model){
         return "play";
+    }
+
+    @GetMapping("/catalog/{storyid}")
+    public String showStory(@PathParam("storyId") int storyId, Model model){
+
+        Story story = dbHandler.getStoryById(storyId);
+        model.addAttribute("storyTitle", story.getTitle());
+        model.addAttribute("storyPlot", story.getPlot());
+        model.addAttribute("storyCategory", story.getCategory());
+        return "story";
     }
 
 

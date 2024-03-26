@@ -2,7 +2,7 @@ package com.sweng.entity;
 
 public class Story {
 
-    private int id;
+    public int id;
     private String title;
     private String plot;
     private int initialScenario;

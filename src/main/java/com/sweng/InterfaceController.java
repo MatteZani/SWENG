@@ -116,6 +116,11 @@ public class InterfaceController {
         return "create-object";
     }
 
+    @GetMapping("prova")
+    public String prova(Model model){
+        return "prova";
+    }
+
     @GetMapping("/create-initial-scenario")
     public String createInitialScenario(Model model){
         model.addAttribute("message", "Crea lo scenario iniziale della storia");
@@ -184,13 +189,15 @@ public class InterfaceController {
         return "play";
     }
 
-    @GetMapping("/catalog/{storyid}")
-    public String showStory(@PathParam("storyId") int storyId, Model model){
+    @GetMapping("/catalog/show-story")
+    public String showStory(@RequestParam("storyId") Integer storyId, Model model){
+        System.out.println(storyId);
 
         Story story = dbHandler.getStoryById(storyId);
         model.addAttribute("storyTitle", story.getTitle());
         model.addAttribute("storyPlot", story.getPlot());
         model.addAttribute("storyCategory", story.getCategory());
+        model.addAttribute("scenariosNumber", dbHandler.getScenariosNumberByStoryId(storyId));
         return "story";
     }
 

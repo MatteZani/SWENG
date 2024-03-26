@@ -2,10 +2,8 @@ package com.sweng.entity;
 
 public class StoryObject {
 
-
     private int id;
     private String name;
-
     private String description;
 
     public StoryObject(String name, String description) {

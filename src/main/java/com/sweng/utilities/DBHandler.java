@@ -196,5 +196,9 @@ public class DBHandler {
 
     }
 
+    public int getScenariosNumberByStoryId(int storyId){
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM SCENARI WHERE ID_STORIA = ?", Integer.class, storyId);
+    }
+
 
 }

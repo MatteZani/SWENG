@@ -110,7 +110,7 @@ public class DBHandler {
 
     public void createScenario(int storyId, String description, int necessaryObjectId, int foundObjectId) {
         try {
-            String sql = "INSERT INTO SCENARI (DESCRIZIONE, ID_STORIA, ID_OGGETTO_NECESSARIO, ID_OGGETTO_OTTENUTO) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO SCENARI (DESCRIZIONE, ID_STORIA, ID_OGGETTO_NECESSARIO, ID_OGGETTO_OTTENUTO) VALUES (?, ?, ?, ?)";
             jdbcTemplate.update(sql, description, storyId, necessaryObjectId, foundObjectId);
 
 
@@ -131,6 +131,9 @@ public class DBHandler {
             return maxScenarioId;
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
+        }catch(NullPointerException e){
+            logger.error("NullPointerException nel metodo getMaxScenarioId della classe DBHandler");
+            return 1;
         }
 
     }
@@ -152,8 +155,12 @@ public class DBHandler {
     // Metodo per aggiungere uno scenario alla storia nel database
     public void addScenarioToStory(int storyId) {
         try {
-            String addScenario = "UPDATE STORIE SET INITIAL_SCENARIO = ? WHERE ID = ?";
-            jdbcTemplate.update(addScenario, httpSession.getAttribute("currentScenarioId"), storyId);
+            String readScenario = "SELECT INITIAL_SCENARIO FROM STORIE WHERE ID = ?";
+            int scenarioId = jdbcTemplate.queryForObject(readScenario, Integer.class);
+            if(Integer.valueOf(scenarioId).equals(null)){
+                String addScenario = "UPDATE STORIE SET INITIAL_SCENARIO = ? WHERE ID = ?";
+                jdbcTemplate.update(addScenario, httpSession.getAttribute("currentScenarioId"), storyId);
+            }
         } catch (DataAccessException e) {
             logger.error("Lanciata eccezione nel metodo addScenarioToStory della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
         }

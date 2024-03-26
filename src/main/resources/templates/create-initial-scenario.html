@@ -2,67 +2,28 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Aggiungi Scenario</title>
-    <style>
-        .scenario-divider {
-            margin-top: 20px;
-            margin-bottom: 20px;
-            height: 2px;
-            background: #333;
-        }
-    </style>
+    <title>Aggiungi scenario iniziale</title>
 </head>
 <body>
 <p th:text="${messaggio}"></p>
-<form id="storyForm" th:action="@{/create-initial-scenario/process}" method="post">
-    <div id="scenarios">
-        <!-- campi aggiunti dinamicamente -->
-    </div>
-    <button type="button" id="addScenario">Aggiungi scenario</button>
+<form th:action="@{/create-scenario/process}" method="post">
+
+    <label th:for="scenarioDescription">Descrivi lo scenario iniziale:</label><br>
+    <textarea id="initialScenario" th:name="scenarioDescription" rows="4" cols="50"
+              placeholder="Tanto tempo fa in una galassia lontana lontana..." required></textarea><br><br>
+
+    <p th:text="${necessaryObjectMessage}"></p>
+    <select th:name = "necessaryObjectId">
+        <option th:each="object : ${currentStoryObjects}" th:value="${object.id}" th:text="${object.name}"></option>
+    </select>
+    <p th:text = "${gainObjectMessage}"></p>
+    <select th:name = "foundObjectId">
+        <option th:each="object : ${currentStoryObjects}" th:value="${object.id}" th:text="${object.name}"></option>
+    </select>
+
+    <input type="submit" value="Aggiungi scenario iniziale">
 </form>
 
-<script>
-        let scenarioIndex = 0;
 
-        function addScenario() {
-            const scenariosDiv = document.getElementById('scenarios');
-            const newScenarioDiv = document.createElement('div');
-            newScenarioDiv.setAttribute('class', 'scenario');
-            newScenarioDiv.setAttribute('data-scenario-index', scenarioIndex);
-
-            const delimiter = document.createElement('hr');
-            delimiter.classList.add('scenario-divider');
-
-            // Aggiunta del delimitatore se non è il primo scenario
-            if (scenarioIndex > 0) {
-                scenariosDiv.appendChild(delimiter);
-            }
-
-            newScenarioDiv.innerHTML = `
-                <label for="title${scenarioIndex}">Titolo dello scenario:</label><br>
-                <input type="text" id="title${scenarioIndex}" name="scenarios[${scenarioIndex}].title" required><br><br>
-
-                <label for="description${scenarioIndex}">Descrizione dello scenario:</label><br>
-                <textarea id="description${scenarioIndex}" name="scenarios[${scenarioIndex}].description" rows="4" cols="50"
-                          required></textarea><br><br>
-
-                <label for="useObject${scenarioIndex}">Oggetto da usare:</label>
-                <select id="useObject${scenarioIndex}" name="scenarios[${scenarioIndex}].useObject">
-
-                </select><br><br>
-
-                <label for="obtainObject${scenarioIndex}">Oggetto da ottenere:</label>
-                <select id="obtainObject${scenarioIndex}" name="scenarios[${scenarioIndex}].obtainObject">
-
-                </select><br><br>
-            `;
-            scenariosDiv.appendChild(newScenarioDiv);
-            scenarioIndex++;
-        }
-
-        document.getElementById('addScenario').addEventListener('click', addScenario);
-
-        addScenario();
-    </script>
 </body>
 </html>

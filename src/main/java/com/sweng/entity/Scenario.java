@@ -8,7 +8,9 @@ public class Scenario {
     private String description;
     private List<Scenario> nextScenarios;
     private int storyId;
-    private int storyObjectId;
+    private int necessaryObjectId;
+
+    private int foundObjectId;
 
     public Scenario(String description, int storyId) {
         this.description = description;
@@ -21,13 +23,16 @@ public class Scenario {
         this.storyId = storyId;
     }
 
-    public Scenario(int id, String description, List<Scenario> nextScenarios, int storyId, int storyObjectId) {
+    public Scenario(int id, String description, List<Scenario> nextScenarios, int storyId, int necessaryObjectId, int foundObjectId) {
         this.id = id;
         this.description = description;
         this.nextScenarios = nextScenarios;
         this.storyId = storyId;
-        this.storyObjectId = storyObjectId;
+        this.necessaryObjectId = necessaryObjectId;
+        this.foundObjectId = foundObjectId;
     }
+
+
 
 
     // Metodi getter e setter
@@ -65,6 +70,20 @@ public class Scenario {
         this.id = id;
     }
 
+    public int getNecessaryObjectId() {
+        return necessaryObjectId;
+    }
 
+    public void setNecessaryObjectId(int necessaryObjectId) {
+        this.necessaryObjectId = necessaryObjectId;
+    }
+
+    public int getFoundObjectId() {
+        return foundObjectId;
+    }
+
+    public void setFoundObjectId(int foundObjectId) {
+        this.foundObjectId = foundObjectId;
+    }
 }
 

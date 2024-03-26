@@ -3,12 +3,14 @@ package com.sweng.entity;
 import java.util.List;
 
 public class ScenarioBuilder {
+    private int id;
     private String description;
     private List<Scenario> nextScenarios;
     private int storyId;
-    private int id;
 
-    private int storyObjectId;
+    private int necessaryObjectId;
+
+    private int foundObjectId;
 
     public ScenarioBuilder setDescription(String description) {
         this.description = description;
@@ -30,12 +32,21 @@ public class ScenarioBuilder {
         return this;
     }
 
-    public ScenarioBuilder setStoryObject(int storyObjectId) {
-        this.storyObjectId = storyObjectId;
+    public ScenarioBuilder setNecessaryObjectId(int necessaryObjectId){
+        this.necessaryObjectId = necessaryObjectId;
+        return this;
+
+    }
+    public ScenarioBuilder setFoundObjectId(int foundObjectId){
+        this.foundObjectId = foundObjectId;
         return this;
     }
 
+
+
     public Scenario build() {
-        return new Scenario(id, description, nextScenarios, storyId, storyObjectId);
+        return new Scenario(id, description, nextScenarios, storyId, necessaryObjectId, foundObjectId);
     }
+
+
 }

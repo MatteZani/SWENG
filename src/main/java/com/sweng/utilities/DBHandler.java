@@ -29,7 +29,7 @@ public class DBHandler {
         return jdbcTemplate.queryForList("SELECT * FROM CREDENZIALI");
     }
 
-    public ResponseEntity<Object> saveUser(User user){
+    public ResponseEntity<Object> saveUser(User user) {
         try {
             String sql = "INSERT INTO CREDENZIALI (USERNAME, PASSWORD) VALUES (?, ?)";
             jdbcTemplate.update(sql, user.getUsername(), user.getPassword());
@@ -40,7 +40,7 @@ public class DBHandler {
         }
     }
 
-    public void createStory(Story story){
+    public void createStory(Story story) {
         try {
             String sql = "INSERT INTO STORIE(TITLE, PLOT, CATEGORY, CREATOR, INITIAL_SCENARIO) VALUES (?, ?, ?, ?, ?)";
             jdbcTemplate.update(sql, story.getTitle(), story.getPlot(), story.getCategory(), story.getCreator(), null);
@@ -49,54 +49,55 @@ public class DBHandler {
             httpSession.setAttribute("currentStoryId", currentStoryId);
 
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo createStory della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+            logger.error("Lanciata eccezione nel metodo createStory della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             throw e;
         }
     }
 
-     public List<Story> getStories(){
-        try{
+    public List<Story> getStories() {
+        try {
 
             return jdbcTemplate.query("SELECT * FROM STORIE", new StoryRowMapper());
 
 
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo getStories della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+            logger.error("Lanciata eccezione nel metodo getStories della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return null;
 
         }
     }
 
-    public int createObject(StoryObject storyObject){
+    public int createObject(StoryObject storyObject) {
         try {
-            String sql = "INSERT INTO OGGETTI(NOME, DESCRIZIONE) VALUES (?, ?)";
-            jdbcTemplate.update(sql, storyObject.getName(), storyObject.getDescription());
+            String sql = "INSERT INTO OGGETTI(NOME, DESCRIZIONE, ID_STORIA) VALUES (?, ?, ?)";
+            jdbcTemplate.update(sql, storyObject.getName(), storyObject.getDescription(), httpSession.getAttribute("currentStoryId"));
             String maxIdQuery = "SELECT MAX(ID) FROM OGGETTI";
             int maxId = jdbcTemplate.queryForObject(maxIdQuery, Integer.class);
             return maxId;
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo createObject della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+            logger.error("Lanciata eccezione nel metodo createObject della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return -1;
         }
     }
 
-    public ResponseEntity<Object> createScenario(Scenario scenario){
+    public ResponseEntity<Object> createScenario(Scenario scenario) {
         try {
             String sql = "INSERT INTO SCENARI(DESCRIZIONE,ID_STORIA) VALUES (?,?)";
-            jdbcTemplate.update(sql, scenario.getDescription(), scenario.getStoryId() );
+            jdbcTemplate.update(sql, scenario.getDescription(), scenario.getStoryId());
             return new ResponseEntity<>(scenario, HttpStatus.OK);
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo createScenario della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+            logger.error("Lanciata eccezione nel metodo createScenario della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
         }
     }
-    public ResponseEntity<Object> createRiddle(Riddle riddle){
+
+    public ResponseEntity<Object> createRiddle(Riddle riddle) {
         try {
             String sql = "INSERT INTO INDOVINELLI(DOMANDA, RISPOSTA) VALUES (?,?)";
-            jdbcTemplate.update(sql, riddle.getQuestion(), riddle.getAnswer() );
+            jdbcTemplate.update(sql, riddle.getQuestion(), riddle.getAnswer());
             return new ResponseEntity<>(riddle, HttpStatus.OK);
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo createRiddle della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+            logger.error("Lanciata eccezione nel metodo createRiddle della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
         }
     }
@@ -107,22 +108,21 @@ public class DBHandler {
         return count > 0;
     }
 
-    public void createScenario(int storyId, String description, int storyObjectId){
+    public void createScenario(int storyId, String description, int necessaryObjectId, int foundObjectId) {
         try {
-            String sql = "INSERT INTO SCENARI (DESCRIZIONE, ID_STORIA, ID_OGGETTO) VALUES (?, ?, ?)";
-            jdbcTemplate.update(sql, description, storyId, storyObjectId);
+            String sql = "INSERT INTO SCENARI (DESCRIZIONE, ID_STORIA, ID_OGGETTO_NECESSARIO, ID_OGGETTO_OTTENUTO) VALUES (?, ?, ?)";
+            jdbcTemplate.update(sql, description, storyId, necessaryObjectId, foundObjectId);
 
 
             httpSession.setAttribute("currentScenarioId", this.getMaxScenarioId());
 
-        }
-        catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo createScenario della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+        } catch (DataAccessException e) {
+            logger.error("Lanciata eccezione nel metodo createScenario della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
         }
 
     }
 
-    public int getMaxScenarioId(){
+    public int getMaxScenarioId() {
 
         try {
             String getScenarioId = "SELECT MAX(ID) FROM SCENARI";
@@ -135,7 +135,7 @@ public class DBHandler {
 
     }
 
-    public int getMaxObjectId(){
+    public int getMaxObjectId() {
         try {
             String getScenarioId = "SELECT MAX(ID) FROM OGGETTI";
             int maxObjectId = jdbcTemplate.queryForObject(getScenarioId, Integer.class);
@@ -143,8 +143,10 @@ public class DBHandler {
             return maxObjectId;
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
+        } catch (NullPointerException e) {
+            logger.error("NullPointerException nel metodo getMaxObjectId della classe DBHandler");
+            return 0;
         }
-
     }
 
     // Metodo per aggiungere uno scenario alla storia nel database
@@ -153,47 +155,46 @@ public class DBHandler {
             String addScenario = "UPDATE STORIE SET INITIAL_SCENARIO = ? WHERE ID = ?";
             jdbcTemplate.update(addScenario, httpSession.getAttribute("currentScenarioId"), storyId);
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo addScenarioToStory della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+            logger.error("Lanciata eccezione nel metodo addScenarioToStory della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
         }
     }
 
 
-    public List<Map<String, Object>> getScenariosByStoryId(int storyId){
-        try{
+    public List<Map<String, Object>> getScenariosByStoryId(int storyId) {
+        try {
             return jdbcTemplate.queryForList("SELECT * FROM SCENARI WHERE ID_STORIA = ?", storyId);
 
         } catch (DataAccessException e) {
             logger.error("Lanciata eccezione nel metodo getScenariosByStoryId della classe DBHandler. Causa dell'" +
-                    "eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+                    "eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return null;
         }
     }
 
-    public void connectScenarios(int start, int end, int story){
+    public void connectScenarios(int start, int end, int story) {
         String sql = "INSERT INTO COLLEGAMENTI(SCENARIO_PARTENZA, SCENARIO_ARRIVO, STORIA_APPARTENENZA, DESCRIZIONE) VALUES (?, ?, ?, 'Collegamento di prova')";
 
         jdbcTemplate.update(sql, start, end, story);
     }
 
-    public List<Map<String, Object>> getLinksByStoryId(int storyId){
-        try{
+    public List<Map<String, Object>> getLinksByStoryId(int storyId) {
+        try {
             return jdbcTemplate.queryForList("SELECT * FROM COLLEGAMENTI WHERE STORIA_APPARTENENZA = ?", storyId);
 
         } catch (DataAccessException e) {
             logger.error("Lanciata eccezione nel metodo getLinksByStoryId della classe DBHandler. Causa dell'" +
-                    "eccezione: {}. Descrizione dell'eccezione: {}",  e.getCause(), e.getMessage());
+                    "eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return null;
         }
     }
 
-    public Story getStoryById(int storyId){
+    public Story getStoryById(int storyId) {
         String sql = "SELECT * FROM STORIE WHERE ID = ?";
         Story story = jdbcTemplate.queryForObject(sql, new StoryRowMapper(), storyId);
 
         return story;
 
     }
-
 
 
 }

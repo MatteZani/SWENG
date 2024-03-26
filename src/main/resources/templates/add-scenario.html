@@ -18,7 +18,7 @@
         <button id="addObject">Aggiungi oggetto</button>
 
         <div id="additionalObjects" style="display: none;">
-            <select th:name = "necessaryObject">
+            <select th:name = "necessaryObjectId">
                 <option th:each="object : ${currentStoryObjects}" th:value="${object.id}" th:text="${object.name}"></option>
             </select>
         </div>

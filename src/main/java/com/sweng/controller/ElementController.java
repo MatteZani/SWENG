@@ -52,14 +52,19 @@ public class ElementController {
     }
 
 
-    @GetMapping("create-riddle/process")
+    @PostMapping("create-riddle/process")
     public String processCreateRiddle(@RequestParam("quest") String quest, @RequestParam("rightAnswer") String rightAnswer, Model model){
-        Riddle riddle = new Riddle(quest, rightAnswer);
-        elementService.createRiddle(riddle);
-        //riddle.setId(dbHandler.getMaxObjectId());
-        ArrayList<Riddle> riddles = (ArrayList<Riddle>) httpSession.getAttribute("currentRiddles");
-        riddles.add(riddle);
-        httpSession.setAttribute("currentRiddles", riddles);
+        try {
+            Riddle riddle = new Riddle(quest, rightAnswer);
+            elementService.createRiddle(riddle);
+            //riddle.setId(dbHandler.getMaxObjectId());
+            ArrayList<Riddle> riddles = (ArrayList<Riddle>) httpSession.getAttribute("currentRiddles");
+            riddles.add(riddle);
+            httpSession.setAttribute("currentRiddles", riddles);
+        } catch (Exception e){
+            model.addAttribute("message", "Si è verificato un errore durante la creazione dell'indovinello.");
+            return "create-riddle";
+        }
 
         model.addAttribute("message", "Storia creata con successo, crea un indovinello che potrà essere risolto all'interno della storia");
 

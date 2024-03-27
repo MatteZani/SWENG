@@ -42,29 +42,36 @@ public class ScenarioController {
 
 
     @PostMapping("/create-scenario/process")
-    public String createScenario(@RequestParam String scenarioDescription, @RequestParam int necessaryObjectId , @RequestParam int foundObjectId, Model model){
-        //TODO cambiare valore 0 passato nella creazione dello scenario, relativo all'oggetto della storia
+    public String createScenario(@RequestParam String scenarioDescription, @RequestParam(required = false) Integer necessaryObjectId, @RequestParam(required = false) Integer foundObjectId, Model model){
+        int storyId = (Integer) httpSession.getAttribute("currentStoryId");
 
-        scenarioservice.createScenario((Integer) httpSession.getAttribute("currentStoryId"), scenarioDescription, necessaryObjectId, foundObjectId);
-        scenarioservice.addScenarioToStory((Integer) httpSession.getAttribute("currentStoryId"));
+        // se non viene selezionato alcun oggetto
+        int finalNecessaryObjectId = (necessaryObjectId != null) ? necessaryObjectId : 0;
+        int finalFoundObjectId = (foundObjectId != null) ? foundObjectId : 0;
 
-        ArrayList<Scenario> scenarios;
-        if(httpSession.getAttribute("scenarios") == null){
-            scenarios = new ArrayList<Scenario>();
+        scenarioservice.createScenario(storyId, scenarioDescription, finalNecessaryObjectId, finalFoundObjectId);
+
+        // Aggiorna la lista degli scenari in sessione
+        ArrayList<Scenario> scenarios = (ArrayList<Scenario>) httpSession.getAttribute("scenarios");
+        if (scenarios == null) {
+            scenarios = new ArrayList<>();
         }
-        else{
-            scenarios = (ArrayList<Scenario>) httpSession.getAttribute("scenarios");
-        }
-
-        scenarios.add(new ScenarioBuilder().setId(scenarioservice.getMaxScenarioId()).setDescription(scenarioDescription).setStoryId((Integer) httpSession.getAttribute("currentStoryId")).setNecessaryObjectId(0).build());
+        scenarios.add(new ScenarioBuilder()
+                .setId(scenarioservice.getMaxScenarioId())
+                .setDescription(scenarioDescription)
+                .setStoryId(storyId)
+                .setNecessaryObjectId(finalNecessaryObjectId)
+                .build());
         httpSession.setAttribute("scenarios", scenarios);
 
+        // Prepara il modello per la vista
         model.addAttribute("necessaryObjectMessage", "Vuoi rendere un oggetto necessario per entrare in questo scenario?");
         model.addAttribute("gainObjectMessage", "Vuoi aggiungere un oggetto all'inventario dei giocatori che entrano in questo scenario?");
-        model.addAttribute("currentStoryObjects", httpSession.getAttribute("currentStoryObjects") );
-        model.addAttribute("currentRiddles", httpSession.getAttribute("currentRiddles") );
+        model.addAttribute("currentStoryObjects", httpSession.getAttribute("currentStoryObjects"));
+        model.addAttribute("currentRiddles", httpSession.getAttribute("currentRiddles"));
         return "add-scenario";
     }
+
 
     @PostMapping("connect-scenarios")
     public String connectScenarios(Model model){

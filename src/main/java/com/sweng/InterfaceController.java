@@ -116,6 +116,27 @@ public class InterfaceController {
         return "create-object";
     }
 
+    @GetMapping("/create-riddle")
+    public String showCreateRiddleForm(Model model) {
+
+        return "create-riddle";
+    }
+
+
+    @PostMapping("create-riddle/process")
+    public String processCreateRiddle(@RequestParam("quest") String quest, @RequestParam("rightAnswer") String rightAnswer, Model model){
+        Riddle riddle = new Riddle(quest, rightAnswer);
+        dbHandler.createRiddle(riddle);
+        //riddle.setId(dbHandler.getMaxObjectId());
+        ArrayList<Riddle> objects = (ArrayList<Riddle>) httpSession.getAttribute("currentStoryObjects");
+        objects.add(riddle);
+        httpSession.setAttribute("currentStoryObjects", objects);
+
+        model.addAttribute("message", "Storia creata con successo, crea un indovinello che potrà essere risolto all'interno della storia");
+
+        return "create-riddle";
+    }
+
     @GetMapping("prova")
     public String prova(Model model){
         return "prova";

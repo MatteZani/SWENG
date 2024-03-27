@@ -83,7 +83,7 @@ public class RestController {
         } catch (DataAccessException e) {
             return new ResponseEntity<>("Errore nel salvataggio della storia", HttpStatusCode.valueOf(400));
         }
-    }*/
+    }
 
     @PostMapping("/object")
     public ResponseEntity<Object> postObject(@RequestBody String name, @RequestBody String description){
@@ -139,3 +139,4 @@ public class RestController {
 
 }
 */
+

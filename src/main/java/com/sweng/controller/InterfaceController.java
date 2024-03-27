@@ -80,7 +80,7 @@ public class InterfaceController {
         return "catalog";
     }*/
 
-
+/*
     @PostMapping("create-object/process")
     public String processCreateObject(@RequestParam("title") String title, @RequestParam("description") String description, Model model){
         StoryObject storyObject = new StoryObject(title, description);
@@ -115,12 +115,9 @@ public class InterfaceController {
         model.addAttribute("message", "Storia creata con successo, crea un indovinello che potrà essere risolto all'interno della storia");
 
         return "create-riddle";
-    }
+    }*/
 
-    @GetMapping("prova")
-    public String prova(Model model){
-        return "prova";
-    }
+
 /*
 
     @GetMapping("/create-scenario")
@@ -175,7 +172,7 @@ public class InterfaceController {
 //        return "add-scenario";
 //    }
 
-    @PostMapping("connect-scenarios")
+   /* @PostMapping("connect-scenarios")
     public String connectScenarios(Model model){
         model.addAttribute("message", "Connetti gli scenari che hai creato");
 
@@ -196,24 +193,24 @@ public class InterfaceController {
         model.addAttribute("scenarios", httpSession.getAttribute("scenarios"));
 
         return "connect-scenarios";
-    }
+    }*/
 
     @GetMapping("/play")
     public String play(Model model){
         return "play";
     }
 
-    @GetMapping("/catalog/show-story")
+    /*@GetMapping("/catalog/show-story")
     public String showStory(@RequestParam("storyId") Integer storyId, Model model){
         System.out.println(storyId);
 
-        Story story = dbHandler.getStoryById(storyId);
+        Story story = storyService.getStoryById(storyId);
         model.addAttribute("storyTitle", story.getTitle());
         model.addAttribute("storyPlot", story.getPlot());
         model.addAttribute("storyCategory", story.getCategory());
         model.addAttribute("scenariosNumber", dbHandler.getScenariosNumberByStoryId(storyId));
         return "story";
-    }
+    }*/
 
 
 }

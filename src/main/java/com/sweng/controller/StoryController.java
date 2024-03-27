@@ -58,4 +58,16 @@ public class StoryController {
         model.addAttribute("stories", storyService.getStories());
         return "catalog";
     }
+
+    @GetMapping("/catalog/show-story")
+    public String showStory(@RequestParam("storyId") Integer storyId, Model model){
+        System.out.println(storyId);
+
+        Story story = storyService.getStoryById(storyId);
+        model.addAttribute("storyTitle", story.getTitle());
+        model.addAttribute("storyPlot", story.getPlot());
+        model.addAttribute("storyCategory", story.getCategory());
+        model.addAttribute("scenariosNumber", storyService.getScenariosNumberByStoryId(storyId));
+        return "story";
+    }
 }

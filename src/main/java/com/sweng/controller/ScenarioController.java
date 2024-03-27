@@ -66,5 +66,27 @@ public class ScenarioController {
         return "add-scenario";
     }
 
+    @PostMapping("connect-scenarios")
+    public String connectScenarios(Model model){
+        model.addAttribute("message", "Connetti gli scenari che hai creato");
+
+        model.addAttribute("scenarios", httpSession.getAttribute("scenarios"));
+
+        System.out.println(httpSession.getAttribute("scenarios"));
+
+        return "connect-scenarios";
+
+    }
+
+    @PostMapping("connect-scenarios/process")
+    public String processConnection(@RequestParam("start") int startingScenario, @RequestParam("end") int endingScenario, Model model){
+
+
+        scenarioservice.connectScenarios(startingScenario, endingScenario,(Integer) httpSession.getAttribute("currentStoryId"));
+
+        model.addAttribute("scenarios", httpSession.getAttribute("scenarios"));
+
+        return "connect-scenarios";
+    }
 
 }

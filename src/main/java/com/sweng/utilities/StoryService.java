@@ -48,4 +48,16 @@ public class StoryService {
 
         }
     }
+
+    public Story getStoryById(int storyId) {
+        String sql = "SELECT * FROM STORIE WHERE ID = ?";
+        Story story = jdbcTemplate.queryForObject(sql, new StoryRowMapper(), storyId);
+
+        return story;
+
+    }
+
+    public int getScenariosNumberByStoryId(int storyId){
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM SCENARI WHERE ID_STORIA = ?", Integer.class, storyId);
+    }
 }

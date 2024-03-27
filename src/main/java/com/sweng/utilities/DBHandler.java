@@ -67,7 +67,7 @@ public class DBHandler {
         }
     }*/
 
-    public int createObject(StoryObject storyObject) {
+    /*public int createObject(StoryObject storyObject) {
         try {
             String sql = "INSERT INTO OGGETTI(NOME, DESCRIZIONE, ID_STORIA) VALUES (?, ?, ?)";
             jdbcTemplate.update(sql, storyObject.getName(), storyObject.getDescription(), httpSession.getAttribute("currentStoryId"));
@@ -78,7 +78,7 @@ public class DBHandler {
             logger.error("Lanciata eccezione nel metodo createObject della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return -1;
         }
-    }
+    }*/
 /*
     public ResponseEntity<Object> createScenario(Scenario scenario) {
         try {
@@ -91,7 +91,7 @@ public class DBHandler {
         }
     }*/
 
-    public ResponseEntity<Object> createRiddle(Riddle riddle) {
+   /* public ResponseEntity<Object> createRiddle(Riddle riddle) {
         try {
             String sql = "INSERT INTO INDOVINELLI(DOMANDA, RISPOSTA) VALUES (?,?)";
             jdbcTemplate.update(sql, riddle.getQuestion(), riddle.getAnswer());
@@ -101,7 +101,7 @@ public class DBHandler {
             return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
         }
     }
-
+*/
    /* public boolean verifyCredentials(String username, String password) {
         String sql = "SELECT COUNT(*) FROM CREDENZIALI WHERE USERNAME = ? AND PASSWORD = ?";
         int count = jdbcTemplate.queryForObject(sql, Integer.class, username, password);
@@ -137,7 +137,7 @@ public class DBHandler {
         }
 
     }*/
-
+/*
     public int getMaxObjectId() {
         try {
             String getScenarioId = "SELECT MAX(ID) FROM OGGETTI";
@@ -150,7 +150,7 @@ public class DBHandler {
             logger.error("NullPointerException nel metodo getMaxObjectId della classe DBHandler");
             return 0;
         }
-    }
+    }*/
 /*
     // Metodo per aggiungere uno scenario alla storia nel database
     public void addScenarioToStory(int storyId) {
@@ -194,18 +194,18 @@ public class DBHandler {
             return null;
         }
     }
-
+/*
     public Story getStoryById(int storyId) {
         String sql = "SELECT * FROM STORIE WHERE ID = ?";
         Story story = jdbcTemplate.queryForObject(sql, new StoryRowMapper(), storyId);
 
         return story;
 
-    }
+    }*/
 
-    public int getScenariosNumberByStoryId(int storyId){
+    /*public int getScenariosNumberByStoryId(int storyId){
         return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM SCENARI WHERE ID_STORIA = ?", Integer.class, storyId);
-    }
+    }*/
 
 
 }

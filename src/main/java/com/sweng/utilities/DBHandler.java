@@ -40,7 +40,7 @@ public class DBHandler {
         }
     }*/
 
-    public void createStory(Story story) {
+    /*public void createStory(Story story) {
         try {
             String sql = "INSERT INTO STORIE(TITLE, PLOT, CATEGORY, CREATOR, INITIAL_SCENARIO) VALUES (?, ?, ?, ?, ?)";
             jdbcTemplate.update(sql, story.getTitle(), story.getPlot(), story.getCategory(), story.getCreator(), null);
@@ -52,9 +52,9 @@ public class DBHandler {
             logger.error("Lanciata eccezione nel metodo createStory della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             throw e;
         }
-    }
+    }*/
 
-    public List<Story> getStories() {
+    /*public List<Story> getStories() {
         try {
 
             return jdbcTemplate.query("SELECT * FROM STORIE", new StoryRowMapper());
@@ -65,7 +65,7 @@ public class DBHandler {
             return null;
 
         }
-    }
+    }*/
 
     public int createObject(StoryObject storyObject) {
         try {

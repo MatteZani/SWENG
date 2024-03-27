@@ -70,35 +70,12 @@ public class InterfaceController {
         return "homepage";
     }
 */
-    @GetMapping("/catalog")
+    /*@GetMapping("/catalog")
     public String catalog(Model model) {
         model.addAttribute("stories", dbHandler.getStories());
         return "catalog";
-    }
+    }*/
 
-    @GetMapping("/create-story")
-    public String createStory(Model model){
-        return "create-story";
-    }
-
-    @PostMapping("/create-story/process")
-    public String processCreateStory(@RequestParam("title") String title, @RequestParam("plot") String plot,
-            @RequestParam("category") String category, Model model) {
-
-//        // Creazione dello scenario iniziale
-//        Scenario initial = new Scenario("Inizio", initialScenario);
-
-        // Creazione della storia con lo scenario iniziale
-        Story story = new StoryBuilder().setTitle(title).setPlot(plot).setInitialScenario(0).setCreator((String) httpSession.getAttribute("username")).setCategory(category).build();
-        dbHandler.createStory(story);
-        model.addAttribute("message", "Storia creata con successo, crea un oggetto che potrà essere utilizzato all'interno della storia");
-        httpSession.setAttribute("currentStoryObjects", new ArrayList<StoryObject>());
-
-        //model.addAttribute("objectCreationMessage", "Vuoi creare un oggetto relativo a questo scenario?" + "\n" + "Questo oggetto sarà necessario per entrare in questo scenario");
-        // Chiamata al metodo createStory di DBHandler per salvare la storia nel database
-        return "create-object";
-
-    }
 
     @PostMapping("create-object/process")
     public String processCreateObject(@RequestParam("title") String title, @RequestParam("description") String description, Model model){

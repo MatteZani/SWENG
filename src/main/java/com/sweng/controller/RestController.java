@@ -54,7 +54,7 @@ public class RestController {
         return dbHandler.saveUser(user);
     }*/
 
-    @GetMapping("/story")
+    /*@GetMapping("/story")
     public ResponseEntity<Object> getStories(){
 
 
@@ -65,9 +65,9 @@ public class RestController {
         }
         else
             return new ResponseEntity<>(stories, HttpStatus.OK);
-    }
+    }*/
 
-    @PostMapping("/story")
+    /*@PostMapping("/story")
     public ResponseEntity<Object> postStory(@RequestBody Story story){
 
         try {
@@ -76,7 +76,7 @@ public class RestController {
         } catch (DataAccessException e) {
             return new ResponseEntity<>("Errore nel salvataggio della storia", HttpStatusCode.valueOf(400));
         }
-    }
+    }*/
 
     @PostMapping("/object")
     public ResponseEntity<Object> postObject(@RequestBody String name, @RequestBody String description){

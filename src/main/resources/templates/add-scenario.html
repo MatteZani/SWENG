@@ -23,6 +23,12 @@
             <option value="">Nessun oggetto ottenibile</option>
             <option th:each="object : ${currentStoryObjects}" th:value="${object.id}" th:text="${object.name}"></option>
         </select>
+        <p th:text = "${riddleMessage}"></p>
+        <select th:name = "riddleId">
+            <option value="">Nessun indovinello</option>
+            <option th:each="riddle : ${currentRiddles}" th:value="${riddle.id}" th:text="${riddle.question}"></option>
+        </select>
+
 
         <input type="submit" value="Aggiungi scenario alla storia">
     </form>

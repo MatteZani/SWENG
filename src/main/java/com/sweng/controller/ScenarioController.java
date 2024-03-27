@@ -2,9 +2,8 @@ package com.sweng.controller;
 
 import com.sweng.entity.Scenario;
 import com.sweng.entity.ScenarioBuilder;
-import com.sweng.entity.User;
 import com.sweng.utilities.ScenarioService;
-import com.sweng.utilities.UserService;
+import com.sweng.utilities.StoryService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,7 +22,8 @@ public class ScenarioController {
 
     // URL di connessione al database
     @Autowired
-    private ScenarioService scenarioservice;
+    private ScenarioService scenarioService;
+
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -35,38 +35,36 @@ public class ScenarioController {
 
         model.addAttribute("necessaryObjectMessage", "Vuoi rendere un oggetto necessario per entrare in questo scenario?");
         model.addAttribute("gainObjectMessage", "Vuoi aggiungere un oggetto all'inventario dei giocatori che entrano in questo scenario?");
+        model.addAttribute("riddleMessage", "Vuoi associare un indovinello a questo scenario? La scelta del giocatore condizionerà il suo percorso");
         model.addAttribute("currentStoryObjects", httpSession.getAttribute("currentStoryObjects") );
-        model.addAttribute("currentRiddles", httpSession.getAttribute("currentRiddles") );
+        model.addAttribute("currentRiddles", httpSession.getAttribute("currentRiddles"));
         return "create-initial-scenario";
     }
 
 
     @PostMapping("/create-scenario/process")
-    public String createScenario(@RequestParam String scenarioDescription, @RequestParam(required = false) Integer necessaryObjectId, @RequestParam(required = false) Integer foundObjectId, Model model){
+    public String createScenario(@RequestParam String scenarioDescription, @RequestParam(required = false) Integer necessaryObjectId, @RequestParam(required = false) Integer foundObjectId, @RequestParam(required = false) Integer riddleId, Model model){
         int storyId = (Integer) httpSession.getAttribute("currentStoryId");
 
         // se non viene selezionato alcun oggetto
         int finalNecessaryObjectId = (necessaryObjectId != null) ? necessaryObjectId : 0;
         int finalFoundObjectId = (foundObjectId != null) ? foundObjectId : 0;
 
-        scenarioservice.createScenario(storyId, scenarioDescription, finalNecessaryObjectId, finalFoundObjectId);
+        Scenario scenario = scenarioService.createScenario(storyId, scenarioDescription, finalNecessaryObjectId, finalFoundObjectId, riddleId);
 
         // Aggiorna la lista degli scenari in sessione
         ArrayList<Scenario> scenarios = (ArrayList<Scenario>) httpSession.getAttribute("scenarios");
         if (scenarios == null) {
             scenarios = new ArrayList<>();
+            scenarioService.setInitialScenario(storyId, scenarioService.getMaxScenarioId());
         }
-        scenarios.add(new ScenarioBuilder()
-                .setId(scenarioservice.getMaxScenarioId())
-                .setDescription(scenarioDescription)
-                .setStoryId(storyId)
-                .setNecessaryObjectId(finalNecessaryObjectId)
-                .build());
+        scenarios.add(scenario);
         httpSession.setAttribute("scenarios", scenarios);
 
         // Prepara il modello per la vista
         model.addAttribute("necessaryObjectMessage", "Vuoi rendere un oggetto necessario per entrare in questo scenario?");
         model.addAttribute("gainObjectMessage", "Vuoi aggiungere un oggetto all'inventario dei giocatori che entrano in questo scenario?");
+        model.addAttribute("riddleMessage", "Vuoi associare un indovinello a questo scenario? La scelta del giocatore condizionerà il suo percorso");
         model.addAttribute("currentStoryObjects", httpSession.getAttribute("currentStoryObjects"));
         model.addAttribute("currentRiddles", httpSession.getAttribute("currentRiddles"));
         return "add-scenario";
@@ -89,7 +87,7 @@ public class ScenarioController {
     public String processConnection(@RequestParam("start") int startingScenario, @RequestParam("end") int endingScenario, Model model){
 
 
-        scenarioservice.connectScenarios(startingScenario, endingScenario,(Integer) httpSession.getAttribute("currentStoryId"));
+        scenarioService.connectScenarios(startingScenario, endingScenario,(Integer) httpSession.getAttribute("currentStoryId"));
 
         model.addAttribute("scenarios", httpSession.getAttribute("scenarios"));
 

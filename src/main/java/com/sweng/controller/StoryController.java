@@ -37,25 +37,28 @@ public class StoryController {
     public String processCreateStory(@RequestParam("title") String title, @RequestParam("plot") String plot,
                                      @RequestParam("category") String category, Model model) {
 
-//        // Creazione dello scenario iniziale
-//        Scenario initial = new Scenario("Inizio", initialScenario);
 
         // Creazione della storia con lo scenario iniziale
         Story story = new StoryBuilder().setTitle(title).setPlot(plot).setInitialScenario(0).setCreator((String) httpSession.getAttribute("username")).setCategory(category).build();
         storyService.createStory(story);
         model.addAttribute("message", "Storia creata con successo, crea un oggetto che potrà essere utilizzato all'interno della storia");
         httpSession.setAttribute("currentStoryObjects", new ArrayList<StoryObject>());
-
+        httpSession.setAttribute("currentStoryId", storyService.getMaxStoryId());
         //model.addAttribute("objectCreationMessage", "Vuoi creare un oggetto relativo a questo scenario?" + "\n" + "Questo oggetto sarà necessario per entrare in questo scenario");
         // Chiamata al metodo createStory di DBHandler per salvare la storia nel database
         return "create-object";
-        //return "create-story";
 
     }
 
     @GetMapping("/catalog")
     public String catalog(Model model) {
         model.addAttribute("stories", storyService.getStories());
+//        httpSession.removeAttribute("currentStoryId");
+//        httpSession.removeAttribute("currentStoryObjects");
+//        httpSession.removeAttribute("currentRiddles");
+//        httpSession.removeAttribute("currentScenarioId");
+//        httpSession.removeAttribute("scenarios");
+        httpSession.invalidate();
         return "catalog";
     }
 

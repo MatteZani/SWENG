@@ -12,6 +12,8 @@ public class ScenarioBuilder {
 
     private int foundObjectId;
 
+    private int riddleId;
+
     public ScenarioBuilder setDescription(String description) {
         this.description = description;
         return this;
@@ -42,10 +44,15 @@ public class ScenarioBuilder {
         return this;
     }
 
+    public ScenarioBuilder setRiddleId(int riddleId){
+        this.riddleId = riddleId;
+        return this;
+    }
+
 
 
     public Scenario build() {
-        return new Scenario(id, description, nextScenarios, storyId, necessaryObjectId, foundObjectId);
+        return new Scenario(id, description, nextScenarios, storyId, necessaryObjectId, foundObjectId, riddleId);
     }
 
 

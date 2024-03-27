@@ -27,9 +27,7 @@ public class StoryService {
         try {
             String sql = "INSERT INTO STORIE(TITLE, PLOT, CATEGORY, CREATOR, INITIAL_SCENARIO) VALUES (?, ?, ?, ?, ?)";
             jdbcTemplate.update(sql, story.getTitle(), story.getPlot(), story.getCategory(), story.getCreator(), null);
-            String maxId = "SELECT MAX(ID) FROM STORIE";
-            int currentStoryId = jdbcTemplate.queryForObject(maxId, Integer.class);
-            httpSession.setAttribute("currentStoryId", currentStoryId);
+
 
         } catch (DataAccessException e) {
             logger.error("Lanciata eccezione nel metodo createStory della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
@@ -59,5 +57,19 @@ public class StoryService {
 
     public int getScenariosNumberByStoryId(int storyId){
         return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM SCENARI WHERE ID_STORIA = ?", Integer.class, storyId);
+    }
+
+    public int getMaxStoryId(){
+        try {
+            String sql = "SELECT MAX(ID) FROM STORIE";
+            int maxStoryId = jdbcTemplate.queryForObject(sql, Integer.class);
+
+            return maxStoryId;
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        } catch (NullPointerException e) {
+            logger.error("NullPointerException nel metodo getMaxStoryId della classe StoryService");
+            return 0;
+        }
     }
 }

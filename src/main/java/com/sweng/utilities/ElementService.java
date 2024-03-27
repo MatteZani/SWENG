@@ -62,6 +62,21 @@ public class ElementService {
         }
     }
 
+    public int getMaxRiddleId(){
+        try {
+            String getScenarioId = "SELECT MAX(ID) FROM INDOVINELLI";
+            int maxObjectId = jdbcTemplate.queryForObject(getScenarioId, Integer.class);
+
+            return maxObjectId;
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        } catch (NullPointerException e) {
+            logger.error("NullPointerException nel metodo getMaxRiddleId della classe ElementService");
+            return 0;
+        }
+
+    }
+
 
 
 }

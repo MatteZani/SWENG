@@ -1,6 +1,8 @@
 package com.sweng.utilities;
 
 import com.sweng.entity.Scenario;
+import com.sweng.entity.ScenarioBuilder;
+import com.sweng.entity.Story;
 import com.sweng.entity.User;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -21,6 +23,9 @@ public class ScenarioService {
     @Autowired
     private HttpSession httpSession;
 
+
+    @Autowired
+    private StoryService storyService;
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -39,16 +44,27 @@ public class ScenarioService {
     }
 
 
-    public void createScenario(int storyId, String description, int necessaryObjectId, int foundObjectId) {
+    public Scenario createScenario(int storyId, String description, int necessaryObjectId, int foundObjectId, int riddleId) {
         try {
-            String sql = "INSERT INTO SCENARI (DESCRIZIONE, ID_STORIA, ID_OGGETTO_NECESSARIO, ID_OGGETTO_OTTENUTO) VALUES (?, ?, ?, ?)";
-            jdbcTemplate.update(sql, description, storyId, necessaryObjectId, foundObjectId);
+            String sql = "INSERT INTO SCENARI (DESCRIZIONE, ID_STORIA, ID_OGGETTO_NECESSARIO, ID_OGGETTO_OTTENUTO, ID_INDOVINELLO) VALUES (?, ?, ?, ?, ?)";
+            jdbcTemplate.update(sql, description, storyId, necessaryObjectId, foundObjectId, riddleId);
 
+            Scenario scenario = new ScenarioBuilder()
+                    .setId(this.getMaxScenarioId())
+                    .setDescription(description)
+                    .setStoryId(storyId)
+                    .setNecessaryObjectId(necessaryObjectId)
+                    .setFoundObjectId(foundObjectId)
+                    .setRiddleId(riddleId)
+                    .build();
 
             httpSession.setAttribute("currentScenarioId", this.getMaxScenarioId());
 
+            return scenario;
+
         } catch (DataAccessException e) {
             logger.error("Lanciata eccezione nel metodo createScenario della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
+            return new Scenario();
         }
 
     }
@@ -100,6 +116,13 @@ public class ScenarioService {
         String sql = "INSERT INTO COLLEGAMENTI(SCENARIO_PARTENZA, SCENARIO_ARRIVO, STORIA_APPARTENENZA, DESCRIZIONE) VALUES (?, ?, ?, 'Collegamento di prova')";
 
         jdbcTemplate.update(sql, start, end, story);
+    }
+
+    public void setInitialScenario(int storyId, int scenarioId){
+        String sql = "UPDATE STORIE SET INITIAL_SCENARIO = ? WHERE ID = ?";
+        jdbcTemplate.update(sql, scenarioId, storyId);
+
+
     }
 
 

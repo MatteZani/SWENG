@@ -12,6 +12,11 @@ public class Scenario {
 
     private int foundObjectId;
 
+    private int riddleId;
+
+    public Scenario(){
+
+    }
     public Scenario(String description, int storyId) {
         this.description = description;
         this.storyId = storyId;
@@ -23,13 +28,14 @@ public class Scenario {
         this.storyId = storyId;
     }
 
-    public Scenario(int id, String description, List<Scenario> nextScenarios, int storyId, int necessaryObjectId, int foundObjectId) {
+    public Scenario(int id, String description, List<Scenario> nextScenarios, int storyId, int necessaryObjectId, int foundObjectId, int riddleId) {
         this.id = id;
         this.description = description;
         this.nextScenarios = nextScenarios;
         this.storyId = storyId;
         this.necessaryObjectId = necessaryObjectId;
         this.foundObjectId = foundObjectId;
+        this.riddleId = riddleId;
     }
 
 
@@ -84,6 +90,14 @@ public class Scenario {
 
     public void setFoundObjectId(int foundObjectId) {
         this.foundObjectId = foundObjectId;
+    }
+
+    public int getRiddleId() {
+        return riddleId;
+    }
+
+    public void setRiddleId(int riddleId) {
+        this.riddleId = riddleId;
     }
 }
 

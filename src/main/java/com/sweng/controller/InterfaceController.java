@@ -1,4 +1,4 @@
-package com.sweng;
+package com.sweng.controller;
 
 
 import com.sweng.entity.*;

@@ -139,7 +139,13 @@ public class InterfaceController {
         dbHandler.createScenario((Integer) httpSession.getAttribute("currentStoryId"), scenarioDescription, necessaryObjectId, foundObjectId);
         dbHandler.addScenarioToStory((Integer) httpSession.getAttribute("currentStoryId"));
 
-        ArrayList<Scenario> scenarios = (ArrayList<Scenario>) httpSession.getAttribute("scenarios");
+        ArrayList<Scenario> scenarios;
+        if(httpSession.getAttribute("scenarios") == null){
+            scenarios = new ArrayList<Scenario>();
+        }
+        else{
+            scenarios = (ArrayList<Scenario>) httpSession.getAttribute("scenarios");
+        }
 
         scenarios.add(new ScenarioBuilder().setId(dbHandler.getMaxScenarioId()).setDescription(scenarioDescription).setStoryId((Integer) httpSession.getAttribute("currentStoryId")).setNecessaryObjectId(0).build());
         httpSession.setAttribute("scenarios", scenarios);

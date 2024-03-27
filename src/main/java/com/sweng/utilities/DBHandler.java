@@ -79,7 +79,7 @@ public class DBHandler {
             return -1;
         }
     }
-
+/*
     public ResponseEntity<Object> createScenario(Scenario scenario) {
         try {
             String sql = "INSERT INTO SCENARI(DESCRIZIONE,ID_STORIA) VALUES (?,?)";
@@ -89,7 +89,7 @@ public class DBHandler {
             logger.error("Lanciata eccezione nel metodo createScenario della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
         }
-    }
+    }*/
 
     public ResponseEntity<Object> createRiddle(Riddle riddle) {
         try {
@@ -107,7 +107,7 @@ public class DBHandler {
         int count = jdbcTemplate.queryForObject(sql, Integer.class, username, password);
         return count > 0;
     }*/
-
+/*
     public void createScenario(int storyId, String description, int necessaryObjectId, int foundObjectId) {
         try {
             String sql = "INSERT INTO SCENARI (DESCRIZIONE, ID_STORIA, ID_OGGETTO_NECESSARIO, ID_OGGETTO_OTTENUTO) VALUES (?, ?, ?, ?)";
@@ -136,7 +136,7 @@ public class DBHandler {
             return 1;
         }
 
-    }
+    }*/
 
     public int getMaxObjectId() {
         try {
@@ -151,7 +151,7 @@ public class DBHandler {
             return 0;
         }
     }
-
+/*
     // Metodo per aggiungere uno scenario alla storia nel database
     public void addScenarioToStory(int storyId) {
         try {
@@ -182,7 +182,7 @@ public class DBHandler {
         String sql = "INSERT INTO COLLEGAMENTI(SCENARIO_PARTENZA, SCENARIO_ARRIVO, STORIA_APPARTENENZA, DESCRIZIONE) VALUES (?, ?, ?, 'Collegamento di prova')";
 
         jdbcTemplate.update(sql, start, end, story);
-    }
+    }*/
 
     public List<Map<String, Object>> getLinksByStoryId(int storyId) {
         try {

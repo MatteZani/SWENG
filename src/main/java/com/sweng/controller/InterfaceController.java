@@ -3,6 +3,7 @@ package com.sweng.controller;
 
 import com.sweng.entity.*;
 import com.sweng.utilities.DBHandler;
+import com.sweng.utilities.ScenarioService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,6 +24,9 @@ public class InterfaceController {
     // URL di connessione al database
     @Autowired
     private DBHandler dbHandler;
+
+    @Autowired
+    private ScenarioService scenarioservice;
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -117,6 +121,7 @@ public class InterfaceController {
     public String prova(Model model){
         return "prova";
     }
+/*
 
     @GetMapping("/create-scenario")
     public String createInitialScenario(Model model){
@@ -154,6 +159,7 @@ public class InterfaceController {
         model.addAttribute("currentRiddles", httpSession.getAttribute("currentRiddles") );
         return "add-scenario";
     }
+*/
 
 //    @PostMapping("add-scenario/process")
 //    public String addScenarioToStory(@RequestParam String scenarioDescription, @RequestParam int necessaryObjectId, @RequestParam int foundObjectId, Model model){
@@ -185,7 +191,7 @@ public class InterfaceController {
     public String processConnection(@RequestParam("start") int startingScenario, @RequestParam("end") int endingScenario, Model model){
 
 
-        dbHandler.connectScenarios(startingScenario, endingScenario,(Integer) httpSession.getAttribute("currentStoryId"));
+        scenarioservice.connectScenarios(startingScenario, endingScenario,(Integer) httpSession.getAttribute("currentStoryId"));
 
         model.addAttribute("scenarios", httpSession.getAttribute("scenarios"));
 

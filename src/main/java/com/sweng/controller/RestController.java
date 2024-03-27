@@ -1,3 +1,4 @@
+/*
 package com.sweng.controller;
 
 import com.sweng.entity.*;
@@ -24,11 +25,13 @@ public class RestController {
 
     Logger logger = LoggerFactory.getLogger(RestController.class);
 
+*/
 /*    @GetMapping("/user")
     public ResponseEntity<List<Map<String, Object>>> getUsers() {
         List<Map<String, Object>> users = dbHandler.getUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
-    }*/
+    }*//*
+
 
 //    @GetMapping("/user/username")
 //    public ResponseEntity<Object> getUserByName(@RequestParam String username){
@@ -41,18 +44,22 @@ public class RestController {
 ////        }
 //    }
 
-    /**
+    */
+/**
      * inserisce un nuovo utente nel database
      * @param user l'utente da inserire
      * @return response entity con codice 200 e l'utente nel body se l'inserimento è andato a buon fide
      * response entity 400 con messaggio di errore se si verifica un errore nell'inserimento
      *
-     **/
+     **//*
+
+*/
 /*    @PostMapping("/user")
     public ResponseEntity<Object> postUser(@RequestBody User user){
 
         return dbHandler.saveUser(user);
-    }*/
+    }*//*
+
 
     /*@GetMapping("/story")
     public ResponseEntity<Object> getStories(){
@@ -105,6 +112,8 @@ public class RestController {
         return dbHandler.createRiddle(riddle);
     }
 
+*/
+/*
     @GetMapping("/scenario")
     public ResponseEntity<Object> getScenariosByStoryId(@RequestParam("storyId") int storyId){
         List<Map<String, Object>> scenarios = dbHandler.getScenariosByStoryId(storyId);
@@ -114,6 +123,8 @@ public class RestController {
         else
             return new ResponseEntity<>(scenarios, HttpStatus.OK);
     }
+*//*
+
 
     @GetMapping("/links")
     public ResponseEntity<Object> getLinksByStoryId(@RequestParam("storyId") int storyId){
@@ -127,3 +138,4 @@ public class RestController {
     }
 
 }
+*/

@@ -4,7 +4,6 @@ package com.sweng.controller;
 import com.sweng.entity.*;
 import com.sweng.utilities.DBHandler;
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -33,7 +32,7 @@ public class InterfaceController {
         return "menu";
     }
 
-    @GetMapping("/login")
+   /* @GetMapping("/login")
     public String login() {
         return "login";
     }
@@ -70,7 +69,7 @@ public class InterfaceController {
         // Reindirizzamento alla pagina "avvenuta registrazione"
         return "homepage";
     }
-
+*/
     @GetMapping("/catalog")
     public String catalog(Model model) {
         model.addAttribute("stories", dbHandler.getStories());
@@ -123,14 +122,14 @@ public class InterfaceController {
     }
 
 
-    @PostMapping("create-riddle/process")
+    @GetMapping("create-riddle/process")
     public String processCreateRiddle(@RequestParam("quest") String quest, @RequestParam("rightAnswer") String rightAnswer, Model model){
         Riddle riddle = new Riddle(quest, rightAnswer);
         dbHandler.createRiddle(riddle);
         //riddle.setId(dbHandler.getMaxObjectId());
-        ArrayList<Riddle> objects = (ArrayList<Riddle>) httpSession.getAttribute("currentStoryObjects");
-        objects.add(riddle);
-        httpSession.setAttribute("currentStoryObjects", objects);
+        ArrayList<Riddle> riddles = (ArrayList<Riddle>) httpSession.getAttribute("currentRiddles");
+        riddles.add(riddle);
+        httpSession.setAttribute("currentRiddles", riddles);
 
         model.addAttribute("message", "Storia creata con successo, crea un indovinello che potrà essere risolto all'interno della storia");
 
@@ -149,6 +148,7 @@ public class InterfaceController {
         model.addAttribute("necessaryObjectMessage", "Vuoi rendere un oggetto necessario per entrare in questo scenario?");
         model.addAttribute("gainObjectMessage", "Vuoi aggiungere un oggetto all'inventario dei giocatori che entrano in questo scenario?");
         model.addAttribute("currentStoryObjects", httpSession.getAttribute("currentStoryObjects") );
+        model.addAttribute("currentRiddles", httpSession.getAttribute("currentRiddles") );
         return "create-initial-scenario";
     }
 
@@ -174,6 +174,7 @@ public class InterfaceController {
         model.addAttribute("necessaryObjectMessage", "Vuoi rendere un oggetto necessario per entrare in questo scenario?");
         model.addAttribute("gainObjectMessage", "Vuoi aggiungere un oggetto all'inventario dei giocatori che entrano in questo scenario?");
         model.addAttribute("currentStoryObjects", httpSession.getAttribute("currentStoryObjects") );
+        model.addAttribute("currentRiddles", httpSession.getAttribute("currentRiddles") );
         return "add-scenario";
     }
 

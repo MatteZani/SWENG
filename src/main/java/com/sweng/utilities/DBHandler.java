@@ -25,7 +25,7 @@ public class DBHandler {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public List<Map<String, Object>> getUsers() {
+    /*public List<Map<String, Object>> getUsers() {
         return jdbcTemplate.queryForList("SELECT * FROM CREDENZIALI");
     }
 
@@ -38,7 +38,7 @@ public class DBHandler {
             logger.error("Lanciata DataAccessException nel metodo postUser della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
         }
-    }
+    }*/
 
     public void createStory(Story story) {
         try {
@@ -102,11 +102,11 @@ public class DBHandler {
         }
     }
 
-    public boolean verifyCredentials(String username, String password) {
+   /* public boolean verifyCredentials(String username, String password) {
         String sql = "SELECT COUNT(*) FROM CREDENZIALI WHERE USERNAME = ? AND PASSWORD = ?";
         int count = jdbcTemplate.queryForObject(sql, Integer.class, username, password);
         return count > 0;
-    }
+    }*/
 
     public void createScenario(int storyId, String description, int necessaryObjectId, int foundObjectId) {
         try {

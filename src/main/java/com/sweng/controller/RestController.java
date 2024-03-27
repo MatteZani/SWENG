@@ -24,11 +24,11 @@ public class RestController {
 
     Logger logger = LoggerFactory.getLogger(RestController.class);
 
-    @GetMapping("/user")
+/*    @GetMapping("/user")
     public ResponseEntity<List<Map<String, Object>>> getUsers() {
         List<Map<String, Object>> users = dbHandler.getUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
-    }
+    }*/
 
 //    @GetMapping("/user/username")
 //    public ResponseEntity<Object> getUserByName(@RequestParam String username){
@@ -48,11 +48,11 @@ public class RestController {
      * response entity 400 con messaggio di errore se si verifica un errore nell'inserimento
      *
      **/
-    @PostMapping("/user")
+/*    @PostMapping("/user")
     public ResponseEntity<Object> postUser(@RequestBody User user){
 
         return dbHandler.saveUser(user);
-    }
+    }*/
 
     @GetMapping("/story")
     public ResponseEntity<Object> getStories(){

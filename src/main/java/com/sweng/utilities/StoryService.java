@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StoryService {
@@ -72,4 +73,16 @@ public class StoryService {
             return 0;
         }
     }
+
+    public List<Map<String, Object>> getLinksByStoryId(int storyId) {
+        try {
+            return jdbcTemplate.queryForList("SELECT * FROM COLLEGAMENTI WHERE STORIA_APPARTENENZA = ?", storyId);
+
+        } catch (DataAccessException e) {
+            logger.error("Lanciata eccezione nel metodo getLinksByStoryId della classe DBHandler. Causa dell'" +
+                    "eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
+            return null;
+        }
+    }
+
 }

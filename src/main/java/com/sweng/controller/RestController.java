@@ -1,7 +1,8 @@
 package com.sweng.controller;
 
 import com.sweng.entity.*;
-import com.sweng.utilities.DBHandler;
+import com.sweng.utilities.ElementService;
+import com.sweng.utilities.ScenarioService;
 import com.sweng.utilities.StoryService;
 import com.sweng.utilities.UserService;
 import org.slf4j.Logger;
@@ -25,6 +26,10 @@ import java.util.Map;
         private UserService userService;
         @Autowired
         private StoryService storyService;
+        @Autowired
+        private ElementService elementService;
+        @Autowired
+        private ScenarioService scenarioService;
 
         Logger logger = LoggerFactory.getLogger(RestController.class);
 
@@ -77,61 +82,47 @@ import java.util.Map;
             }
         }
 
-    }
+        @PostMapping("/object")
+        public ResponseEntity<Object> postObject(@RequestBody String name, @RequestBody String description){
 
+            try {
+                StoryObject storyObject = new StoryObject(name, description);
+                elementService.createObject(storyObject);
 
-   /*@PostMapping("/object")
-    public ResponseEntity<Object> postObject(@RequestBody String name, @RequestBody String description){
+                return new ResponseEntity<>(storyObject, HttpStatus.OK);
+            }
+            catch(Exception e){
+                return new ResponseEntity<>("Errore nella creazione dell'oggetto", HttpStatusCode.valueOf(400));
+            }
 
-        try {
-            StoryObject storyObject = new StoryObject(name, description);
-            dbHandler.createObject(storyObject);
-
-            return new ResponseEntity<>(storyObject, HttpStatus.OK);
         }
-        catch(Exception e){
-            return new ResponseEntity<>("Errore nella creazione dell'oggetto", HttpStatusCode.valueOf(400));
+
+        @PostMapping("/scenario")
+        public ResponseEntity<Object> postScenario(@RequestBody Scenario scenario){
+            return scenarioService.createScenario(scenario);
+        }
+
+        @GetMapping("/scenario")
+        public ResponseEntity<Object> getScenariosByStoryId(@RequestParam("storyId") int storyId){
+            List<Map<String, Object>> scenarios = scenarioService.getScenariosByStoryId(storyId);
+            if(scenarios == null){
+                return new ResponseEntity<>("Errore nella ricerca degli scenari", HttpStatusCode.valueOf(400));
+            }else
+                return new ResponseEntity<>(scenarios, HttpStatus.OK);
+        }
+
+        @PostMapping("/riddle")
+        public ResponseEntity<Object> postRiddle(@RequestBody Riddle riddle){
+            return elementService.createRiddle(riddle);
+        }
+
+        @GetMapping("/links")
+        public ResponseEntity<Object> getLinksByStoryId(@RequestParam("storyId") int storyId){
+            List<Map<String, Object>> links = storyService.getLinksByStoryId(storyId);
+            if(links == null){
+                return new ResponseEntity<>("Errore nella ricerca degli scenari", HttpStatusCode.valueOf(400));
+            }else
+                return new ResponseEntity<>(links, HttpStatus.OK);
         }
 
     }
-
-    @PostMapping("/scenario")
-    public ResponseEntity<Object> postScenario(@RequestBody Scenario scenario){
-
-        return dbHandler.createScenario(scenario);
-    }
-
-    @PostMapping("/riddle")
-    public ResponseEntity<Object> postRiddle(@RequestBody Riddle riddle){
-
-        return dbHandler.createRiddle(riddle);
-    }
-
-*/
-/*
-    @GetMapping("/scenario")
-    public ResponseEntity<Object> getScenariosByStoryId(@RequestParam("storyId") int storyId){
-        List<Map<String, Object>> scenarios = dbHandler.getScenariosByStoryId(storyId);
-        if(scenarios == null){
-            return new ResponseEntity<>("Errore nella ricerca degli scenari", HttpStatusCode.valueOf(400));
-        }
-        else
-            return new ResponseEntity<>(scenarios, HttpStatus.OK);
-    }
-*//*
-
-
-    @GetMapping("/links")
-    public ResponseEntity<Object> getLinksByStoryId(@RequestParam("storyId") int storyId){
-        List<Map<String, Object>> links = dbHandler.getLinksByStoryId(storyId);
-        if(links == null){
-            return new ResponseEntity<>("Errore nella ricerca degli scenari", HttpStatusCode.valueOf(400));
-        }
-        else
-            return new ResponseEntity<>(links, HttpStatus.OK);
-
-    }
-
-}
-*/
-

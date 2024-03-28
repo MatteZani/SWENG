@@ -2,8 +2,6 @@ package com.sweng.utilities;
 
 import com.sweng.entity.Scenario;
 import com.sweng.entity.ScenarioBuilder;
-import com.sweng.entity.Story;
-import com.sweng.entity.User;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

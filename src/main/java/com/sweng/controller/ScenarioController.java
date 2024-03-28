@@ -1,9 +1,7 @@
 package com.sweng.controller;
 
 import com.sweng.entity.Scenario;
-import com.sweng.entity.ScenarioBuilder;
 import com.sweng.utilities.ScenarioService;
-import com.sweng.utilities.StoryService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.ArrayList;
 
 @Controller

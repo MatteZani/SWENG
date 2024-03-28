@@ -94,17 +94,18 @@ public class ScenarioController {
 
         Integer currentStoryId = (Integer) httpSession.getAttribute("currentStoryId");
 
-        if (correctAnswerScenario != 0 && wrongAnswerScenario != 0) {
+        if (correctAnswerScenario != wrongAnswerScenario) {
             // Logica per gli scenari con indovinelli
-            scenarioService.connectScenarios(startingScenario, correctAnswerScenario, currentStoryId);
-            scenarioService.connectScenarios(startingScenario, wrongAnswerScenario, currentStoryId);
-        } else if (endingScenario != 0) {
+            scenarioService.connectScenarios(startingScenario, correctAnswerScenario, currentStoryId, "Risposta giusta");
+            scenarioService.connectScenarios(startingScenario, wrongAnswerScenario, currentStoryId, "Risposta sbagliata");
+        } else{
             // Logica per il collegamento normale
-            scenarioService.connectScenarios(startingScenario, endingScenario, currentStoryId);
-        } else {
-            // Gestisci il caso in cui non vengono forniti dati adeguati
-            // Potresti voler reindirizzare a una pagina di errore o mostrare un messaggio
+            scenarioService.connectScenarios(startingScenario, endingScenario, currentStoryId, "");
         }
+//        else {
+//            // Gestisci il caso in cui non vengono forniti dati adeguati
+//            // Potresti voler reindirizzare a una pagina di errore o mostrare un messaggio
+//        }
 
         model.addAttribute("scenarios", httpSession.getAttribute("scenarios"));
         return "connect-scenarios";

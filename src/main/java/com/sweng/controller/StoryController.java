@@ -61,6 +61,12 @@ public class StoryController {
         return "catalog";
     }
 
+    @GetMapping("/visitor-catalog")
+    public String visitorCatalog(Model model){
+        model.addAttribute("stories", storyService.getStories());
+        return "visitor-catalog";
+    }
+
     @GetMapping("/catalog/show-story")
     public String showStory(@RequestParam("storyId") Integer storyId, Model model){
         System.out.println(storyId);

@@ -110,10 +110,10 @@ public class ScenarioService {
         }
     }
 
-    public void connectScenarios(int start, int end, int story) {
-        String sql = "INSERT INTO COLLEGAMENTI(SCENARIO_PARTENZA, SCENARIO_ARRIVO, STORIA_APPARTENENZA, DESCRIZIONE) VALUES (?, ?, ?, 'Collegamento di prova')";
+    public void connectScenarios(int start, int end, int story, String description) {
+        String sql = "INSERT INTO COLLEGAMENTI(SCENARIO_PARTENZA, SCENARIO_ARRIVO, STORIA_APPARTENENZA, DESCRIZIONE) VALUES (?, ?, ?, ?)";
 
-        jdbcTemplate.update(sql, start, end, story);
+        jdbcTemplate.update(sql, start, end, story, description);
     }
 
     public void setInitialScenario(int storyId, int scenarioId){

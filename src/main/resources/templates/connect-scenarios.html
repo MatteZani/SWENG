@@ -1,31 +1,4 @@
-<!--
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Connetti gli scenari</title>
-</head>
-<body>
-    <p th:text="${message}"></p>
-
-    <form th:action="@{/connect-scenarios/process}" method="post">
-
-        <select th:name = "start">
-            <option th:each="scenario : ${scenarios}" th:value="${scenario.id}" th:text="${scenario.description}"></option>
-        </select>
-
-        <select th:name = "end">
-            <option th:each="scenario : ${scenarios}" th:value="${scenario.id}" th:text="${scenario.description}"></option>
-        </select>
-        <input type="submit" value="Connetti">
-    </form>
-
-    <a th:href="@{/catalog}">Termina connessione scenari</a>
-
-
-</body>
-</html>-->
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
@@ -71,6 +44,80 @@
             document.getElementById('riddleConnection').style.display = hasRiddle ? 'block' : 'none';
         }
     </script>
+
+</body>
+</html>-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connetti gli scenari</title>
+    <!-- Link per Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Collegamento al file CSS personalizzato -->
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+<body>
+
+<div class="header">
+    <h2>Collega gli scenari che hai creato</h2>
+</div>
+
+<div class="container">
+    <!--<p th:text="${message}"></p>-->
+
+    <form action="/connect-scenarios/process" method="post" class="mt-4">
+
+        <div class="form-group">
+            <label for="start">Seleziona lo scenario di partenza:</label>
+            <select class="form-control" id="start" name="start" onchange="checkForRiddle(this)">
+                <option th:each="scenario : ${scenarios}" th:value="${scenario.id}" th:text="${scenario.description}" th:data-riddle-id="${scenario.riddleId}"></option>
+            </select>
+        </div>
+
+        <div id="normalConnection" class="form-group">
+            <label for="end">Seleziona lo scenario di destinazione:</label>
+            <select class="form-control" id="end" name="end">
+                <option th:each="scenario : ${scenarios}" th:value="${scenario.id}" th:text="${scenario.description}"></option>
+            </select>
+        </div>
+
+        <div id="riddleConnection" class="form-group" style="display: none;">
+            <label for="correctAnswer">Se l'indovinello è risolto correttamente:</label>
+            <select class="form-control" id="correctAnswer" name="correctAnswer">
+                <option th:each="scenario : ${scenarios}" th:value="${scenario.id}" th:text="${scenario.description}"></option>
+            </select>
+            <label for="wrongAnswer">Se l'indovinello è risolto erroneamente:</label>
+            <select class="form-control" id="wrongAnswer" name="wrongAnswer">
+                <option th:each="scenario : ${scenarios}" th:value="${scenario.id}" th:text="${scenario.description}"></option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Connetti</button>
+    </form>
+
+    <a href="/catalog" class="btn btn-secondary mt-3">Termina connessione scenari</a>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2024 SWENG - Tutti i diritti riservati</p>
+    </div>
+</footer>
+
+<!-- Link per Bootstrap JS (opzionale, necessario solo se si utilizzano componenti JS di Bootstrap) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    function checkForRiddle(select) {
+        var option = select.options[select.selectedIndex];
+        var riddleId = option.getAttribute('data-riddle-id');
+        var hasRiddle = riddleId !== '0'; // Assume '0' as the indicator of no riddle
+        document.getElementById('normalConnection').style.display = hasRiddle ? 'none' : 'block';
+        document.getElementById('riddleConnection').style.display = hasRiddle ? 'block' : 'none';
+    }
+</script>
 
 </body>
 </html>

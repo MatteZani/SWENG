@@ -1,30 +1,50 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Story</title>
+    <!-- Link per Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Collegamento al file CSS personalizzato -->
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
 </head>
 <body>
+
+<div class="header">
     <h2>Crea una nuova storia</h2>
-    <form th:action="@{/create-story/process}" method="post">
-        <label for="title">Titolo:</label><br>
-        <input type="text" id="title" name="title" required><br><br>
-
-        <label for="plot">Trama:</label><br>
-        <textarea id="plot" name="plot" rows="4" cols="50" required></textarea><br><br>
-
-        <label for="category">Genere:</label><br>
-        <select id="category" name="category" required>
-            <option value="Horror">Horror</option>
-            <option value="Azione">Azione</option>
-            <option value="Fantasy">Fantasy</option>
-            <option value="Comica">Comica</option>
-            <option value="Drammatica">Drammatica</option>
-        </select><br><br>
-
-<!--        <input type="hidden" id="creatorId" name="creatorId" value="123"> &lt;!&ndash; Aggiungi l'ID del creatore &ndash;&gt;-->
-
-        <input type="submit" value="Crea storia">
+</div>
+<div class="container">
+    <form action="/create-story/process" method="post" class="mt-4">
+        <div class="form-group">
+            <label for="title">Titolo:</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+        <div class="form-group">
+            <label for="plot">Trama:</label>
+            <textarea class="form-control" id="plot" name="plot" rows="4" cols="50" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="category">Genere:</label>
+            <select class="form-control" id="category" name="category" required>
+                <option value="Horror">Horror</option>
+                <option value="Azione">Azione</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Comica">Comica</option>
+                <option value="Drammatica">Drammatica</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Crea storia</button>
     </form>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2024 SWENG - Tutti i diritti riservati</p>
+    </div>
+</footer>
+
+<!-- Link per Bootstrap JS (opzionale, necessario solo se si utilizzano componenti JS di Bootstrap) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

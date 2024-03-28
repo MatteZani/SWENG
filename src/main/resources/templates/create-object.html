@@ -2,23 +2,47 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crea oggetti</title>
+    <!-- Link per Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Collegamento al file CSS personalizzato -->
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
 </head>
 <body>
-<form th:action="@{/create-object/process}" method="post">
-    <p th:text="${message}"></p>
-    <label th:for="title">Inserisci il titolo dell'oggetto:</label><br>
-    <textarea id="title" th:name="title" rows="1" cols="50"
-              placeholder="Una gamba del Garpez"></textarea><br><br>
 
-    <label th:for="description">Inserisci la descrizione dell'oggetto:</label><br>
-    <textarea id="description" th:name="description" rows="3" cols="50"
-              placeholder="Pezzo d'arte dal valore inestimabbile"></textarea><br><br>
-    <input type="submit" value="Aggiungi oggetto alla storia">
-</form>
+<div class="header">
+    <h2>Crea oggetti</h2>
+</div>
+<div class="container">
+    <form action="/create-object/process" method="post" class="mt-4">
+        <p th:text="${message}"></p>
+        <div class="form-group">
+            <label for="title">Titolo dell'oggetto:</label>
+            <textarea id="title" class="form-control" name="title" rows="1"
+                      placeholder="Una gamba del Garpez" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="description">Descrizione dell'oggetto:</label>
+            <textarea id="description" class="form-control" name="description" rows="3"
+                      placeholder="Pezzo d'arte dal valore inestimabbile" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Aggiungi oggetto alla storia</button>
+    </form>
+    <div class="mt-3">
+        <a href="/create-scenario" class="btn btn-secondary">Vai alla creazione scenari</a>
+        <a href="/create-riddle" class="btn btn-secondary">Vai alla creazione indovinelli</a>
+    </div>
+</div>
 
-<a th:href="@{/create-scenario}">Vai alla creazione scenari</a>
-<a th:href="@{/create-riddle}">Vai alla creazione indovinelli</a>
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2024 SWENG - Tutti i diritti riservati</p>
+    </div>
+</footer>
 
+<!-- Link per Bootstrap JS (opzionale, necessario solo se si utilizzano componenti JS di Bootstrap) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+

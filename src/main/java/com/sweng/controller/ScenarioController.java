@@ -49,7 +49,10 @@ public class ScenarioController {
         int finalNecessaryObjectId = (necessaryObjectId != null) ? necessaryObjectId : 0;
         int finalFoundObjectId = (foundObjectId != null) ? foundObjectId : 0;
 
-        Scenario scenario = scenarioService.createScenario(storyId, scenarioDescription, finalNecessaryObjectId, finalFoundObjectId, riddleId);
+        // se non viene selezionato alcun indovinello
+        int finalRiddleId = (riddleId != null) ? riddleId : 0;
+
+        Scenario scenario = scenarioService.createScenario(storyId, scenarioDescription, finalNecessaryObjectId, finalFoundObjectId, finalRiddleId);
 
         // Aggiorna la lista degli scenari in sessione
         ArrayList<Scenario> scenarios = (ArrayList<Scenario>) httpSession.getAttribute("scenarios");
@@ -83,14 +86,30 @@ public class ScenarioController {
     }
 
     @PostMapping("connect-scenarios/process")
-    public String processConnection(@RequestParam("start") int startingScenario, @RequestParam("end") int endingScenario, Model model){
+    public String processConnection(@RequestParam("start") int startingScenario,
+                                    @RequestParam(value = "correctAnswer", required = false, defaultValue = "0") int correctAnswerScenario,
+                                    @RequestParam(value = "wrongAnswer", required = false, defaultValue = "0") int wrongAnswerScenario,
+                                    @RequestParam(value = "end", required = false, defaultValue = "0") int endingScenario,
+                                    Model model) {
 
+        Integer currentStoryId = (Integer) httpSession.getAttribute("currentStoryId");
 
-        scenarioService.connectScenarios(startingScenario, endingScenario,(Integer) httpSession.getAttribute("currentStoryId"));
+        if (correctAnswerScenario != 0 && wrongAnswerScenario != 0) {
+            // Logica per gli scenari con indovinelli
+            scenarioService.connectScenarios(startingScenario, correctAnswerScenario, currentStoryId);
+            scenarioService.connectScenarios(startingScenario, wrongAnswerScenario, currentStoryId);
+        } else if (endingScenario != 0) {
+            // Logica per il collegamento normale
+            scenarioService.connectScenarios(startingScenario, endingScenario, currentStoryId);
+        } else {
+            // Gestisci il caso in cui non vengono forniti dati adeguati
+            // Potresti voler reindirizzare a una pagina di errore o mostrare un messaggio
+        }
 
         model.addAttribute("scenarios", httpSession.getAttribute("scenarios"));
-
         return "connect-scenarios";
     }
+
+
 
 }

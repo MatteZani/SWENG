@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
@@ -23,4 +24,55 @@
 
 
 </body>
+</html>-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Connetti gli scenari</title>
+</head>
+<body>
+<p th:text="${message}"></p>
+
+<form th:action="@{/connect-scenarios/process}" method="post">
+
+    <select th:name="start" onchange="checkForRiddle(this)">
+        <option th:each="scenario : ${scenarios}" th:value="${scenario.id}" th:text="${scenario.description}" th:data-riddle-id="${scenario.riddleId}"></option>
+    </select>
+
+    <div id="normalConnection">
+        <select th:name="end">
+            <option th:each="scenario : ${scenarios}" th:value="${scenario.id}" th:text="${scenario.description}"></option>
+        </select>
+    </div>
+
+    <div id="riddleConnection" style="display: none;">
+        <label>Se l'indovinello è risolto correttamente:</label>
+        <select th:name="correctAnswer">
+            <option th:each="scenario : ${scenarios}" th:value="${scenario.id}" th:text="${scenario.description}"></option>
+        </select>
+        <label>Se l'indovinello è risolto erroneamente:</label>
+        <select th:name="wrongAnswer">
+            <option th:each="scenario : ${scenarios}" th:value="${scenario.id}" th:text="${scenario.description}"></option>
+        </select>
+    </div>
+
+    <input type="submit" value="Connetti">
+</form>
+
+<a th:href="@{/catalog}">Termina connessione scenari</a>
+
+<script>
+        function checkForRiddle(select) {
+            var option = select.options[select.selectedIndex];
+            var riddleId = option.getAttribute('data-riddle-id');
+            var hasRiddle = riddleId !== '0'; // Assume '0' as the indicator of no riddle
+            document.getElementById('normalConnection').style.display = hasRiddle ? 'none' : 'block';
+            document.getElementById('riddleConnection').style.display = hasRiddle ? 'block' : 'none';
+        }
+    </script>
+
+</body>
 </html>
+
+

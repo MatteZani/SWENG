@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
@@ -8,10 +9,46 @@
     <h1>Che cosa vuoi fare?</h1>
     <div class="choices">
 
-<!--        <input type="hidden" th:value="${creator}">-->
+&lt;!&ndash;        <input type="hidden" th:value="${creator}">&ndash;&gt;
         <a th:href="@{/create-story}">Creare una nuova storia</a>
         <a th:href="@{/play}">Giocare una storia</a>
 
     </div>
 </body>
+</html>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <!-- Link per Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Collegamento al file CSS personalizzato -->
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+<body>
+
+<div class="header">
+    <h1>Home</h1>
+</div>
+<div class="container">
+
+    <div class="choices mt-4">
+        <h2>Che cosa vuoi fare?</h2>
+        <a href="/create-story" class="btn btn-primary btn-lg">Creare una nuova storia</a>
+        <a href="/play" class="btn btn-secondary btn-lg">Giocare una storia</a>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2024 SWENG - Tutti i diritti riservati</p>
+    </div>
+</footer>
+
+<!-- Link per Bootstrap JS (opzionale, necessario solo se si utilizzano componenti JS di Bootstrap) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
 </html>
+

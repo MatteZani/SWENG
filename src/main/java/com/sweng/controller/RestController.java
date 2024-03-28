@@ -53,7 +53,7 @@ import java.util.Map;
          * inserisce un nuovo utente nel database
          *
          * @param user l'utente da inserire
-         * @return response entity con codice 200 e l'utente nel body se l'inserimento è andato a buon fide
+         * @return response entity con codice 200 e l'utente nel body se l'inserimento è andato a buon fine
          * response entity 400 con messaggio di errore se si verifica un errore nell'inserimento
          **/
         @PostMapping("/user")
@@ -61,6 +61,11 @@ import java.util.Map;
             return userService.saveUser(user);
         }
 
+        /**
+         * ritorna tutti le storie create dagli utenti
+         * @return una lista di storie se la richiesta va a buon fine.
+         + Ritorna codice 400 se c'è un errore nel recupero delle storie
+         **/
         @GetMapping("/story")
         public ResponseEntity<Object> getStories(){
             List<Story> stories = storyService.getStories();
@@ -71,6 +76,14 @@ import java.util.Map;
                 return new ResponseEntity<>(stories, HttpStatus.OK);
         }
 
+        /**
+         * Crea una nuova storia
+         *
+         *
+         * @param story: la storia da creare
+         * @return Response entity con la storia nel body e codice 200 se la creazione va a buon fine.
+         * Response entity con errore e codice 400 se c'è un errore nel salvataggio della storia
+         */
         @PostMapping("/story")
         public ResponseEntity<Object> postStory(@RequestBody Story story){
 
@@ -82,6 +95,13 @@ import java.util.Map;
             }
         }
 
+        /**
+         *
+         * @param name: il nome dell'oggetto da creare
+         * @param description: la descrizione dell'oggetto da creare
+         * @return Response entity con oggetto nel body e codice 200 se la creazione va a buon fine.
+         * Response entity con errore e codice 400 se c'è un errore nella creazione dell'oggetto
+         */
         @PostMapping("/object")
         public ResponseEntity<Object> postObject(@RequestBody String name, @RequestBody String description){
 
@@ -97,11 +117,23 @@ import java.util.Map;
 
         }
 
+        /**
+         *
+         * @param scenario: lo scenario da creare
+         * @return Response entity con scenario nel body e codice 200 se la creazione va a buon fine.
+         * Response entity con errore e codice 400 se c'è un errore nella creazione dello scenario
+         */
         @PostMapping("/scenario")
         public ResponseEntity<Object> postScenario(@RequestBody Scenario scenario){
             return scenarioService.createScenario(scenario);
         }
 
+        /**
+         *
+         * @param storyId: l'id della storia a cui apppartengono gli scenari da cercare
+         * @return Response entity con gli scenari e codice 200 se la ricerca va a buon fine
+         * Response entity con errore e codice 400 se c'è un errore nella ricerca
+         */
         @GetMapping("/scenario")
         public ResponseEntity<Object> getScenariosByStoryId(@RequestParam("storyId") int storyId){
             List<Map<String, Object>> scenarios = scenarioService.getScenariosByStoryId(storyId);
@@ -111,11 +143,23 @@ import java.util.Map;
                 return new ResponseEntity<>(scenarios, HttpStatus.OK);
         }
 
+        /**
+         *
+         * @param riddle: l'indovinello da creare
+         * @return Response entity con l'indovinello e codice 200 se la creazione va a buon fine
+         * Response entity con errore e codice 400 se c'è un errore nella creazione
+         */
         @PostMapping("/riddle")
         public ResponseEntity<Object> postRiddle(@RequestBody Riddle riddle){
             return elementService.createRiddle(riddle);
         }
 
+        /**
+         *
+         * @param storyId: l'id della storia a cui appartengono i collegamenti da cercare
+         * @return Response entity con i collegamenti e codice 200 se la ricerca va a buon fine
+         * Response entity con errore e codice 400 se c'è un errore nella ricerca
+         */
         @GetMapping("/links")
         public ResponseEntity<Object> getLinksByStoryId(@RequestParam("storyId") int storyId){
             List<Map<String, Object>> links = storyService.getLinksByStoryId(storyId);

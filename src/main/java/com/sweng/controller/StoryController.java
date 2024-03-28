@@ -1,8 +1,10 @@
 package com.sweng.controller;
 
+import com.sweng.entity.Scenario;
 import com.sweng.entity.Story;
 import com.sweng.entity.StoryBuilder;
 import com.sweng.entity.StoryObject;
+import com.sweng.utilities.ScenarioService;
 import com.sweng.utilities.StoryService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class StoryController {
     // URL di connessione al database
     @Autowired
     private StoryService storyService;
+
+    @Autowired
+    private ScenarioService scenarioService;
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -77,5 +82,18 @@ public class StoryController {
         model.addAttribute("storyCategory", story.getCategory());
         model.addAttribute("scenariosNumber", storyService.getScenariosNumberByStoryId(storyId));
         return "story";
+    }
+
+    @GetMapping("play-story")
+    public String playStory(@RequestParam("storyId") Integer storyId, Model model){
+
+        Story story = storyService.getStoryById(storyId);
+
+        Scenario initialScenario = scenarioService.getScenarioById(story.getInitialScenario());
+        model.addAttribute("story", story);
+        model.addAttribute("initialScenario", initialScenario);
+
+        return "play-story";
+
     }
 }

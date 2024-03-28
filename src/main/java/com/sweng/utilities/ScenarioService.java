@@ -2,6 +2,9 @@ package com.sweng.utilities;
 
 import com.sweng.entity.Scenario;
 import com.sweng.entity.ScenarioBuilder;
+import com.sweng.entity.Story;
+import com.sweng.mapper.ScenarioRowMapper;
+import com.sweng.mapper.StoryRowMapper;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +68,13 @@ public class ScenarioService {
             return new Scenario();
         }
 
+    }
+
+    public Scenario getScenarioById(Integer scenarioId) {
+        String sql = "SELECT * FROM SCENARI WHERE ID = ?";
+        Scenario scenario = jdbcTemplate.queryForObject(sql, new ScenarioRowMapper(), scenarioId);
+
+        return scenario;
     }
 
     public int getMaxScenarioId() {

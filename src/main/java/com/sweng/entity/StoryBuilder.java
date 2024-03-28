@@ -45,6 +45,6 @@ public class StoryBuilder {
     }
 
     public Story build() {
-        return new Story(title, plot, initialScenario, creator, category);
+        return new Story(id, title, plot, initialScenario, category, creator);
     }
 }

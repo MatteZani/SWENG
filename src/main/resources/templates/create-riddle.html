@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+      <meta charset="UTF-8">
+      <title>Crea indovinelli</title>
+</head>
+<body>
+<form th:action="@{/create-riddle/process}" method="post">
+    <label th:for="quest">Inserisci la domanda dell'indovinello:</label><br>
+     <textarea id="quest" th:name="quest" rows="1" cols="50"
+            placeholder="Quanto fa 2+2?"></textarea><br><br>
+
+    <label th:for="rightAnswer">Inserisci la risposta giusta:</label><br>
+    <textarea id="rightAnswer" th:name="rightAnswer" rows="3" cols="50"
+            placeholder="2"></textarea><br><br>
+    <input type="submit" value="Aggiungi indovinello alla storia">
+</form>
+
+<a th:href="@{/create-scenario}">Vai alla creazione scenari</a>
+
+</body>
+</html>
+

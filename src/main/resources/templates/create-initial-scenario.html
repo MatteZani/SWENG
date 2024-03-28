@@ -6,16 +6,66 @@
 </head>
 <body>
     <p th:text="${messaggio}"></p>
-    <form th:action="@{/create-initial-scenario/process}" method="post">
+    <form th:action="@{/create-scenario/process}" method="post">
 
-        <label th:for="initialScenarioDescription">Descrivi lo scenario iniziale:</label><br>
-        <textarea id="initialScenario" th:name="initialScenarioDescription" rows="4" cols="50"
-                  placeholder="Tanto tempo fa in una galassia lontana lontana..." required></textarea><br><br>
+    <label th:for="scenarioDescription">Descrivi lo scenario iniziale:</label><br>
+    <textarea id="initialScenario" th:name="scenarioDescription" rows="4" cols="50"
+              placeholder="Tanto tempo fa in una galassia lontana lontana..." required></textarea><br><br>
 
-<!--        <input type="hidden" id="storyId" th:name="storyId" value="${storyId}"> &lt;!&ndash; Aggiungi l'ID del creatore &ndash;&gt;-->
-        <input type="submit" value="Aggiungi scenario iniziale">
-    </form>
+    <p th:text="${necessaryObjectMessage}"></p>
+    <select th:name = "necessaryObjectId">
+        <option value="">Nessun oggetto necessario</option>
+        <option th:each="object : ${currentStoryObjects}" th:value="${object.id}" th:text="${object.name}"></option>
+    </select>
+    <p th:text = "${gainObjectMessage}"></p>
+    <select th:name = "foundObjectId">
+        <option value="">Nessun oggetto ottenibile</option>
+        <option th:each="object : ${currentStoryObjects}" th:value="${object.id}" th:text="${object.name}"></option>
+    </select>
+    <p th:text = "${riddleMessage}"></p>
+    <select th:name = "riddleId">
+        <option value="">Nessun indovinello</option>
+        <option th:each="riddle : ${currentRiddles}" th:value="${riddle.id}" th:text="${riddle.question}"></option>
+    </select>
+
+
+    <input type="submit" value="Aggiungi scenario iniziale">
+</form>
 
 
 </body>
 </html>
+<!--
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Aggiungi scenario iniziale</title>
+</head>
+<body>
+<p th:text="${messaggio}"></p>
+<form th:action="@{/create-scenario/process}" method="post">
+
+    <label th:for="scenarioDescription">Descrivi lo scenario iniziale:</label><br>
+    <textarea id="initialScenario" th:name="scenarioDescription" rows="4" cols="50"
+              placeholder="Tanto tempo fa in una galassia lontana lontana..." required></textarea><br><br>
+
+    <label for="necessaryObjectCheckbox">Rendere un oggetto necessario per lo scenario?</label><br>
+    <input type="radio" id="necessaryObjectYes" name="necessaryObject" value="true">
+    <label for="necessaryObjectYes">Sì</label><br>
+    <input type="radio" id="necessaryObjectNo" name="necessaryObject" value="false">
+    <label for="necessaryObjectNo">No</label><br><br>
+
+    <div th:if="${necessaryObject}">
+        <p th:text="${gainObjectMessage}"></p>
+        <select th:name="foundObjectId">
+            <option value="">Scegli un oggetto</option>
+            <option th:each="object : ${currentStoryObjects}" th:value="${object.id}" th:text="${object.name}"></option>
+        </select>
+    </div>
+
+    <input type="submit" value="Aggiungi scenario iniziale">
+</form>
+</body>
+</html>
+-->

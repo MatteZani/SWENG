@@ -2,7 +2,7 @@ package com.sweng.entity;
 
 public class Story {
 
-    private int id;
+    public int id;
     private String title;
     private String plot;
     private int initialScenario;
@@ -24,6 +24,14 @@ public class Story {
         this.initialScenario = initialScenario;
         this.category = category;
         this.creator = creator;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

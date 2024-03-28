@@ -6,11 +6,29 @@
 </head>
 <body>
 
-    <form th:action="@{/add-scenario/process}" method="post">
+    <form th:action="@{/create-scenario/process}" method="post">
 
         <label th:for="scenarioDescription">Descrivi il nuovo scenario:</label><br>
         <textarea id="scenarioDescription" th:name="scenarioDescription" rows="4" cols="50"
                   placeholder="Tanto tempo fa in una galassia lontana lontana..." required></textarea><br><br>
+
+
+        <p th:text="${necessaryObjectMessage}"></p>
+        <select th:name = "necessaryObjectId">
+            <option value="">Nessun oggetto necessario</option>
+            <option th:each="object : ${currentStoryObjects}" th:value="${object.id}" th:text="${object.name}"></option>
+        </select>
+        <p th:text = "${gainObjectMessage}"></p>
+        <select th:name = "foundObjectId">
+            <option value="">Nessun oggetto ottenibile</option>
+            <option th:each="object : ${currentStoryObjects}" th:value="${object.id}" th:text="${object.name}"></option>
+        </select>
+        <p th:text = "${riddleMessage}"></p>
+        <select th:name = "riddleId">
+            <option value="">Nessun indovinello</option>
+            <option th:each="riddle : ${currentRiddles}" th:value="${riddle.id}" th:text="${riddle.question}"></option>
+        </select>
+
 
         <input type="submit" value="Aggiungi scenario alla storia">
     </form>

@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
@@ -48,5 +49,41 @@
         </form>
         <p> Non sei registrato? <a th:href="@{/registration}">Registrati</a> </p>
 
+</body>
+</html>-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <!-- Aggiunta del link a Bootstrap CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Accedi</h2>
+                    <form th:action="@{/login/process}" method="post">
+                        <div class="form-group">
+                            <input type="text" class="form-control" th:name="username" placeholder="Username" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" th:name="password" placeholder="Password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Accedi</button>
+                    </form>
+                    <p class="mt-3 text-center">Non sei registrato? <a th:href="@{/registration}">Registrati</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Aggiunta dello script di Bootstrap -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

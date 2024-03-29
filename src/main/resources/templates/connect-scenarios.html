@@ -109,19 +109,18 @@
     </div>
 </footer>
 
-<!-- Link per Bootstrap JS (opzionale, necessario solo se si utilizzano componenti JS di Bootstrap) -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Link per Bootstrap JS (opzionale, necessario solo se si utilizzano componenti JS di Bootstrap) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<script>
-    function checkForRiddle(select) {
-        var option = select.options[select.selectedIndex];
-        var riddleId = option.getAttribute('data-riddle-id');
-        var hasRiddle = riddleId !== '0'; // Assume '0' as the indicator of no riddle
-        document.getElementById('normalConnection').style.display = hasRiddle ? 'none' : 'block';
-        document.getElementById('riddleConnection').style.display = hasRiddle ? 'block' : 'none';
-    }
-</script>
-
+    <script>
+        function checkForRiddle(select) {
+            var option = select.options[select.selectedIndex];
+            var riddleId = option.getAttribute('data-riddle-id');
+            var hasRiddle = riddleId !== '0'; // Assume '0' as the indicator of no riddle
+            document.getElementById('normalConnection').style.display = hasRiddle ? 'none' : 'block';
+            document.getElementById('riddleConnection').style.display = hasRiddle ? 'block' : 'none';
+        }
+    </script>
 
 </body>
 </html>

@@ -45,14 +45,14 @@ public class GameService {
     }
 
 
-    public Scenario chooseNextScenario(int scenarioId) {
-        try {
-            String sql = "SELECT * FROM SCENARIO WHERE ID = ?";
-            Scenario scenario = jdbcTemplate.queryForObject(sql, new ScenarioRowMapper(), scenarioId);
-            return scenario;
-        } catch (DataAccessException e) {
-            logger.error("Errore nel metodo chooseNextScenario: {}", e.getMessage());
-            throw e;
-        }
-    }
+//    public Scenario chooseNextScenario(int scenarioId) {
+//        try {
+//            String sql = "SELECT * FROM SCENARI WHERE ID = ?";
+//            Scenario scenario = jdbcTemplate.query(sql, scenarioId);
+//            return scenario;
+//        } catch (DataAccessException e) {
+//            logger.error("Errore nel metodo chooseNextScenario: {}", e.getMessage());
+//            throw e;
+//        }
+//    }
 }

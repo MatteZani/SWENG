@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class StoryController {
@@ -93,6 +94,10 @@ public class StoryController {
         Scenario scenario = scenarioService.getScenarioById(story.getInitialScenario());
         model.addAttribute("story", story);
         model.addAttribute("scenario", scenario);
+        List<Scenario> nextScenarios = scenarioService.getNextScenariosByScenarioId(scenario.getId());
+
+        model.addAttribute("nextScenarios", nextScenarios);
+
         if(scenario.getFoundObjectId() != 0){
             StoryObject foundObject = elementService.getStoryObjectById(scenario.getFoundObjectId());
             model.addAttribute("foundObjectMessage", "Ti è stato aggiunto all'inventario il seguente oggetto: " + foundObject.getName());

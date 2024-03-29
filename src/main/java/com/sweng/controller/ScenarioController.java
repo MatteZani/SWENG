@@ -100,7 +100,7 @@ public class ScenarioController {
             scenarioService.connectScenarios(startingScenario, wrongAnswerScenario, currentStoryId, "Risposta sbagliata");
         } else{
             // Logica per il collegamento normale
-            scenarioService.connectScenarios(startingScenario, endingScenario, currentStoryId, "");
+            scenarioService.connectScenarios(startingScenario, endingScenario, currentStoryId, "Collegamento normale");
         }
 //        else {
 //            // Gestisci il caso in cui non vengono forniti dati adeguati

@@ -1,23 +1,45 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
-      <meta charset="UTF-8">
-      <title>Crea indovinelli</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crea indovinelli</title>
+    <!-- Link per Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Collegamento al file CSS personalizzato -->
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
 </head>
 <body>
-<form th:action="@{/create-riddle/process}" method="post">
-    <label th:for="quest">Inserisci la domanda dell'indovinello:</label><br>
-     <textarea id="quest" th:name="quest" rows="1" cols="50"
-            placeholder="Quanto fa 2+2?"></textarea><br><br>
 
-    <label th:for="rightAnswer">Inserisci la risposta giusta:</label><br>
-    <textarea id="rightAnswer" th:name="rightAnswer" rows="3" cols="50"
-            placeholder="2"></textarea><br><br>
-    <input type="submit" value="Aggiungi indovinello alla storia">
-</form>
+<div class="header">
+    <h2>Crea indovinelli</h2>
+</div>
+<div class="container">
+    <form action="/create-riddle/process" method="post" class="mt-4">
+        <div class="form-group">
+            <label for="quest">Inserisci la domanda dell'indovinello:</label>
+            <textarea class="form-control" id="quest" name="quest" rows="1" cols="50"
+                      placeholder="Quanto fa 2+2?" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="rightAnswer">Inserisci la risposta giusta:</label>
+            <textarea class="form-control" id="rightAnswer" name="rightAnswer" rows="3" cols="50"
+                      placeholder="2" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Aggiungi indovinello alla storia</button>
+    </form>
+    <a href="/create-scenario" class="btn btn-secondary mt-3">Vai alla creazione scenari</a>
+</div>
 
-<a th:href="@{/create-scenario}">Vai alla creazione scenari</a>
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2024 SWENG - Tutti i diritti riservati</p>
+    </div>
+</footer>
 
+<!-- Link per Bootstrap JS (opzionale, necessario solo se si utilizzano componenti JS di Bootstrap) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+
 

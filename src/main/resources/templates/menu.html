@@ -1,44 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
-
-  <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        h1 {
-            font-size: 3em;
-            margin-top: 50px;
-        }
-        .choices {
-            margin-top: 30px;
-        }
-        .choices a {
-            display: inline-block;
-            margin: 10px;
-            padding: 15px 30px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 1.2em;
-            transition: background-color 0.3s ease;
-        }
-        .choices a:hover {
-            background-color: #0056b3;
-        }
-    </style>
-
+    <!-- Link per Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Link per style CSS -->
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
 </head>
+
 <body>
-    <h1>SWENG</h1>
+    <div class="header">
+        <h1>SWENG</h1>
+        <p class="lead">Benvenuto al sito per creare e giocare storie emozionanti</p>
+    </div>
+
+    <div class="container">
         <div class="choices">
-            <a th:href="@{/login}">Accedi</a>
-            <a th:href="@{/registration}">Registrati</a>
-            <a th:href="@{/catalog}">Continua come Visitatore</a>
+            <a class="btn btn-primary btn-lg" href="/login">Accedi</a>
+            <a class="btn btn-secondary btn-lg" href="/registration">Registrati</a>
+            <a class="btn btn-info btn-lg" href="/visitor-catalog">Continua come Visitatore</a>
         </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 SWENG - Tutti i diritti riservati</p>
+        </div>
+    </footer>
+
+<!-- Link per Bootstrap JS (opzionale, necessario solo se si utilizzano componenti JS di Bootstrap) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

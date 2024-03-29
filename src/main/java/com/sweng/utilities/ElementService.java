@@ -2,6 +2,9 @@ package com.sweng.utilities;
 
 import com.sweng.entity.Riddle;
 import com.sweng.entity.StoryObject;
+import com.sweng.mapper.RiddleRowMapper;
+import com.sweng.mapper.StoryObjectRowMapper;
+import com.sweng.mapper.StoryRowMapper;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +39,13 @@ public class ElementService {
         }
     }
 
+    public StoryObject getStoryObjectById(int storyObjectId){
+        String sql = "SELECT * FROM OGGETTI WHERE ID = ?";
+        StoryObject storyObject = jdbcTemplate.queryForObject(sql, new StoryObjectRowMapper(), storyObjectId);
+
+        return storyObject;
+    }
+
     public ResponseEntity<Object> createRiddle(Riddle riddle) {
         try {
             String sql = "INSERT INTO INDOVINELLI(DOMANDA, RISPOSTA) VALUES (?,?)";
@@ -45,6 +55,13 @@ public class ElementService {
             logger.error("Lanciata eccezione nel metodo createRiddle della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
         }
+    }
+
+    public Riddle getRiddleById(int riddleId){
+        String sql = "SELECT * FROM INDOVINELLI WHERE ID = ?";
+        Riddle riddle = jdbcTemplate.queryForObject(sql, new RiddleRowMapper(), riddleId);
+
+        return riddle;
     }
 
 

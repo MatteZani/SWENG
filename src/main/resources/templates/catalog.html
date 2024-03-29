@@ -2,49 +2,43 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalogo</title>
-
-    <style>
-          body {
-              font-family: Arial, sans-serif;
-              text-align: center;
-              margin-top: 50px;
-          }
-          h2 {
-              margin-bottom: 20px;
-          }
-          .story {
-              border: 1px solid #ccc;
-              border-radius: 5px;
-              padding: 20px;
-              margin-bottom: 20px;
-              text-align: left;
-          }
-          .story h3 {
-              margin-top: 0;
-          }
-          .story p {
-              margin-top: 10px;
-          }
-      </style>
+    <!-- Link per Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Collegamento al file CSS personalizzato -->
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
 </head>
 <body>
+
+<div class="header">
     <h2>Catalogo delle Storie</h2>
+</div>
+
+<div class="container">
     <ol>
         <li th:each="story : ${stories}">
             <div class="story">
 
-                <h3 th:text="${story.title}"></h3> <!-- Accedi all'oggetto con chiave 'chiave' -->
+                <h3 th:text="${story.title}"></h3>
                 <p th:text="${story.id}"></p>
-                <p th:text="${story.plot}"></p> <!-- Accedi all'oggetto con chiave 'chiave' -->
-<!--                <a th:href="@{catalog/${story.id}}">Leggi di più</a>-->
-                <input type="hidden" th:name="storyId"/>
-                <a th:href="@{/catalog/show-story?storyId={storyId}(storyId=${story.id})}">Leggi di più</a>
+                <p th:text="${story.plot}"></p>
+                <a class="btn btn-primary" th:href="@{/play-story?storyId={storyId}(storyId=${story.id})}">Gioca storia</a>
+
+
             </div>
         </li>
     </ol>
+</div>
 
-    <p> Per giocare effettua la <a th:href="@{/registration}">registrazione</a></p>
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2024 SWENG - Tutti i diritti riservati</p>
+    </div>
+</footer>
 
+<!-- Link per Bootstrap JS (opzionale, necessario solo se si utilizzano componenti JS di Bootstrap) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+

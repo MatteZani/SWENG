@@ -2,70 +2,63 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aggiungi scenario iniziale</title>
+    <!-- Link per Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Collegamento al file CSS personalizzato -->
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
 </head>
 <body>
+
+<div class="header">
+    <h2>Crea lo scenario iniziale della tua storia</h2>
+</div>
+<div class="container">
     <p th:text="${messaggio}"></p>
-    <form th:action="@{/create-scenario/process}" method="post">
+    <form action="/create-scenario/process" method="post" class="mt-4">
 
-    <label th:for="scenarioDescription">Descrivi lo scenario iniziale:</label><br>
-    <textarea id="initialScenario" th:name="scenarioDescription" rows="4" cols="50"
-              placeholder="Tanto tempo fa in una galassia lontana lontana..." required></textarea><br><br>
+        <div class="form-group">
+            <label for="scenarioDescription">Descrivi lo scenario iniziale:</label>
+            <textarea class="form-control" id="scenarioDescription" name="scenarioDescription" rows="4" cols="50"
+                      placeholder="Tanto tempo fa in una galassia lontana lontana..." required></textarea>
+        </div>
 
-    <p th:text="${necessaryObjectMessage}"></p>
-    <select th:name = "necessaryObjectId">
-        <option value="">Nessun oggetto necessario</option>
-        <option th:each="object : ${currentStoryObjects}" th:value="${object.id}" th:text="${object.name}"></option>
-    </select>
-    <p th:text = "${gainObjectMessage}"></p>
-    <select th:name = "foundObjectId">
-        <option value="">Nessun oggetto ottenibile</option>
-        <option th:each="object : ${currentStoryObjects}" th:value="${object.id}" th:text="${object.name}"></option>
-    </select>
-    <p th:text = "${riddleMessage}"></p>
-    <select th:name = "riddleId">
-        <option value="">Nessun indovinello</option>
-        <option th:each="riddle : ${currentRiddles}" th:value="${riddle.id}" th:text="${riddle.question}"></option>
-    </select>
+        <div class="form-group">
+            <label for="necessaryObjectId">Seleziona un oggetto necessario:</label>
+            <select class="form-control" id="necessaryObjectId" name="necessaryObjectId">
+                <option value="">Nessun oggetto necessario</option>
+                <option th:each="object : ${currentStoryObjects}" th:value="${object.id}" th:text="${object.name}"></option>
+            </select>
+        </div>
 
+        <div class="form-group">
+            <label for="foundObjectId">Seleziona un oggetto ottenibile:</label>
+            <select class="form-control" id="foundObjectId" name="foundObjectId">
+                <option value="">Nessun oggetto ottenibile</option>
+                <option th:each="object : ${currentStoryObjects}" th:value="${object.id}" th:text="${object.name}"></option>
+            </select>
+        </div>
 
-    <input type="submit" value="Aggiungi scenario iniziale">
-</form>
+        <div class="form-group">
+            <label for="riddleId">Seleziona un indovinello:</label>
+            <select class="form-control" id="riddleId" name="riddleId">
+                <option value="">Nessun indovinello</option>
+                <option th:each="riddle : ${currentRiddles}" th:value="${riddle.id}" th:text="${riddle.question}"></option>
+            </select>
+        </div>
 
+        <button type="submit" class="btn btn-primary">Aggiungi scenario iniziale</button>
+    </form>
+</div>
 
-</body>
-</html>
-<!--
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Aggiungi scenario iniziale</title>
-</head>
-<body>
-<p th:text="${messaggio}"></p>
-<form th:action="@{/create-scenario/process}" method="post">
-
-    <label th:for="scenarioDescription">Descrivi lo scenario iniziale:</label><br>
-    <textarea id="initialScenario" th:name="scenarioDescription" rows="4" cols="50"
-              placeholder="Tanto tempo fa in una galassia lontana lontana..." required></textarea><br><br>
-
-    <label for="necessaryObjectCheckbox">Rendere un oggetto necessario per lo scenario?</label><br>
-    <input type="radio" id="necessaryObjectYes" name="necessaryObject" value="true">
-    <label for="necessaryObjectYes">Sì</label><br>
-    <input type="radio" id="necessaryObjectNo" name="necessaryObject" value="false">
-    <label for="necessaryObjectNo">No</label><br><br>
-
-    <div th:if="${necessaryObject}">
-        <p th:text="${gainObjectMessage}"></p>
-        <select th:name="foundObjectId">
-            <option value="">Scegli un oggetto</option>
-            <option th:each="object : ${currentStoryObjects}" th:value="${object.id}" th:text="${object.name}"></option>
-        </select>
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2024 SWENG - Tutti i diritti riservati</p>
     </div>
+</footer>
 
-    <input type="submit" value="Aggiungi scenario iniziale">
-</form>
+<!-- Link per Bootstrap JS (opzionale, necessario solo se si utilizzano componenti JS di Bootstrap) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
--->

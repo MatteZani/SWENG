@@ -2,6 +2,9 @@ package com.sweng.utilities;
 
 import com.sweng.entity.Scenario;
 import com.sweng.entity.ScenarioBuilder;
+import com.sweng.entity.Story;
+import com.sweng.mapper.ScenarioRowMapper;
+import com.sweng.mapper.StoryRowMapper;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,6 +70,13 @@ public class ScenarioService {
 
     }
 
+    public Scenario getScenarioById(Integer scenarioId) {
+        String sql = "SELECT * FROM SCENARI WHERE ID = ?";
+        Scenario scenario = jdbcTemplate.queryForObject(sql, new ScenarioRowMapper(), scenarioId);
+
+        return scenario;
+    }
+
     public int getMaxScenarioId() {
 
         try {
@@ -110,10 +120,10 @@ public class ScenarioService {
         }
     }
 
-    public void connectScenarios(int start, int end, int story) {
-        String sql = "INSERT INTO COLLEGAMENTI(SCENARIO_PARTENZA, SCENARIO_ARRIVO, STORIA_APPARTENENZA, DESCRIZIONE) VALUES (?, ?, ?, 'Collegamento di prova')";
+    public void connectScenarios(int start, int end, int story, String description) {
+        String sql = "INSERT INTO COLLEGAMENTI(SCENARIO_PARTENZA, SCENARIO_ARRIVO, STORIA_APPARTENENZA, DESCRIZIONE) VALUES (?, ?, ?, ?)";
 
-        jdbcTemplate.update(sql, start, end, story);
+        jdbcTemplate.update(sql, start, end, story, description);
     }
 
     public void setInitialScenario(int storyId, int scenarioId){

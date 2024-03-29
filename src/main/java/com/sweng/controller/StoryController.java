@@ -1,8 +1,8 @@
 package com.sweng.controller;
 
-import com.sweng.entity.Story;
-import com.sweng.entity.StoryBuilder;
-import com.sweng.entity.StoryObject;
+import com.sweng.entity.*;
+import com.sweng.utilities.ElementService;
+import com.sweng.utilities.ScenarioService;
 import com.sweng.utilities.StoryService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,12 @@ public class StoryController {
     private StoryService storyService;
 
     @Autowired
+    private ScenarioService scenarioService;
+
+    @Autowired
+    private ElementService elementService;
+
+    @Autowired
     JdbcTemplate jdbcTemplate;
 
     @GetMapping("/create-story")
@@ -40,7 +46,7 @@ public class StoryController {
         // Creazione della storia con lo scenario iniziale
         Story story = new StoryBuilder().setTitle(title).setPlot(plot).setInitialScenario(0).setCreator((String) httpSession.getAttribute("username")).setCategory(category).build();
         storyService.createStory(story);
-        model.addAttribute("message", "Storia creata con successo, crea un oggetto che potrà essere utilizzato all'interno della storia");
+        model.addAttribute("message", "Complimenti! Storia creata con successo. Ora crea un oggetto che potrà essere utilizzato all'interno della storia.");
         httpSession.setAttribute("currentStoryObjects", new ArrayList<StoryObject>());
         httpSession.setAttribute("currentStoryId", storyService.getMaxStoryId());
         //model.addAttribute("objectCreationMessage", "Vuoi creare un oggetto relativo a questo scenario?" + "\n" + "Questo oggetto sarà necessario per entrare in questo scenario");
@@ -61,6 +67,12 @@ public class StoryController {
         return "catalog";
     }
 
+    @GetMapping("/visitor-catalog")
+    public String visitorCatalog(Model model){
+        model.addAttribute("stories", storyService.getStories());
+        return "visitor-catalog";
+    }
+
     @GetMapping("/catalog/show-story")
     public String showStory(@RequestParam("storyId") Integer storyId, Model model){
         System.out.println(storyId);
@@ -71,5 +83,28 @@ public class StoryController {
         model.addAttribute("storyCategory", story.getCategory());
         model.addAttribute("scenariosNumber", storyService.getScenariosNumberByStoryId(storyId));
         return "story";
+    }
+
+    @GetMapping("play-story")
+    public String playStory(@RequestParam("storyId") Integer storyId, Model model){
+
+        Story story = storyService.getStoryById(storyId);
+
+        Scenario scenario = scenarioService.getScenarioById(story.getInitialScenario());
+        model.addAttribute("story", story);
+        model.addAttribute("scenario", scenario);
+        if(scenario.getFoundObjectId() != 0){
+            StoryObject foundObject = elementService.getStoryObjectById(scenario.getFoundObjectId());
+            model.addAttribute("foundObjectMessage", "Ti è stato aggiunto all'inventario il seguente oggetto: " + foundObject.getName());
+        }
+
+        if(scenario.getRiddleId() != 0){
+            Riddle riddle = elementService.getRiddleById(scenario.getRiddleId());
+            model.addAttribute("riddleMessage", "Per continuare devi rispondere al seguente indovinello: " + riddle.getQuestion());
+
+        }
+
+        return "play-story";
+
     }
 }

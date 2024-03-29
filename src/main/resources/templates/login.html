@@ -1,89 +1,42 @@
-<!--
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-        form {
-            width: 300px;
-            margin: 0 auto;
-        }
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-        input[type="submit"] {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-    </style>
-
-</head>
-<body>
-    <h2>Accedi</h2>
-        <form th:action="@{/login/process}" method="post">
-            <input type="text" th:name="username" placeholder="Username" required><br>
-            <input type="password" th:name="password" placeholder="Password" required><br>
-            <input type="submit" value="Accedi">
-        </form>
-        <p> Non sei registrato? <a th:href="@{/registration}">Registrati</a> </p>
-
-</body>
-</html>-->
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <!-- Aggiunta del link a Bootstrap CDN -->
+    <!-- Link per Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
+    <!-- Collegamento al file CSS personalizzato -->
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
 </head>
-<body>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card mt-5">
-                <div class="card-body">
-                    <h2 class="text-center mb-4">Accedi</h2>
-                    <form th:action="@{/login/process}" method="post">
-                        <div class="form-group">
-                            <input type="text" class="form-control" th:name="username" placeholder="Username" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" th:name="password" placeholder="Password" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Accedi</button>
-                    </form>
-                    <p class="mt-3 text-center">Non sei registrato? <a th:href="@{/registration}">Registrati</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Aggiunta dello script di Bootstrap -->
+<body>
+    <div class="header">
+        <h2>Accedi</h2>
+    </div>
+
+    <div class="container">
+        <form action="/login/process" method="post" class="mt-4">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Username" style="width: 300px;" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" style="width: 300px;" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Accedi</button>
+        </form>
+        <p class="mt-3">Non sei registrato? <a href="/registration">Registrati</a></p>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 SWENG - Tutti i diritti riservati</p>
+        </div>
+    </footer>
+
+<!-- Link per Bootstrap JS (opzionale, necessario solo se si utilizzano componenti JS di Bootstrap) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

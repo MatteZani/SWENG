@@ -1,9 +1,8 @@
-/*
 package com.sweng;
 
+import com.sweng.utilities.UserService;
 import org.junit.jupiter.api.Assertions;
 import com.sweng.entity.User;
-import com.sweng.utilities.DBHandler;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +15,7 @@ import static org.mockito.Mockito.when;
 class RegistrationTest {
 
 	@Mock
-	private DBHandler dbHandler;
+	private UserService userService;
 
 	@Test
 	void userCorrectlyCreated() {
@@ -26,8 +25,8 @@ class RegistrationTest {
 		ResponseEntity<Object> expectedResponse = new ResponseEntity(expected, HttpStatus.OK);
 
 		//when
-		when(dbHandler.saveUser(expected)).thenReturn(new ResponseEntity<>(expected, HttpStatus.OK));
-		ResponseEntity<Object> actualResponse = dbHandler.saveUser(expected);
+		when(userService.saveUser(expected)).thenReturn(new ResponseEntity<>(expected, HttpStatus.OK));
+		ResponseEntity<Object> actualResponse = userService.saveUser(expected);
 
 		//then
 		Assertions.assertEquals(expectedResponse, actualResponse);
@@ -42,16 +41,14 @@ class RegistrationTest {
 		final int expectedStatusCode = 400;
 
 		// Configure mock behavior
-		when(dbHandler.saveUser(invalidUser)).thenReturn(new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
+		when(userService.saveUser(invalidUser)).thenReturn(new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
 
 		//when
-		ResponseEntity<Object> response = dbHandler.saveUser(invalidUser);
+		ResponseEntity<Object> response = userService.saveUser(invalidUser);
 
 		//then
 		Assertions.assertEquals(expectedStatusCode, response.getStatusCode().value());
 
 	}
-
-
 }
-*/
+

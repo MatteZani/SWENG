@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
+    <title>Catalogo per visitatori</title>
     <!-- Link per Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Collegamento al file CSS personalizzato -->
@@ -12,16 +12,24 @@
 <body>
 
 <div class="header">
-    <h2>Home</h2>
+    <h2>Catalogo delle Storie</h2>
 </div>
-<div class="container">
 
-    <div class="choices mt-4">
-        <h2>Che cosa vuoi fare?</h2>
-        <a href="/create-story" class="btn btn-primary btn-lg">Crea una nuova storia</a>
-        <a href="/play" class="btn btn-secondary btn-lg">Gioca una storia</a>
-        <a href="/catalog" class="btn btn-secondary btn-lg">Vai al catalogo</a>
-    </div>
+<div class="container">
+    <ol>
+        <li th:each="story : ${stories}">
+            <div class="story">
+
+                <h3 th:text="${story.title}"></h3>
+                <p th:text="${story.id}"></p>
+                <p th:text="${story.plot}"></p>
+                <a class="btn btn-primary" th:href="@{/catalog/show-story?storyId={storyId}(storyId=${story.id})}">Leggi di più</a>
+            </div>
+        </li>
+    </ol>
+
+    <p> Per giocare effettua la <a href="/registration">registrazione</a></p>
+    <p>Oppure effettua il <a href="/login">login</a></p>
 </div>
 
 <footer class="footer">

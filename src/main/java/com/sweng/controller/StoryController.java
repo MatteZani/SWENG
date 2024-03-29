@@ -106,7 +106,6 @@ public class StoryController {
         if(scenario.getRiddleId() != 0){
             Riddle riddle = elementService.getRiddleById(scenario.getRiddleId());
             model.addAttribute("riddleMessage", "Per continuare devi rispondere al seguente indovinello: " + riddle.getQuestion());
-
         }
 
         return "play-story";

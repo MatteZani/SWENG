@@ -1,10 +1,10 @@
 package com.sweng.utilities;
 
 import com.sweng.entity.Riddle;
+import com.sweng.entity.Scenario;
 import com.sweng.entity.StoryObject;
 import com.sweng.mapper.RiddleRowMapper;
 import com.sweng.mapper.StoryObjectRowMapper;
-import com.sweng.mapper.StoryRowMapper;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,11 +15,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ElementService {
 
     @Autowired
     private HttpSession httpSession;
+
+    @Autowired
+    private ScenarioService scenarioService;
 
     Logger logger = LoggerFactory.getLogger(ElementService.class);
 
@@ -91,6 +97,32 @@ public class ElementService {
             logger.error("NullPointerException nel metodo getMaxRiddleId della classe ElementService");
             return 0;
         }
+
+    }
+
+    public ArrayList<Scenario> processChoice(Integer startingScenarioId, Boolean answer){
+        String descrizione;
+        String sql;
+        ArrayList<Integer> nextScenariosId;
+        ArrayList<Scenario> nextScenarios = null;
+        if(answer) {
+            sql = "SELECT SCENARIO_ARRIVO FROM COLLEGAMENTI WHERE SCENARIO_PARTENZA = ?";
+            nextScenariosId = (ArrayList<Integer>) jdbcTemplate.queryForList(sql, Integer.class, startingScenarioId);
+
+            for(Integer nextScenarioId : nextScenariosId) {
+                nextScenarios.add(scenarioService.getScenarioById(nextScenarioId));
+            }
+        }
+        else {
+            descrizione = "Risposta sbagliata";
+
+            sql = "SELECT SCENARIO_ARRIVO FROM COLLEGAMENTI WHERE SCENARIO_PARTENZA = ? AND DESCRIZIONE = ?";
+            nextScenariosId = (ArrayList<Integer>) jdbcTemplate.queryForList(sql, Integer.class, startingScenarioId, descrizione);
+
+            nextScenarios.add(scenarioService.getScenarioById(nextScenariosId.get(0)));
+        }
+
+        return nextScenarios;
 
     }
 

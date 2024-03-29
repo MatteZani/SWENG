@@ -132,7 +132,6 @@ public class ScenarioService {
     public List<Scenario> getNextScenariosByScenarioId(int scenarioPartenzaId) {
         String sql = "SELECT * FROM SCENARI WHERE ID IN (SELECT SCENARIO_ARRIVO FROM COLLEGAMENTI WHERE SCENARIO_PARTENZA = ? )";
         List<Scenario> nextScenarios = jdbcTemplate.query(sql, new ScenarioRowMapper(), scenarioPartenzaId);
-        int pippo = 0;
         return nextScenarios;
     }
 

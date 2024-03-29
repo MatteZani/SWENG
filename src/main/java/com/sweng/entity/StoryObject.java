@@ -6,10 +6,20 @@ public class StoryObject {
     private String name;
     private String description;
 
+    private int storyId;
+
+    public StoryObject(int id, String name, String description, int storyId) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.storyId = storyId;
+    }
+
     public StoryObject(String name, String description) {
         this.name = name;
         this.description = description;
     }
+
 
     public int getId() {
         return id;
@@ -33,5 +43,14 @@ public class StoryObject {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+
+    public int getStoryId() {
+        return storyId;
+    }
+
+    public void setStoryId(int storyId) {
+        this.storyId = storyId;
     }
 }

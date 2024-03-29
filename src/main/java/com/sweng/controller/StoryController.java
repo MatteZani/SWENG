@@ -1,9 +1,7 @@
 package com.sweng.controller;
 
-import com.sweng.entity.Scenario;
-import com.sweng.entity.Story;
-import com.sweng.entity.StoryBuilder;
-import com.sweng.entity.StoryObject;
+import com.sweng.entity.*;
+import com.sweng.utilities.ElementService;
 import com.sweng.utilities.ScenarioService;
 import com.sweng.utilities.StoryService;
 import jakarta.servlet.http.HttpSession;
@@ -28,6 +26,9 @@ public class StoryController {
 
     @Autowired
     private ScenarioService scenarioService;
+
+    @Autowired
+    private ElementService elementService;
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -89,9 +90,19 @@ public class StoryController {
 
         Story story = storyService.getStoryById(storyId);
 
-        Scenario initialScenario = scenarioService.getScenarioById(story.getInitialScenario());
+        Scenario scenario = scenarioService.getScenarioById(story.getInitialScenario());
         model.addAttribute("story", story);
-        model.addAttribute("initialScenario", initialScenario);
+        model.addAttribute("scenario", scenario);
+        if(scenario.getFoundObjectId() != 0){
+            StoryObject foundObject = elementService.getStoryObjectById(scenario.getFoundObjectId());
+            model.addAttribute("foundObjectMessage", "Ti è stato aggiunto all'inventario il seguente oggetto: " + foundObject.getName());
+        }
+
+        if(scenario.getRiddleId() != 0){
+            Riddle riddle = elementService.getRiddleById(scenario.getRiddleId());
+            model.addAttribute("riddleMessage", "Per continuare devi rispondere al seguente indovinello: " + riddle.getQuestion());
+
+        }
 
         return "play-story";
 

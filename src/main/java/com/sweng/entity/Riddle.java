@@ -5,6 +5,12 @@ public class Riddle {
     private String question;
     private String answer;
 
+    public Riddle(int id, String question, String answer) {
+        this.id = id;
+        this.question = question;
+        this.answer = answer;
+    }
+
     public Riddle(String question, String answer) {
         this.question = question;
         this.answer = answer;

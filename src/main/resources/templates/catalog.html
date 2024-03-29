@@ -24,6 +24,8 @@
                 <p th:text="${story.id}"></p>
                 <p th:text="${story.plot}"></p>
                 <a class="btn btn-primary" th:href="@{/play-story?storyId={storyId}(storyId=${story.id})}">Gioca storia</a>
+
+
             </div>
         </li>
     </ol>

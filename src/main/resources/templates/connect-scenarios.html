@@ -67,7 +67,7 @@
 <div class="container">
     <!--<p th:text="${message}"></p>-->
 
-    <form action="/connect-scenarios/process" method="post" class="mt-4">
+    <form id="connectionForm" action="/connect-scenarios/process" method="post" class="mt-4">
 
         <div class="form-group">
             <label for="start">Seleziona lo scenario di partenza:</label>
@@ -79,6 +79,7 @@
         <div id="normalConnection" class="form-group">
             <label for="end">Seleziona lo scenario di destinazione:</label>
             <select class="form-control" id="end" name="end">
+                <option th:value="0" text="Scegli lo scenario di destinazione"></option>
                 <option th:each="scenario : ${scenarios}" th:value="${scenario.id}" th:text="${scenario.description}"></option>
             </select>
         </div>
@@ -86,10 +87,12 @@
         <div id="riddleConnection" class="form-group" style="display: none;">
             <label for="correctAnswer">Se l'indovinello è risolto correttamente:</label>
             <select class="form-control" id="correctAnswer" name="correctAnswer">
+                <option th:value="0" text="Scegli lo scenario di destinazione"></option>
                 <option th:each="scenario : ${scenarios}" th:value="${scenario.id}" th:text="${scenario.description}"></option>
             </select>
             <label for="wrongAnswer">Se l'indovinello è risolto erroneamente:</label>
             <select class="form-control" id="wrongAnswer" name="wrongAnswer">
+                <option th:value="0" text="Scegli lo scenario di destinazione"></option>
                 <option th:each="scenario : ${scenarios}" th:value="${scenario.id}" th:text="${scenario.description}"></option>
             </select>
         </div>
@@ -118,6 +121,7 @@
         document.getElementById('riddleConnection').style.display = hasRiddle ? 'block' : 'none';
     }
 </script>
+
 
 </body>
 </html>

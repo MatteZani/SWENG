@@ -87,14 +87,14 @@ public class ScenarioController {
 
     @PostMapping("connect-scenarios/process")
     public String processConnection(@RequestParam("start") int startingScenario,
-                                    @RequestParam(value = "correctAnswer", required = false, defaultValue = "0") int correctAnswerScenario,
-                                    @RequestParam(value = "wrongAnswer", required = false, defaultValue = "0") int wrongAnswerScenario,
-                                    @RequestParam(value = "end", required = false, defaultValue = "0") int endingScenario,
+                                    @RequestParam(value = "correctAnswer", required = false, defaultValue = "0") Integer correctAnswerScenario,
+                                    @RequestParam(value = "wrongAnswer", required = false, defaultValue = "0") Integer wrongAnswerScenario,
+                                    @RequestParam(value = "end", required = false, defaultValue = "0") Integer endingScenario,
                                     Model model) {
 
         Integer currentStoryId = (Integer) httpSession.getAttribute("currentStoryId");
 
-        if (correctAnswerScenario != wrongAnswerScenario) {
+        if (correctAnswerScenario != 0 && wrongAnswerScenario != 0) {
             // Logica per gli scenari con indovinelli
             scenarioService.connectScenarios(startingScenario, correctAnswerScenario, currentStoryId, "Risposta giusta");
             scenarioService.connectScenarios(startingScenario, wrongAnswerScenario, currentStoryId, "Risposta sbagliata");

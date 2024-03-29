@@ -23,7 +23,8 @@
                 <h3 th:text="${story.title}"></h3>
                 <p th:text="${story.id}"></p>
                 <p th:text="${story.plot}"></p>
-                <a class="btn btn-primary" th:href="@{/play-story?storyId={storyId}(storyId=${story.id})}">Gioca storia</a>
+                <a class="btn btn-primary" th:href="@{/play-story(storyId=${story.id})}">Gioca questa Storia</a>
+
 
 
             </div>

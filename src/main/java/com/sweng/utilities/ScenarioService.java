@@ -129,9 +129,9 @@ public class ScenarioService {
     public void setInitialScenario(int storyId, int scenarioId){
         String sql = "UPDATE STORIE SET INITIAL_SCENARIO = ? WHERE ID = ?";
         jdbcTemplate.update(sql, scenarioId, storyId);
-
-
     }
+
+
 
 
 }

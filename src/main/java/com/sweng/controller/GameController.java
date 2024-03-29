@@ -2,10 +2,8 @@ package com.sweng.controller;
 
 import com.sweng.entity.GameSession;
 import com.sweng.entity.Scenario;
-import com.sweng.utilities.ElementService;
 import com.sweng.utilities.GameService;
 import com.sweng.utilities.ScenarioService;
-import com.sweng.utilities.StoryService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -51,12 +49,13 @@ public class GameController {
 
 
     @GetMapping("/play-scenario/{scenarioId}")
-    public String playScenario(@PathVariable int scenarioId, Model model) {
-        Scenario scenario = scenarioService.getScenarioById(scenarioId); // Supponendo che questo metodo esista e recuperi lo scenario corrente
-        List<Scenario> nextScenarios = scenarioService.getNextScenariosByScenarioId(scenarioId); // Metodo ipotetico per ottenere i prossimi scenari
+    public String playScenario(int scenarioId, Model model) {
+        Scenario scenario = scenarioService.getScenarioById(scenarioId);
+        List<Scenario> nextScenarios = scenarioService.getNextScenariosByScenarioId(scenarioId);
 
         model.addAttribute("scenario", scenario);
-        model.addAttribute("nextScenarios", nextScenarios); // Aggiungi i prossimi scenari al modello per Thymeleaf
+        // Aggiunta e controllo dei prossimi scenari con Thymeleaf
+        model.addAttribute("nextScenarios", nextScenarios);
 
         return "play-story";
     }

@@ -93,8 +93,6 @@ public class ScenarioService {
 
     }
 
-
-    // Metodo per aggiungere uno scenario alla storia nel database
     public void addScenarioToStory(int storyId) {
         try {
             String readScenario = "SELECT INITIAL_SCENARIO FROM STORIE WHERE ID = ?";
@@ -129,6 +127,13 @@ public class ScenarioService {
     public void setInitialScenario(int storyId, int scenarioId){
         String sql = "UPDATE STORIE SET INITIAL_SCENARIO = ? WHERE ID = ?";
         jdbcTemplate.update(sql, scenarioId, storyId);
+    }
+
+    public List<Scenario> getNextScenariosByScenarioId(int scenarioPartenzaId) {
+        String sql = "SELECT s.* FROM SCENARI s " +
+                "INNER JOIN COLLEGAMENTI c ON s.ID = c.SCENARIO_ARRIVO " +
+                "WHERE c.SCENARIO_PARTENZA = ?";
+        return jdbcTemplate.query(sql, new ScenarioRowMapper(), scenarioPartenzaId);
     }
 
 

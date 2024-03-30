@@ -1,15 +1,14 @@
 package com.sweng.utilities;
 
 import com.sweng.entity.*;
-import com.sweng.mapper.ScenarioRowMapper;
 import com.sweng.mapper.StoryRowMapper;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.dao.DataAccessException;
 import org.springframework.ui.Model;
 
 import java.util.List;

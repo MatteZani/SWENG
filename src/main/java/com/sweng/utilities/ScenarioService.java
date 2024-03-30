@@ -2,9 +2,7 @@ package com.sweng.utilities;
 
 import com.sweng.entity.Scenario;
 import com.sweng.entity.ScenarioBuilder;
-import com.sweng.entity.Story;
 import com.sweng.mapper.ScenarioRowMapper;
-import com.sweng.mapper.StoryRowMapper;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ScenarioService {

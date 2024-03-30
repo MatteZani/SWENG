@@ -1,6 +1,9 @@
 package com.sweng.controller;
 
-import com.sweng.entity.*;
+import com.sweng.entity.Scenario;
+import com.sweng.entity.Story;
+import com.sweng.entity.StoryBuilder;
+import com.sweng.entity.StoryObject;
 import com.sweng.utilities.ElementService;
 import com.sweng.utilities.GameService;
 import com.sweng.utilities.ScenarioService;
@@ -15,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class StoryController {

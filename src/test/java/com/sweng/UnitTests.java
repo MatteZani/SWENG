@@ -1,8 +1,8 @@
 package com.sweng;
 
+import com.sweng.entity.User;
 import com.sweng.utilities.UserService;
 import org.junit.jupiter.api.Assertions;
-import com.sweng.entity.User;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -52,6 +52,8 @@ public class GameController {
     @PostMapping("/choose-scenario")
     public String chooseNextScenario(@RequestParam int scenarioId, Model model) {
 
+        //TODO aggiungere il controllo se l'utente possiede l'oggetto necessario per entrare nello scenario
+
         return gameService.loadScenario(scenarioService.getScenarioById(scenarioId), model);
 
     }

@@ -100,12 +100,15 @@ public class ScenarioController {
             scenarioService.connectScenarios(startingScenario, wrongAnswerScenario, currentStoryId, "Risposta sbagliata");
         } else{
             // Logica per il collegamento normale
-            scenarioService.connectScenarios(startingScenario, endingScenario, currentStoryId, "");
+            Scenario nextScenario = scenarioService.getScenarioById(endingScenario);
+            if(nextScenario.getNecessaryObjectId() != 0){
+
+                scenarioService.connectScenarios(startingScenario, endingScenario, currentStoryId, "Oggetto necessario");
+            }
+            else{
+                scenarioService.connectScenarios(startingScenario, endingScenario, currentStoryId, "Collegamento normale");
+            }
         }
-//        else {
-//            // Gestisci il caso in cui non vengono forniti dati adeguati
-//            // Potresti voler reindirizzare a una pagina di errore o mostrare un messaggio
-//        }
 
         model.addAttribute("scenarios", httpSession.getAttribute("scenarios"));
         return "connect-scenarios";

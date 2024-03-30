@@ -1,20 +1,47 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Gioca storia</title>
+    <title>Gioca la Storia</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
 
-<p th:text="${story.title}"></p>
-<h4>Scenario iniziale</h4>
-<p th:text ="${scenario.description}"></p>
-
-<p th:text ="${foundObjectMessage}"></p>
-<p th:text ="${riddleMessage}"></p>
+    <input type="hidden" th:value="${storyScenarios}" th:name="storyScenarios">
 
 
+    <div class="container mt-5">
+        <h2>Scenario Corrente</h2>
+        <p th:text="${scenario.description}">Descrizione dello Scenario</p>
 
+        <div th:if="${foundObjectMessage} != null">
+            <h3 th:text="${foundObjectMessage}"></h3>
+        </div>
+
+        <div th:if="${scenario.riddleId} != 0">
+            <p th:text="${riddle.answer}"></p>
+            <form th:action="@{/process-choice}" method="post">
+                <h2>Indovinello:</h2>
+                <p th:text="${riddleMessage}"></p>
+
+                <textarea class="form-control" th:name="response" rows="4" cols="50"
+                          placeholder="Inserisci la risposta" required></textarea>
+                <button type="submit" class="btn btn-info mt-2">Inserisci risposta</button>
+
+                <input type="hidden" th:value="${scenario.id}" th:name="scenarioId">
+
+            </form>
+        </div>
+
+        <div th:if="${scenario.riddleId} == 0">
+            <h2>Scegli la tua prossima mossa:</h2>
+            <form th:action="@{/choose-scenario}" method="post">
+                <div th:each="option : ${scenario.nextScenarios}">
+                    <button type="submit" class="btn btn-info mt-2" th:name="scenarioId" th:value="${option.id}" th:text="${option.description}">Opzione Scenario</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 </body>
 </html>

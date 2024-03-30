@@ -1,10 +1,10 @@
 package com.sweng.utilities;
 
 import com.sweng.entity.Riddle;
+import com.sweng.entity.Scenario;
 import com.sweng.entity.StoryObject;
 import com.sweng.mapper.RiddleRowMapper;
 import com.sweng.mapper.StoryObjectRowMapper;
-import com.sweng.mapper.StoryRowMapper;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +20,9 @@ public class ElementService {
 
     @Autowired
     private HttpSession httpSession;
+
+    @Autowired
+    private ScenarioService scenarioService;
 
     Logger logger = LoggerFactory.getLogger(ElementService.class);
 
@@ -91,6 +94,26 @@ public class ElementService {
             logger.error("NullPointerException nel metodo getMaxRiddleId della classe ElementService");
             return 0;
         }
+
+    }
+
+    public Scenario processChoice(Integer startingScenarioId, Boolean answer){
+
+        String descrizione;
+
+        String sql = "SELECT SCENARIO_ARRIVO FROM COLLEGAMENTI WHERE SCENARIO_PARTENZA = ? AND DESCRIZIONE = ?";
+        if(answer){
+            descrizione = "Risposta giusta";
+        }
+        else{
+            descrizione = "Risposta sbagliata";
+        }
+
+        Integer nextScenarioId = jdbcTemplate.queryForObject(sql, Integer.class, startingScenarioId, descrizione);
+
+        Scenario nextScenario = scenarioService.getScenarioById(nextScenarioId);
+
+        return nextScenario;
 
     }
 

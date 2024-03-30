@@ -136,7 +136,7 @@ import java.util.Map;
          */
         @GetMapping("/scenario")
         public ResponseEntity<Object> getScenariosByStoryId(@RequestParam("storyId") int storyId){
-            List<Map<String, Object>> scenarios = scenarioService.getScenariosByStoryId(storyId);
+            List<Scenario> scenarios = scenarioService.getScenariosByStoryId(storyId);
             if(scenarios == null){
                 return new ResponseEntity<>("Errore nella ricerca degli scenari", HttpStatusCode.valueOf(400));
             }else

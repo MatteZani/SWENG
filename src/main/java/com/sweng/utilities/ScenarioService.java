@@ -2,9 +2,7 @@ package com.sweng.utilities;
 
 import com.sweng.entity.Scenario;
 import com.sweng.entity.ScenarioBuilder;
-import com.sweng.entity.Story;
 import com.sweng.mapper.ScenarioRowMapper;
-import com.sweng.mapper.StoryRowMapper;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ScenarioService {
@@ -94,24 +92,9 @@ public class ScenarioService {
     }
 
 
-    // Metodo per aggiungere uno scenario alla storia nel database
-    public void addScenarioToStory(int storyId) {
+    public ArrayList<Scenario> getScenariosByStoryId(int storyId) {
         try {
-            String readScenario = "SELECT INITIAL_SCENARIO FROM STORIE WHERE ID = ?";
-            int scenarioId = jdbcTemplate.queryForObject(readScenario, Integer.class);
-            if(Integer.valueOf(scenarioId).equals(null)){
-                String addScenario = "UPDATE STORIE SET INITIAL_SCENARIO = ? WHERE ID = ?";
-                jdbcTemplate.update(addScenario, httpSession.getAttribute("currentScenarioId"), storyId);
-            }
-        } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo addScenarioToStory della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
-        }
-    }
-
-
-    public List<Map<String, Object>> getScenariosByStoryId(int storyId) {
-        try {
-            return jdbcTemplate.queryForList("SELECT * FROM SCENARI WHERE ID_STORIA = ?", storyId);
+            return (ArrayList<Scenario>) jdbcTemplate.query("SELECT * FROM SCENARI WHERE ID_STORIA = ?", new ScenarioRowMapper(), storyId);
 
         } catch (DataAccessException e) {
             logger.error("Lanciata eccezione nel metodo getScenariosByStoryId della classe DBHandler. Causa dell'" +
@@ -129,9 +112,33 @@ public class ScenarioService {
     public void setInitialScenario(int storyId, int scenarioId){
         String sql = "UPDATE STORIE SET INITIAL_SCENARIO = ? WHERE ID = ?";
         jdbcTemplate.update(sql, scenarioId, storyId);
-
-
     }
+
+    public List<Scenario> getNextScenariosByScenarioId(int scenarioPartenzaId) {
+        String sql = "SELECT * FROM SCENARI WHERE ID IN (SELECT SCENARIO_ARRIVO FROM COLLEGAMENTI WHERE SCENARIO_PARTENZA = ? )";
+        List<Scenario> nextScenarios = jdbcTemplate.query(sql, new ScenarioRowMapper(), scenarioPartenzaId);
+        return nextScenarios;
+    }
+
+    public Scenario getScenarioGiusto(int scenarioPartenzaId){
+        String sql = "SELECT SCENARIO_ARRIVO FROM COLLEGAMENTI WHERE SCENARIO_PARTENZA = ? AND DESCRIZIONE = 'Risposta giusta'";
+
+        Integer scenarioGiustoId = jdbcTemplate.queryForObject(sql, Integer.class, scenarioPartenzaId);
+
+        Scenario scenarioGiusto = this.getScenarioById(scenarioGiustoId);
+        return scenarioGiusto;
+    }
+
+    public Scenario getScenarioSbagliato(int scenarioPartenzaId){
+        String sql = "SELECT SCENARIO_ARRIVO FROM COLLEGAMENTI WHERE SCENARIO_PARTENZA = ? AND DESCRIZIONE = 'Risposta sbagliata'";
+
+        Integer scenarioSbagliatoId = jdbcTemplate.queryForObject(sql, Integer.class, scenarioPartenzaId);
+
+        Scenario scenarioSbagliato = this.getScenarioById(scenarioSbagliatoId);
+        return scenarioSbagliato;
+    }
+
+
 
 
 }

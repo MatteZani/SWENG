@@ -45,11 +45,15 @@ public class GameController {
     }
 
     @PostMapping("/choose-scenario")
-    public String chooseNextScenario(@RequestParam int scenarioId, @RequestParam(required = false) String outcome, Model model) {
+    public String chooseNextScenario(@RequestParam int scenarioId, Model model) {
 
-        List<Scenario> nextScenarios = null;
         Scenario scenario = scenarioService.getScenarioById(scenarioId);
+
+
+        List<Scenario> nextScenarios = scenarioService.getNextScenariosByScenarioId(scenarioId);
+        scenario.setNextScenarios(nextScenarios);
         model.addAttribute("scenario", scenario);
+
 
         if(scenario.getFoundObjectId() != 0){
             StoryObject foundObject = elementService.getStoryObjectById(scenario.getFoundObjectId());
@@ -61,20 +65,8 @@ public class GameController {
             model.addAttribute("riddleMessage", "Per continuare devi rispondere al seguente indovinello: " + riddle.getQuestion());
             model.addAttribute("riddle", riddle);
         }
-        if(outcome != null && outcome.equals("true")){
-            nextScenarios = scenarioService.getNextScenariosByScenarioId(scenarioId);
-        }
-        else if(outcome != null && outcome.equals("false")){
 
-            String descrizione = "Risposta sbagliata";
 
-            String sql = "SELECT SCENARIO_ARRIVO FROM COLLEGAMENTI WHERE SCENARIO_PARTENZA = ? AND DESCRIZIONE = ?";
-            ArrayList<Integer> nextScenariosId = (ArrayList<Integer>) jdbcTemplate.queryForList(sql, Integer.class, scenarioId, descrizione);
-
-            nextScenarios.add(scenarioService.getScenarioById(nextScenariosId.get(0)));
-
-        }
-        model.addAttribute("nextScenarios", nextScenarios);
 
         return "play-story";
     }

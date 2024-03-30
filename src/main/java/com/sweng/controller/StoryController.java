@@ -95,8 +95,7 @@ public class StoryController {
         model.addAttribute("story", story);
         model.addAttribute("scenario", scenario);
         List<Scenario> nextScenarios = scenarioService.getNextScenariosByScenarioId(scenario.getId());
-
-        model.addAttribute("nextScenarios", nextScenarios);
+        scenario.setNextScenarios(nextScenarios);
 
         if(scenario.getFoundObjectId() != 0){
             StoryObject foundObject = elementService.getStoryObjectById(scenario.getFoundObjectId());

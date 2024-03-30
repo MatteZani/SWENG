@@ -97,25 +97,6 @@ public class ElementService {
 
     }
 
-    public Scenario processChoice(Integer startingScenarioId, Boolean answer){
-
-        String descrizione;
-
-        String sql = "SELECT SCENARIO_ARRIVO FROM COLLEGAMENTI WHERE SCENARIO_PARTENZA = ? AND DESCRIZIONE = ?";
-        if(answer){
-            descrizione = "Risposta giusta";
-        }
-        else{
-            descrizione = "Risposta sbagliata";
-        }
-
-        Integer nextScenarioId = jdbcTemplate.queryForObject(sql, Integer.class, startingScenarioId, descrizione);
-
-        Scenario nextScenario = scenarioService.getScenarioById(nextScenarioId);
-
-        return nextScenario;
-
-    }
 
     public boolean checkObjectInInventory(String username, int objectId) {
         String sql = "SELECT COUNT(*) FROM INVENTARIO WHERE USERNAME = ? AND ID_OGGETTO = ?";

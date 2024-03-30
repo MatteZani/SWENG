@@ -56,8 +56,6 @@ public class StoryController {
         model.addAttribute("message", "Complimenti! Storia creata con successo. Ora crea un oggetto che potrà essere utilizzato all'interno della storia.");
         httpSession.setAttribute("currentStoryObjects", new ArrayList<StoryObject>());
         httpSession.setAttribute("currentStoryId", storyService.getMaxStoryId());
-        //model.addAttribute("objectCreationMessage", "Vuoi creare un oggetto relativo a questo scenario?" + "\n" + "Questo oggetto sarà necessario per entrare in questo scenario");
-        // Chiamata al metodo createStory di DBHandler per salvare la storia nel database
         return "create-object";
 
     }

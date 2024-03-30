@@ -69,22 +69,6 @@ public class GameController {
         User user = userService.getUserByUsername((String) httpSession.getAttribute("username"));
         int storyId = storyService.getStoryIdByScenarioId(scenarioId);
         GameSession gameSession = new GameSession(user, storyService.getStoryById(storyId));
-        //GameSession gameSession = (GameSession) httpSession.getAttribute("gameSession");
-        //int storyId = gameSession.getCurrentStory().getId(); // Ottieni l'ID della storia dalla sessione di gioco
-
-
-       /*user = (User) httpSession.getAttribute("user");
-        if (user == null) {
-            // Gestisci l'assenza dell'utente, forse reindirizzando al login o visualizzando un errore
-            return "redirect:/login";
-        }
-
-        gameSession = (GameSession) httpSession.getAttribute("gameSession");
-        if (gameSession == null) {
-            // Gestisci l'assenza della sessione di gioco
-            return "redirect:/start"; // Usa il percorso appropriato per iniziare una nuova sessione di gioco
-        }*/
-
 
         if (scenario.getNecessaryObjectId() != 0) {
             if (!elementService.checkObjectInInventory(user.getUsername(), scenario.getNecessaryObjectId())) {

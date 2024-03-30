@@ -71,9 +71,4 @@ public class GameService {
         return "play-story";
     }
 
-    public void addObjectToInventory(int storyId, int objectId, String username) {
-        String sql = "INSERT INTO INVENTARIO (USERNAME, ID_STORIA, ID_OGGETTO) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, username, storyId, objectId);
-    }
-
 }

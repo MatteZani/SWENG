@@ -1,9 +1,6 @@
 package com.sweng.utilities;
 
-import com.sweng.entity.GameSession;
-import com.sweng.entity.Scenario;
-import com.sweng.entity.Story;
-import com.sweng.entity.User;
+import com.sweng.entity.*;
 import com.sweng.mapper.ScenarioRowMapper;
 import com.sweng.mapper.StoryRowMapper;
 import jakarta.servlet.http.HttpSession;
@@ -13,12 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.dao.DataAccessException;
+import org.springframework.ui.Model;
+
+import java.util.List;
 
 @Service
 public class GameService {
 
     @Autowired
     private HttpSession httpSession;
+
+    @Autowired
+    private ScenarioService scenarioService;
+
+    @Autowired
+    private ElementService elementService;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -44,15 +50,25 @@ public class GameService {
         }
     }
 
+    public String loadScenario(Scenario scenario, Model model){
 
-//    public Scenario chooseNextScenario(int scenarioId) {
-//        try {
-//            String sql = "SELECT * FROM SCENARI WHERE ID = ?";
-//            Scenario scenario = jdbcTemplate.query(sql, scenarioId);
-//            return scenario;
-//        } catch (DataAccessException e) {
-//            logger.error("Errore nel metodo chooseNextScenario: {}", e.getMessage());
-//            throw e;
-//        }
-//    }
+
+        List<Scenario> nextScenarios = scenarioService.getNextScenariosByScenarioId(scenario.getId());
+        scenario.setNextScenarios(nextScenarios);
+
+        model.addAttribute("scenario", scenario);
+
+        if(scenario.getFoundObjectId() != 0){
+            StoryObject foundObject = elementService.getStoryObjectById(scenario.getFoundObjectId());
+            model.addAttribute("foundObjectMessage", "Ti è stato aggiunto all'inventario il seguente oggetto: " + foundObject.getName());
+        }
+
+        if(scenario.getRiddleId() != 0){
+            Riddle riddle = elementService.getRiddleById(scenario.getRiddleId());
+            model.addAttribute("riddleMessage", "Per continuare devi rispondere al seguente indovinello: " + riddle.getQuestion());
+            model.addAttribute("riddle", riddle);
+        }
+
+        return "play-story";
+    }
 }

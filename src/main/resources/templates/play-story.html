@@ -7,34 +7,33 @@
 </head>
 <body>
 
+    <input type="hidden" th:value="${storyScenarios}" th:name="storyScenarios">
+
+
     <div class="container mt-5">
         <h2>Scenario Corrente</h2>
         <p th:text="${scenario.description}">Descrizione dello Scenario</p>
-
-
 
         <div th:if="${foundObjectMessage} != null">
             <h3 th:text="${foundObjectMessage}"></h3>
         </div>
 
-<!--        &lt;!&ndash;solo c'è un indovinello da risolvere, mostriamo questa parte &ndash;&gt;-->
-<!--        <div th:if="${scenario.riddleId} != 0">-->
-<!--            <form th:action="@{/choose-scenario}" method="post">-->
-<!--                <h2>Indovinello:</h2>-->
-<!--                <p th:text="${riddleMessage}"></p>-->
+        <div th:if="${scenario.riddleId} != 0">
+            <p th:text="${riddle.answer}"></p>
+            <form th:action="@{/process-choice}" method="post">
+                <h2>Indovinello:</h2>
+                <p th:text="${riddleMessage}"></p>
 
-<!--                <textarea class="form-control" th:name="response" rows="4" cols="50"-->
-<!--                          placeholder="Inserisci la risposta" required></textarea>-->
-<!--                <button type="submit" class="btn btn-info mt-2">Inserisci risposta</button>-->
-<!--                <input type="hidden" th:name="scenarioId" th:value="${scenario.id}"/>-->
-<!--                <input type="hidden" th:name="riddleAnswer" th:value="${riddle.answer}"/>-->
+                <textarea class="form-control" th:name="response" rows="4" cols="50"
+                          placeholder="Inserisci la risposta" required></textarea>
+                <button type="submit" class="btn btn-info mt-2">Inserisci risposta</button>
 
-<!--            </form>-->
-<!--        </div>-->
+                <input type="hidden" th:value="${scenario.id}" th:name="scenarioId">
 
-        <!-- Mostra le opzioni di scelta per lo scenario corrente se nextScenarios non è vuoto
-         th:if="${not #lists.isEmpty(nextScenarios)}"-->
-<!--        <div th:if="${scenario.riddleId} == 0">-->
+            </form>
+        </div>
+
+        <div th:if="${scenario.riddleId} == 0">
             <h2>Scegli la tua prossima mossa:</h2>
             <form th:action="@{/choose-scenario}" method="post">
                 <div th:each="option : ${scenario.nextScenarios}">
@@ -42,7 +41,7 @@
                 </div>
             </form>
         </div>
-<!--    </div>-->
+    </div>
 
 </body>
 </html>

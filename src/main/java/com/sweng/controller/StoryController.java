@@ -2,6 +2,7 @@ package com.sweng.controller;
 
 import com.sweng.entity.*;
 import com.sweng.utilities.ElementService;
+import com.sweng.utilities.GameService;
 import com.sweng.utilities.ScenarioService;
 import com.sweng.utilities.StoryService;
 import jakarta.servlet.http.HttpSession;
@@ -30,6 +31,9 @@ public class StoryController {
 
     @Autowired
     private ElementService elementService;
+
+    @Autowired
+    private GameService gameService;
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -89,25 +93,16 @@ public class StoryController {
     @GetMapping("play-story")
     public String playStory(@RequestParam("storyId") Integer storyId, Model model){
 
-        Story story = storyService.getStoryById(storyId);
+        ArrayList<Scenario> storyScenarios = scenarioService.getScenariosByStoryId(storyId);
+        model.addAttribute("storyScenarios", storyScenarios);
 
-        Scenario scenario = scenarioService.getScenarioById(story.getInitialScenario());
-        model.addAttribute("story", story);
-        model.addAttribute("scenario", scenario);
-        List<Scenario> nextScenarios = scenarioService.getNextScenariosByScenarioId(scenario.getId());
-        scenario.setNextScenarios(nextScenarios);
-
-        if(scenario.getFoundObjectId() != 0){
-            StoryObject foundObject = elementService.getStoryObjectById(scenario.getFoundObjectId());
-            model.addAttribute("foundObjectMessage", "Ti è stato aggiunto all'inventario il seguente oggetto: " + foundObject.getName());
+        for(Scenario scenario : storyScenarios){
+            scenario.setNextScenarios(scenarioService.getNextScenariosByScenarioId(scenario.getId()));
         }
 
-        if(scenario.getRiddleId() != 0){
-            Riddle riddle = elementService.getRiddleById(scenario.getRiddleId());
-            model.addAttribute("riddleMessage", "Per continuare devi rispondere al seguente indovinello: " + riddle.getQuestion());
-        }
+        Scenario initialScenario = storyScenarios.get(0);
+        return gameService.loadScenario(initialScenario, model);
 
-        return "play-story";
 
     }
 }

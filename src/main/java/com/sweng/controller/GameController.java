@@ -1,5 +1,8 @@
 package com.sweng.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sweng.entity.GameSession;
 import com.sweng.entity.Riddle;
 import com.sweng.entity.Scenario;
@@ -10,10 +13,12 @@ import com.sweng.utilities.ScenarioService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,69 +49,35 @@ public class GameController {
         return "play-story";
     }
 
+    @PostMapping("/pagina-prova")
+    public String prova(@RequestParam String response, Model model){
+        model.addAttribute("Risposta", response);
+
+        return "prova";
+    }
+
     @PostMapping("/choose-scenario")
     public String chooseNextScenario(@RequestParam int scenarioId, Model model) {
 
-        Scenario scenario = scenarioService.getScenarioById(scenarioId);
+        return gameService.loadScenario(scenarioService.getScenarioById(scenarioId), model);
 
-
-        List<Scenario> nextScenarios = scenarioService.getNextScenariosByScenarioId(scenarioId);
-        scenario.setNextScenarios(nextScenarios);
-        model.addAttribute("scenario", scenario);
-
-
-        if(scenario.getFoundObjectId() != 0){
-            StoryObject foundObject = elementService.getStoryObjectById(scenario.getFoundObjectId());
-            model.addAttribute("foundObjectMessage", "Ti è stato aggiunto all'inventario il seguente oggetto: " + foundObject.getName());
-        }
-
-        if(scenario.getRiddleId() != 0){
-            Riddle riddle = elementService.getRiddleById(scenario.getRiddleId());
-            model.addAttribute("riddleMessage", "Per continuare devi rispondere al seguente indovinello: " + riddle.getQuestion());
-            model.addAttribute("riddle", riddle);
-        }
-
-
-
-        return "play-story";
     }
 
-//    @GetMapping("/process-choice")
-//    public String processChoice(@RequestParam("response") String response, @RequestParam("riddleAnswer") String riddleAnswer, @RequestParam("scenarioId") Integer scenarioId, Model model){
-//
-////        Integer nextScenarioId = elementService.processChoice(scenarioId, response.equals(riddleAnswer));
-////
-////        Scenario nextScenario = scenarioService.getScenarioById(nextScenarioId);
-//
-//        ArrayList<Scenario> nextScenarios = elementService.processChoice(scenarioId, response.equals(riddleAnswer));
-//        model.addAttribute("nextScenarios", nextScenarios);
-//
-//        if(nextScenario.getFoundObjectId() != 0){
-//            StoryObject foundObject = elementService.getStoryObjectById(nextScenario.getFoundObjectId());
-//            model.addAttribute("foundObjectMessage", "Ti è stato aggiunto all'inventario il seguente oggetto: " + foundObject.getName());
-//        }
-//
-//        if(nextScenario.getRiddleId() != 0){
-//            Riddle riddle = elementService.getRiddleById(nextScenario.getRiddleId());
-//            model.addAttribute("riddleMessage", "Per continuare devi rispondere al seguente indovinello: " + riddle.getQuestion());
-//            model.addAttribute("riddle", riddle);
-//        }
-//        return "play-story";
-//    }
+    @PostMapping("/process-choice")
+    public String processChoice(@RequestParam int scenarioId, @RequestParam String response, Model model){
+        Scenario scenario = scenarioService.getScenarioById(scenarioId);
+        Riddle riddle = elementService.getRiddleById(scenario.getRiddleId());
 
+        Scenario scenarioGiusto = scenarioService.getScenarioGiusto(scenarioId);
+        Scenario scenarioSbagliato = scenarioService.getScenarioSbagliato(scenarioId);
 
-//    @GetMapping("/play-scenario/{scenarioId}")
-//    public String playScenario(int scenarioId, Model model) {
-//        Scenario scenario = scenarioService.getScenarioById(scenarioId);
-//        List<Scenario> nextScenarios = scenarioService.getNextScenariosByScenarioId(scenarioId);
-//
-//        model.addAttribute("scenario", scenario);
-//        // Aggiunta e controllo dei prossimi scenari con Thymeleaf
-//        model.addAttribute("nextScenarios", nextScenarios);
-//
-//
-//
-//        return "play-story";
-//    }
+        if(response.equals(riddle.getAnswer())){
+            return chooseNextScenario(scenarioGiusto.getId(), model);
+        }
+        else{
+            return chooseNextScenario(scenarioSbagliato.getId(), model);
+        }
+    }
+
 
 }

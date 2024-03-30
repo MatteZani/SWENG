@@ -100,29 +100,23 @@ public class ElementService {
 
     }
 
-    public ArrayList<Scenario> processChoice(Integer startingScenarioId, Boolean answer){
+    public Scenario processChoice(Integer startingScenarioId, Boolean answer){
+
         String descrizione;
-        String sql;
-        ArrayList<Integer> nextScenariosId;
-        ArrayList<Scenario> nextScenarios = null;
-        if(answer) {
-            sql = "SELECT SCENARIO_ARRIVO FROM COLLEGAMENTI WHERE SCENARIO_PARTENZA = ?";
-            nextScenariosId = (ArrayList<Integer>) jdbcTemplate.queryForList(sql, Integer.class, startingScenarioId);
 
-            for(Integer nextScenarioId : nextScenariosId) {
-                nextScenarios.add(scenarioService.getScenarioById(nextScenarioId));
-            }
+        String sql = "SELECT SCENARIO_ARRIVO FROM COLLEGAMENTI WHERE SCENARIO_PARTENZA = ? AND DESCRIZIONE = ?";
+        if(answer){
+            descrizione = "Risposta giusta";
         }
-        else {
+        else{
             descrizione = "Risposta sbagliata";
-
-            sql = "SELECT SCENARIO_ARRIVO FROM COLLEGAMENTI WHERE SCENARIO_PARTENZA = ? AND DESCRIZIONE = ?";
-            nextScenariosId = (ArrayList<Integer>) jdbcTemplate.queryForList(sql, Integer.class, startingScenarioId, descrizione);
-
-            nextScenarios.add(scenarioService.getScenarioById(nextScenariosId.get(0)));
         }
 
-        return nextScenarios;
+        Integer nextScenarioId = jdbcTemplate.queryForObject(sql, Integer.class, startingScenarioId, descrizione);
+
+        Scenario nextScenario = scenarioService.getScenarioById(nextScenarioId);
+
+        return nextScenario;
 
     }
 

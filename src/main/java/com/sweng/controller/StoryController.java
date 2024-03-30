@@ -65,12 +65,11 @@ public class StoryController {
     @GetMapping("/catalog")
     public String catalog(Model model) {
         model.addAttribute("stories", storyService.getStories());
-//        httpSession.removeAttribute("currentStoryId");
-//        httpSession.removeAttribute("currentStoryObjects");
-//        httpSession.removeAttribute("currentRiddles");
-//        httpSession.removeAttribute("currentScenarioId");
-//        httpSession.removeAttribute("scenarios");
-        httpSession.invalidate();
+        httpSession.removeAttribute("currentStoryId");
+        httpSession.removeAttribute("currentStoryObjects");
+        httpSession.removeAttribute("currentRiddles");
+        httpSession.removeAttribute("currentScenarioId");
+        httpSession.removeAttribute("scenarios");
         return "catalog";
     }
 

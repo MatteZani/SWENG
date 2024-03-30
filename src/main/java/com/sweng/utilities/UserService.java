@@ -1,6 +1,7 @@
 package com.sweng.utilities;
 
 import com.sweng.entity.User;
+import com.sweng.mapper.UserRowMapper;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,5 +45,12 @@ public class UserService {
         String sql = "SELECT COUNT(*) FROM CREDENZIALI WHERE USERNAME = ? AND PASSWORD = ?";
         int count = jdbcTemplate.queryForObject(sql, Integer.class, username, password);
         return count > 0;
+    }
+
+    public User getUserByUsername(String username){
+        String sql = "SELECT * FROM CREDENZIALI WHERE USERNAME = ?";
+        User user = jdbcTemplate.queryForObject(sql, new UserRowMapper(), username);
+
+        return user;
     }
 }

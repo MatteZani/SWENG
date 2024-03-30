@@ -12,6 +12,12 @@
 
     <div class="container mt-5">
         <h2>Scenario Corrente</h2>
+
+        <!-- visualizzare il messaggio di errore in cui il giocatore non ha l'oggetto richiesto dallo scenario-->
+        <div th:if="${error} != null" class="alert alert-danger" role="alert">
+            <p th:text="${error}"></p>
+        </div>
+
         <p th:text="${scenario.description}">Descrizione dello Scenario</p>
 
         <div th:if="${foundObjectMessage} != null">

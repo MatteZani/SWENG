@@ -51,7 +51,6 @@ public class GameService {
 
     public String loadScenario(Scenario scenario, Model model){
 
-
         List<Scenario> nextScenarios = scenarioService.getNextScenariosByScenarioId(scenario.getId());
         scenario.setNextScenarios(nextScenarios);
 

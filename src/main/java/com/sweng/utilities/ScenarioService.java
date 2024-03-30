@@ -91,7 +91,6 @@ public class ScenarioService {
 
     }
 
-
     public ArrayList<Scenario> getScenariosByStoryId(int storyId) {
         try {
             return (ArrayList<Scenario>) jdbcTemplate.query("SELECT * FROM SCENARI WHERE ID_STORIA = ?", new ScenarioRowMapper(), storyId);

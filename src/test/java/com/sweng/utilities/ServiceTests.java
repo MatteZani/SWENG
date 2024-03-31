@@ -1,4 +1,4 @@
-package com.sweng;
+package com.sweng.utilities;
 
 
 import com.sweng.entity.Riddle;
@@ -43,6 +43,7 @@ public class ServiceTests {
         assertEquals(expectedScenario.getDescription(), scenarioService.getScenarioById(1).getDescription());
         assertEquals(expectedScenario.getId(), scenarioService.getScenarioById(1).getId());
         assertEquals(expectedScenario.getStoryId(), scenarioService.getScenarioById(1).getStoryId());
+        assertEquals(expectedScenario.getFoundObjectId(), scenarioService.getScenarioById(1).getFoundObjectId());
     }
 
     @Test

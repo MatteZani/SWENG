@@ -1,4 +1,4 @@
-package com.sweng;
+package com.sweng.mapper;
 
 
 import com.sweng.entity.Riddle;

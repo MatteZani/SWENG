@@ -52,7 +52,12 @@ public class GameService {
     public String loadScenario(Scenario scenario, Model model){
 
         List<Scenario> nextScenarios = scenarioService.getNextScenariosByScenarioId(scenario.getId());
+
+        if(nextScenarios.size() == 0){
+            model.addAttribute("endStoryMessage", "Sei arrivato alla fine della storia");
+        }
         scenario.setNextScenarios(nextScenarios);
+
 
         model.addAttribute("scenario", scenario);
 
@@ -69,4 +74,5 @@ public class GameService {
 
         return "play-story";
     }
+
 }

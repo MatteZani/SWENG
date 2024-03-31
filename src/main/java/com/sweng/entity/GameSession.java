@@ -9,12 +9,14 @@ public class GameSession {
     private Story currentStory;
     private int currentScenario;
     private List<Integer> inventory;
+    private int storyId;
 
     public GameSession(User user, Story story) {
         this.user = user;
         this.currentStory = story;
         this.currentScenario = story.getInitialScenario();
         this.inventory = new ArrayList<>();
+        this.storyId = story.getId();
     }
 
 
@@ -65,5 +67,9 @@ public class GameSession {
 
     public boolean solveRiddle(String riddleId, String userAnswer) {
         return false;
+    }
+
+    public int getStoryId() {
+        return this.storyId;
     }
 }

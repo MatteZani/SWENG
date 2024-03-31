@@ -97,4 +97,19 @@ public class ElementService {
 
     }
 
+
+    public boolean checkObjectInInventory(String username, int objectId) {
+        String sql = "SELECT COUNT(*) FROM INVENTARIO WHERE USERNAME = ? AND ID_OGGETTO = ?";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, username, objectId);
+        return count > 0;
+    }
+
+    public void addObjectToInventory(int storyId, int objectId, String username) {
+        String sql = "INSERT INTO INVENTARIO (USERNAME, ID_STORIA, ID_OGGETTO) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, username, storyId, objectId);
+    }
+
+
+
+
 }

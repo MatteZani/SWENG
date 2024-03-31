@@ -85,4 +85,15 @@ public class StoryService {
         }
     }
 
+    public int getStoryIdByScenarioId(int scenarioId) {
+        try {
+            String sql = "SELECT ID_STORIA FROM SCENARI WHERE ID = ?";
+            return jdbcTemplate.queryForObject(sql, Integer.class, scenarioId);
+        } catch (DataAccessException e) {
+            logger.error("Impossibile recuperare l'ID della storia per lo scenario con ID: {}. Errore: {}", scenarioId, e.getMessage());
+            return 0;
+        }
+    }
+
+
 }

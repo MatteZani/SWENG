@@ -9,6 +9,9 @@ public class Story {
     private String category;
     private String creator;
 
+    public Story() {
+    }
+
     public Story(String title, String plot, int initialScenario, String creator, String category) {
         this.title = title;
         this.plot = plot;

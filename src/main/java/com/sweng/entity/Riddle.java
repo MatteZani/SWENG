@@ -5,6 +5,9 @@ public class Riddle {
     private String question;
     private String answer;
 
+    public Riddle() {
+    }
+
     public Riddle(int id, String question, String answer) {
         this.id = id;
         this.question = question;

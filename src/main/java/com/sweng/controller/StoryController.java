@@ -79,7 +79,6 @@ public class StoryController {
 
     @GetMapping("/catalog/show-story")
     public String showStory(@RequestParam("storyId") Integer storyId, Model model){
-        System.out.println(storyId);
 
         Story story = storyService.getStoryById(storyId);
         model.addAttribute("storyTitle", story.getTitle());

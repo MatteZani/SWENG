@@ -79,7 +79,6 @@ public class ScenarioController {
 
         model.addAttribute("scenarios", httpSession.getAttribute("scenarios"));
 
-        System.out.println(httpSession.getAttribute("scenarios"));
 
         return "connect-scenarios";
 

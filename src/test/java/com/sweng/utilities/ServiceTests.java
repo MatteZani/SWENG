@@ -3,16 +3,11 @@ package com.sweng.utilities;
 
 import com.sweng.entity.Riddle;
 import com.sweng.entity.Scenario;
-import com.sweng.mapper.ScenarioRowMapper;
-import com.sweng.utilities.ElementService;
-import com.sweng.utilities.ScenarioService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.hamcrest.Matchers.any;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest

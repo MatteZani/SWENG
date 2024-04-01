@@ -3,8 +3,6 @@ package com.sweng.utilities;
 
 import com.sweng.entity.Scenario;
 import com.sweng.entity.Story;
-import com.sweng.utilities.ScenarioService;
-import com.sweng.utilities.StoryService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;

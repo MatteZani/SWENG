@@ -1,7 +1,6 @@
 package com.sweng.utilities;
 
 import com.sweng.entity.Riddle;
-import com.sweng.entity.Scenario;
 import com.sweng.entity.StoryObject;
 import com.sweng.mapper.RiddleRowMapper;
 import com.sweng.mapper.StoryObjectRowMapper;

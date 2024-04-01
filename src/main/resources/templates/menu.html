@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +16,7 @@
         <p class="lead">Benvenuto al sito per creare e giocare storie emozionanti</p>
     </div>
 
+
     <div class="container">
         <div class="choices">
             <a class="btn btn-primary btn-lg" href="/login">Accedi</a>
@@ -24,11 +25,7 @@
         </div>
     </div>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 SWENG - Tutti i diritti riservati</p>
-        </div>
-    </footer>
+    <footer th:insert="fragments/footer.html :: footer"></footer>
 
 </body>
 </html>

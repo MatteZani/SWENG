@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,14 +24,11 @@
     </div>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <p>&copy; 2024 SWENG - Tutti i diritti riservati</p>
-    </div>
-</footer>
+<footer th:insert="fragments/footer.html :: footer"></footer>
 
 <!-- Link per Bootstrap JS (opzionale, necessario solo se si utilizzano componenti JS di Bootstrap) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>
 

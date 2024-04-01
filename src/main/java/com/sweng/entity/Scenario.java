@@ -38,9 +38,6 @@ public class Scenario {
         this.riddleId = riddleId;
     }
 
-
-
-
     // Metodi getter e setter
     public String getDescription() {
         return description;

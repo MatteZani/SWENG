@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Header</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<header class="header">
+    <div class="container">
+        <div style="display: flex; align-items: center;">
+            <h2 style="margin-right: 1rem;">SWENG</h2>
+            <form th:action="@{/catalog}" method ="get">
+                <button type="submit" class="btn btn-info">Torna al catalogo</button>
+            </form>
+        </div>
+    </div>
+</header>
+
+</body>
+</html>

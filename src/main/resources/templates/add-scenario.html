@@ -1,47 +1,4 @@
-<!--
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Aggiungi scenario</title>
-</head>
-<body>
 
-    <form th:action="@{/create-scenario/process}" method="post">
-
-        <label th:for="scenarioDescription">Descrivi il nuovo scenario:</label><br>
-        <textarea id="scenarioDescription" th:name="scenarioDescription" rows="4" cols="50"
-                  placeholder="Tanto tempo fa in una galassia lontana lontana..." required></textarea><br><br>
-
-
-        <p th:text="${necessaryObjectMessage}"></p>
-        <select th:name = "necessaryObjectId">
-            <option value="">Nessun oggetto necessario</option>
-            <option th:each="object : ${currentStoryObjects}" th:value="${object.id}" th:text="${object.name}"></option>
-        </select>
-        <p th:text = "${gainObjectMessage}"></p>
-        <select th:name = "foundObjectId">
-            <option value="">Nessun oggetto ottenibile</option>
-            <option th:each="object : ${currentStoryObjects}" th:value="${object.id}" th:text="${object.name}"></option>
-        </select>
-        <p th:text = "${riddleMessage}"></p>
-        <select th:name = "riddleId">
-            <option value="">Nessun indovinello</option>
-            <option th:each="riddle : ${currentRiddles}" th:value="${riddle.id}" th:text="${riddle.question}"></option>
-        </select>
-
-
-        <input type="submit" value="Aggiungi scenario alla storia">
-    </form>
-
-&lt;!&ndash;    <a th:href="@{/connect-scenarios}">Termina creazione scenari</a>&ndash;&gt;
-
-    <form th:action="@{/connect-scenarios}" method="post">
-        <input type="submit" value="Vai a collegare gli scenari inseriti">
-    </form>
-
-</body>
-</html>-->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
@@ -100,11 +57,7 @@
     </form>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <p>&copy; 2024 SWENG - Tutti i diritti riservati</p>
-    </div>
-</footer>
+<footer th:insert="fragments/footer.html :: footer"></footer>
 
 </body>
 </html>

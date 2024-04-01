@@ -75,6 +75,13 @@ public class ScenarioController {
 
     @PostMapping("connect-scenarios")
     public String connectScenarios(Model model){
+
+        String username = (String) httpSession.getAttribute("username");
+
+        if(username == null){
+            return "redirect:/login";
+        }
+
         model.addAttribute("message", "Connetti gli scenari che hai creato");
 
         model.addAttribute("scenarios", httpSession.getAttribute("scenarios"));
@@ -90,6 +97,12 @@ public class ScenarioController {
                                     @RequestParam(value = "wrongAnswer", required = false, defaultValue = "0") Integer wrongAnswerScenario,
                                     @RequestParam(value = "end", required = false, defaultValue = "0") Integer endingScenario,
                                     Model model) {
+
+        String username = (String) httpSession.getAttribute("username");
+
+        if(username == null){
+            return "redirect:/login";
+        }
 
         Integer currentStoryId = (Integer) httpSession.getAttribute("currentStoryId");
 

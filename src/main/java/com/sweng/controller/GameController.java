@@ -64,6 +64,12 @@ public class GameController {
 
     @PostMapping("/choose-scenario")
     public String chooseNextScenario(@RequestParam int scenarioId, Model model) {
+
+        String username = (String) httpSession.getAttribute("username");
+
+        if(username == null){
+            return "redirect:/login";
+        }
         //logger.info("Choosing next scenario with ID: {}", scenarioId);
         Scenario scenario = scenarioService.getScenarioById(scenarioId);
         User user = userService.getUserByUsername((String) httpSession.getAttribute("username"));
@@ -95,6 +101,12 @@ public class GameController {
 
     @PostMapping("/process-choice")
     public String processChoice(@RequestParam int scenarioId, @RequestParam String response, Model model){
+
+        String username = (String) httpSession.getAttribute("username");
+
+        if(username == null){
+            return "redirect:/login";
+        }
         Scenario scenario = scenarioService.getScenarioById(scenarioId);
         Riddle riddle = elementService.getRiddleById(scenario.getRiddleId());
 

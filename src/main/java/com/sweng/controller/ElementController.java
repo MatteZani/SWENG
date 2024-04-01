@@ -34,6 +34,13 @@ public class ElementController {
 
     @PostMapping("create-object/process")
     public String processCreateObject(@RequestParam("title") String title, @RequestParam("description") String description, Model model){
+
+        String username = (String) httpSession.getAttribute("username");
+
+        if(username == null){
+            return "redirect:/login";
+        }
+
         StoryObject storyObject = new StoryObject(title, description);
         elementService.createObject(storyObject);
         storyObject.setId(elementService.getMaxObjectId());
@@ -49,6 +56,12 @@ public class ElementController {
 
     @GetMapping("/create-riddle")
     public String showCreateRiddleForm(Model model) {
+
+        String username = (String) httpSession.getAttribute("username");
+
+        if(username == null){
+            return "redirect:/login";
+        }
         httpSession.setAttribute("currentRiddles", new ArrayList<Riddle>());
 
         return "create-riddle";
@@ -57,6 +70,13 @@ public class ElementController {
 
     @PostMapping("create-riddle/process")
     public String processCreateRiddle(@RequestParam("quest") String quest, @RequestParam("rightAnswer") String rightAnswer, Model model){
+
+        String username = (String) httpSession.getAttribute("username");
+
+        if(username == null){
+            return "redirect:/login";
+        }
+
         try {
             Riddle riddle = new Riddle(quest, rightAnswer);
             elementService.createRiddle(riddle);

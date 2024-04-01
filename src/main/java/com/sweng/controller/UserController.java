@@ -62,5 +62,15 @@ public class UserController {
         return "homepage";
     }
 
+    @GetMapping("/home")
+    public String home(Model model){
+        String username = (String) httpSession.getAttribute("username");
+
+        if(username == null){
+            return "redirect:/login";
+        }
+        return "homepage";
+    }
+
 
 }

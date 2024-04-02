@@ -1,69 +1,3 @@
-<!--<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Gioca la Storia</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
-</head>
-<body>
-    <header th:insert="fragments/header.html :: header"></header>
-
-    <input type="hidden" th:value="${storyScenarios}" th:name="storyScenarios">
-
-    <div class="container mt-5">
-        <h2>Scenario Corrente</h2>
-
-        &lt;!&ndash; visualizzare il messaggio di errore in cui il giocatore non ha l'oggetto richiesto dallo scenario&ndash;&gt;
-        <div th:if="${error} != null" class="alert alert-danger" role="alert">
-            <p th:text="${error}"></p>
-        </div>
-
-        <p th:text="${scenario.description}">Descrizione dello Scenario</p>
-
-        <div th:if="${endStoryMessage} != null">
-            <p th:text="${endStoryMessage}"></p>
-            <a th:href="@{/catalog}">Torna al catalogo</a>
-        </div>
-
-        <div th:unless="${endStoryMessage} != null">
-
-
-            <div th:if="${foundObjectMessage} != null">
-                <h3 th:text="${foundObjectMessage}"></h3>
-            </div>
-
-            <div th:if="${scenario.riddleId} != 0">
-                <p th:text="${riddle.answer}"></p>
-                <form th:action="@{/process-choice}" method="post">
-                    <h2>Indovinello:</h2>
-                    <p th:text="${riddleMessage}"></p>
-
-                    <textarea class="form-control" th:name="response" rows="4" cols="50"
-                              placeholder="Inserisci la risposta" required></textarea>
-                    <button type="submit" class="btn btn-info mt-2">Inserisci risposta</button>
-
-                    <input type="hidden" th:value="${scenario.id}" th:name="scenarioId">
-
-                </form>
-            </div>
-
-            <div th:if="${scenario.riddleId} == 0">
-                <h2>Scegli la tua prossima mossa:</h2>
-                <form th:action="@{/choose-scenario}" method="post">
-                    <div th:each="option : ${scenario.nextScenarios}">
-                        <button type="submit" class="btn btn-info mt-2" th:name="scenarioId" th:value="${option.id}" th:text="${option.description}">Opzione Scenario</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <footer th:insert="fragments/footer.html :: footer"></footer>
-
-</body>
-</html>-->
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -102,7 +36,7 @@
                 </div>
 
                 <div th:if="${scenario.riddleId} != 0">
-                    <!--<p class="card-text" th:text="${riddle.answer}"></p>-->
+
                     <form th:action="@{/process-choice}" method="post">
                         <h2 class="card-title">Indovinello:</h2>
                         <p class="card-text" th:text="${riddleMessage}"></p>
@@ -133,4 +67,3 @@
 
 </body>
 </html>
-

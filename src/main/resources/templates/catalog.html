@@ -18,15 +18,34 @@
     </form>
 </div>
 
+<!-- Form di Ricerca -->
+<div class="container my-4">
+    <h4>Ricerca Storie</h4>
+    <form th:action="@{/search-stories}" method="get">
+        <div class="form-row">
+            <div class="col">
+                <input type="text" class="form-control" placeholder="Titolo" name="title">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" placeholder="Categoria" name="category">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" placeholder="Creatore" name="creator">
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-primary">Cerca</button>
+            </div>
+        </div>
+    </form>
+</div>
+
 <div class="container">
     <ol>
         <li th:each="story : ${stories}">
             <div class="story">
-
                 <h3 th:text="${story.title}"></h3>
                 <p th:text="${story.plot}"></p>
                 <a class="btn btn-primary" th:href="@{/play-story(storyId=${story.id})}">Gioca questa Storia</a>
-
             </div>
         </li>
     </ol>
@@ -36,4 +55,3 @@
 
 </body>
 </html>
-

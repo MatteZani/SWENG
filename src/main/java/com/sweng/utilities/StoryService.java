@@ -10,6 +10,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -94,6 +95,28 @@ public class StoryService {
             return 0;
         }
     }
+
+
+    public List<Story> findStoriesByFilter(String title, String category, String creator) {
+        List<Object> params = new ArrayList<>();
+        String sql = "SELECT * FROM STORIE WHERE 1=1";
+
+        if (title != null && !title.trim().isEmpty()) {
+            sql += " AND TITLE LIKE ?";
+            params.add("%" + title + "%");
+        }
+        if (category != null && !category.trim().isEmpty()) {
+            sql += " AND CATEGORY = ?";
+            params.add(category);
+        }
+        if (creator != null && !creator.trim().isEmpty()) {
+            sql += " AND CREATOR = ?";
+            params.add(creator);
+        }
+
+        return jdbcTemplate.query(sql, params.toArray(), new StoryRowMapper());
+    }
+
 
 
 }

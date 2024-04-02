@@ -16,6 +16,12 @@ body {
     letter-spacing: 2px;
 }
 
+.header button{
+    position: absolute;
+    right: 1rem;
+    top: 4%;
+}
+
 .choices {
     text-align: center;
     margin-top: 50px;
@@ -41,3 +47,4 @@ body {
     margin: 0;
     font-size: 14px;
 }
+

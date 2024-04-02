@@ -114,7 +114,7 @@ public class StoryService {
             params.add(creator);
         }
 
-        return jdbcTemplate.query(sql, params.toArray(), new StoryRowMapper());
+        return jdbcTemplate.query(sql, new StoryRowMapper(), params.toArray());
     }
 
 

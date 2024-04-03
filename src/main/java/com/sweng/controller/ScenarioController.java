@@ -126,6 +126,15 @@ public class ScenarioController {
         return "connect-scenarios";
     }
 
+    @PostMapping("/update-scenario")
+    public String updateScenario(@RequestParam("scenarioId") Integer scenarioId,
+                                 @RequestParam("newDescription") String newDescription) {
+        // Aggiorna la descrizione dello scenario nel database
+        scenarioService.updateDescription(scenarioId, newDescription);
+
+        // Reindirizza alla pagina di conferma o a una nuova pagina
+        return "redirect:/confirmation-page";
+    }
 
 
 }

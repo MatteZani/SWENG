@@ -22,7 +22,6 @@ public class ScenarioService {
     @Autowired
     private HttpSession httpSession;
 
-
     @Autowired
     private StoryService storyService;
     @Autowired
@@ -138,6 +137,13 @@ public class ScenarioService {
     }
 
 
-
+    public void updateDescription(int scenarioId, String newDescription) {
+        try {
+            String sql = "UPDATE SCENARI SET DESCRIZIONE = ? WHERE ID = ?";
+            jdbcTemplate.update(sql, newDescription, scenarioId);
+        } catch (DataAccessException e) {
+            // Gestisci l'eccezione
+        }
+    }
 
 }

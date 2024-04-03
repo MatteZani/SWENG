@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifica Scenario</title>
+
+  <!-- Link per Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>Modifica uno Scenario</h2>
+
+  <form th:action="@{/update-scenario}" method="post">
+    <div class="form-group">
+      <label for="scenario">Seleziona lo scenario da modificare:</label>
+      <select class="form-control" id="scenario" name="scenarioId">
+        <option th:each="scenario : ${scenarios}" th:value="${scenario.id}" th:text="${scenario.description}"></option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="newDescription">Nuova descrizione dello scenario:</label>
+      <textarea class="form-control" id="newDescription" name="newDescription" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Modifica Scenario</button>
+  </form>
+</div>
+
+<!-- Link per Bootstrap JS (opzionale, necessario solo se si utilizzano componenti JS di Bootstrap) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

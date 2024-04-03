@@ -127,4 +127,17 @@ public class StoryController {
 
         return "catalog";
     }
+
+    @PostMapping("/edit-scenario")
+    public String editScenario(@RequestParam("storyId") Integer storyId, Model model) {
+        // Qui dovresti recuperare gli scenari associati alla storia con l'ID specificato
+        List<Scenario> scenarios = scenarioService.getScenariosByStoryId(storyId);
+
+        // Passa gli scenari al model per renderli nella pagina di modifica dello scenario
+        model.addAttribute("scenarios", scenarios);
+
+        return "edit-scenario"; // Sostituisci con il nome della tua pagina di modifica dello scenario
+    }
+
+
 }

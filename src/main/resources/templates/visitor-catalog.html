@@ -13,6 +13,9 @@
 
 <div class="header">
     <h2>Catalogo delle Storie</h2>
+    <form action="/menu">
+        <button type="submit" class="btn btn-outline-light">Torna alla home</button>
+    </form>
 </div>
 
 <div class="container">
@@ -28,12 +31,11 @@
         </li>
     </ol>
 
-    <p> Per giocare effettua la <a href="/registration">registrazione</a></p>
-    <p>Oppure effettua il <a href="/login">login</a></p>
+    <p>Per giocare effettua la <a href="/registration">registrazione</a>. Oppure effettua il <a href="/login">login</a>.</p>
+
 </div>
 
 <footer th:insert="fragments/footer.html :: footer"></footer>
 
 </body>
 </html>
-

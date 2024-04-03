@@ -3,14 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${storyName}"></title>
-</head>
-<body>
-    <p th:text="${storyTitle}"></p>
-    <p th:text="${storyPlot}"></p>
-    <p th:text="${storyCategory}"></p>
-    <p th:text="${scenariosNumber}"></p>
 
-    <footer th:insert="fragments/footer.html :: footer"></footer>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+
+<div class="header">
+    <h2>Dettaglio storia</h2>
+    <form action="/visitor-catalog">
+        <button type="submit" class="btn btn-outline-light">Torna al catalogo</button>
+    </form>
+</div>
+
+<div class="container">
+    <div class="story-container">
+        <p class="story-info"><strong>Titolo:</strong> <span th:text="${storyTitle}"></span></p>
+        <p class="story-info"><strong>Trama:</strong> <span th:text="${storyPlot}"></span></p>
+        <p class="story-info"><strong>Categoria:</strong> <span th:text="${storyCategory}"></span></p>
+        <p class="story-info"><strong>Numero di scenari:</strong> <span th:text="${scenariosNumber}"></span></p>
+    </div>
+</div>
+
+<footer th:insert="fragments/footer.html :: footer"></footer>
 
 </body>
 </html>

@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
-    <!-- Link per Bootstrap CSS -->
+
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Collegamento al file CSS personalizzato -->
     <link rel="stylesheet" type="text/css" href="../styles/styles.css">
 </head>
-<body>
 
+<body>
 <div class="header">
     <h2>Home</h2>
 </div>
@@ -20,15 +19,10 @@
         <h2>Che cosa vuoi fare?</h2>
         <a href="/create-story" class="btn btn-primary btn-lg">Crea una nuova storia</a>
         <a href="/catalog" class="btn btn-primary btn-lg">Gioca una storia</a>
-<!--        <a href="/catalog" class="btn btn-secondary btn-lg">Vai al catalogo</a>-->
     </div>
 </div>
 
 <footer th:insert="fragments/footer.html :: footer"></footer>
 
-<!-- Link per Bootstrap JS (opzionale, necessario solo se si utilizzano componenti JS di Bootstrap) -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </body>
 </html>
-

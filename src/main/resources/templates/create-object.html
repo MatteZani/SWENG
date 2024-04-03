@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crea oggetti</title>
-    <!-- Link per Bootstrap CSS -->
+
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Collegamento al file CSS personalizzato -->
     <link rel="stylesheet" type="text/css" href="../styles/styles.css">
 </head>
-<body>
 
+<body>
 <div class="header">
     <h2>Crea oggetti</h2>
 </div>
+
 <div class="container">
     <form action="/create-object/process" method="post" class="mt-4">
         <p th:text="${message}"></p>
@@ -37,7 +37,5 @@
 
 <footer th:insert="fragments/footer.html :: footer"></footer>
 
-
 </body>
 </html>
-

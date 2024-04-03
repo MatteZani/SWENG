@@ -20,6 +20,7 @@
 <div class="container my-4">
     <h4>Ricerca Storie</h4>
     <form th:action="@{/search-stories}" method="get">
+        <input type="hidden" th:name = "action" th:value = "visit">
         <div class="form-row">
             <div class="col">
                 <input type="text" class="form-control" placeholder="Titolo" name="title">
@@ -39,7 +40,7 @@
             </div>
             <div class="col">
                 <button type="submit" class="btn btn-primary">Cerca</button>
-                <a href="/catalog" class="btn btn-secondary">Rimuovi filtri</a>
+                <a href="/visitor-catalog" class="btn btn-secondary">Rimuovi filtri</a>
             </div>
         </div>
     </form>
@@ -57,6 +58,7 @@
             </div>
         </div>
     </div>
+    <p>Per giocare effettua la <a href="/registration">registrazione</a>. Oppure effettua il <a href="/login">login</a>.</p>
 </div>
 
 <!--<div class="container">
@@ -72,7 +74,6 @@
         </li>
     </ol>
 
-    <p>Per giocare effettua la <a href="/registration">registrazione</a>. Oppure effettua il <a href="/login">login</a>.</p>
 
 </div>-->
 

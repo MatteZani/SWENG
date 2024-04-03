@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Le mie Storie</title>
+
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+<body>
+
+<div class="header">
+  <h2>Le mie Storie</h2>
+  <form action="/home">
+    <button type="submit" class="btn btn-outline-light">Torna alla home</button>
+  </form>
+</div>
+
+<div th:if ="${successMessage} != null">
+  <p th:text = "${successMessage}"> </p>
+</div>
+
+<div class="container my-4">
+  <h4>Ricerca Storie</h4>
+  <form th:action="@{/search-stories}" method="get">
+    <input type="hidden" th:name = "action" th:value = "edit">
+    <div class="form-row">
+      <div class="col">
+        <input type="text" class="form-control" placeholder="Titolo" name="title">
+      </div>
+      <div class="col">
+        <select class="form-control" name="category">
+          <option value="" disabled selected hidden>Seleziona categoria</option>
+          <option value="Horror">Horror</option>
+          <option value="Azione">Azione</option>
+          <option value="Fantasy">Fantasy</option>
+          <option value="Comica">Comica</option>
+          <option value="Drammatica">Drammatica</option>
+        </select>
+      </div>
+<!--      <div class="col">-->
+<!--        <input type="text" class="form-control" placeholder="Creatore" name="creator">-->
+<!--      </div>-->
+      <div class="col">
+        <button type="submit" class="btn btn-primary">Cerca</button>
+        <a href="/owner-catalog" class="btn btn-secondary">Rimuovi filtri</a>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4" th:each="story : ${stories}">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title" th:text="${story.title}"></h5>
+          <p class="card-text" th:text="${story.plot}"></p>
+          <a class="btn btn-secondary mt-2" th:href="@{/edit-scenario(storyId=${story.id})}">Modifica Scenario</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--<div class="container">
+    <ol>
+        <li th:each="story : ${stories}">
+            <div class="story">
+                <h3 th:text="${story.title}"></h3>
+                <p th:text="${story.plot}"></p>
+                <a class="btn btn-primary" th:href="@{/play-story(storyId=${story.id})}">Gioca questa Storia</a>
+            </div>
+        </li>
+    </ol>
+</div>-->
+
+<footer th:insert="fragments/footer.html :: footer"></footer>
+
+</body>
+</html>

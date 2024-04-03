@@ -36,6 +36,8 @@ public class UserController {
         if (isValidCredentials) {
             httpSession.setAttribute("username", username);
             httpSession.setAttribute("password", password);
+
+            model.addAttribute("username", username);
             return "homepage";
         } else {
             // Reindirizza alla pagina di login con un messaggio di errore se le credenziali non sono valide
@@ -58,7 +60,7 @@ public class UserController {
         httpSession.setAttribute("username", username);
         httpSession.setAttribute("password", password);
 
-        // Reindirizzamento alla pagina "avvenuta registrazione"
+        model.addAttribute("username", username);
         return "homepage";
     }
 
@@ -69,6 +71,7 @@ public class UserController {
         if(username == null){
             return "redirect:/login";
         }
+        model.addAttribute("username", username);
         return "homepage";
     }
 

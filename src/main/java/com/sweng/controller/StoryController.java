@@ -117,14 +117,44 @@ public class StoryController {
     }
 
     @GetMapping("/search-stories")
-    public String searchStories(@RequestParam(required = false) String title, @RequestParam(required = false) String category, @RequestParam(required = false) String creator, Model model) {
+    public String searchStories(@RequestParam(required = false) String title, @RequestParam(required = false) String category,
+                                @RequestParam(required = false) String creator, @RequestParam String action, Model model) {
 
-        // Esegue la ricerca basata sui filtri forniti dall'utente
-        List<Story> stories = storyService.findStoriesByFilter(title, category, creator);
 
-        // Aggiunge i risultati della ricerca al modello
-        model.addAttribute("stories", stories);
+        if(action.equals("play")){
+            List<Story> stories = storyService.findStoriesByFilter(title, category, creator);
+            model.addAttribute("stories", stories);
 
-        return "catalog";
+            return "catalog";
+        }
+        else if(action.equals("visit")){
+            List<Story> stories = storyService.findStoriesByFilter(title, category, creator);
+            model.addAttribute("stories", stories);
+            return "visitor-catalog";
+        }
+        else{
+            List<Story> stories = storyService.findStoriesByFilter(title, category,(String) httpSession.getAttribute("username"));
+            model.addAttribute("stories", stories);
+            return "owner-catalog";
+        }
+
     }
+
+    @GetMapping("/owner-catalog")
+    public String ownerCatalog(Model model){
+        model.addAttribute("stories", storyService.getStoriesByCreator((String) httpSession.getAttribute("username")));
+
+        return "owner-catalog";
+    }
+
+    @GetMapping("/edit-scenario")
+    public String editScenario(@RequestParam("storyId") Integer storyId, Model model) {
+
+        List<Scenario> scenarios = scenarioService.getScenariosByStoryId(storyId);
+        model.addAttribute("scenarios", scenarios);
+
+        return "edit-scenario";
+    }
+
+
 }

@@ -38,15 +38,25 @@ public class StoryService {
     }
     public List<Story> getStories() {
         try {
-
             return jdbcTemplate.query("SELECT * FROM STORIE", new StoryRowMapper());
-
 
         } catch (DataAccessException e) {
             logger.error("Lanciata eccezione nel metodo getStories della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return null;
 
         }
+    }
+
+    public List<Story> getStoriesByCreator(String username){
+        try {
+            return jdbcTemplate.query("SELECT * FROM STORIE WHERE CREATOR = ?", new StoryRowMapper(), username);
+
+        } catch (DataAccessException e) {
+            logger.error("Lanciata eccezione nel metodo getStories della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
+            return null;
+
+        }
+
     }
 
     public Story getStoryById(int storyId) {

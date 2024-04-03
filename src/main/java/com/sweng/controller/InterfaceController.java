@@ -23,6 +23,12 @@ public class InterfaceController {
 
     @GetMapping("/menu")
     public String menu(Model model){
+        String username = (String) httpSession.getAttribute("username");
+        if(username != null){
+            model.addAttribute("username", username);
+            return "homepage";
+        }
+
         return "menu";
     }
 

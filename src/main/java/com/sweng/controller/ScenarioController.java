@@ -1,7 +1,9 @@
 package com.sweng.controller;
 
 import com.sweng.entity.Scenario;
+import com.sweng.entity.Story;
 import com.sweng.utilities.ScenarioService;
+import com.sweng.utilities.StoryService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ScenarioController {
@@ -19,9 +22,11 @@ public class ScenarioController {
     @Autowired
     private HttpSession httpSession;
 
-    // URL di connessione al database
     @Autowired
     private ScenarioService scenarioService;
+
+    @Autowired
+    private StoryService storyService;
 
 
     @Autowired
@@ -134,6 +139,9 @@ public class ScenarioController {
 
         // Aggiunge un messaggio di successo al modello
         model.addAttribute("successMessage", "Scenario modificato con successo!");
+
+        List<Story> stories = storyService.getStoriesByCreator((String) httpSession.getAttribute("username"));
+        model.addAttribute("stories", stories);
 
         return "owner-catalog";
     }

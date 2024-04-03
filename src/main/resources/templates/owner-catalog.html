@@ -23,7 +23,7 @@
 <div class="container my-4">
   <h4>Ricerca Storie</h4>
   <form th:action="@{/search-stories}" method="get">
-    <input type="hidden" th:name = "action" th:value = "modify">
+    <input type="hidden" th:name = "action" th:value = "edit">
     <div class="form-row">
       <div class="col">
         <input type="text" class="form-control" placeholder="Titolo" name="title">
@@ -38,9 +38,9 @@
           <option value="Drammatica">Drammatica</option>
         </select>
       </div>
-      <div class="col">
-        <input type="text" class="form-control" placeholder="Creatore" name="creator">
-      </div>
+<!--      <div class="col">-->
+<!--        <input type="text" class="form-control" placeholder="Creatore" name="creator">-->
+<!--      </div>-->
       <div class="col">
         <button type="submit" class="btn btn-primary">Cerca</button>
         <a href="/owner-catalog" class="btn btn-secondary">Rimuovi filtri</a>

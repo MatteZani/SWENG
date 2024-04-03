@@ -120,19 +120,30 @@ public class StoryController {
     public String searchStories(@RequestParam(required = false) String title, @RequestParam(required = false) String category,
                                 @RequestParam(required = false) String creator, @RequestParam String action, Model model) {
 
-        List<Story> stories = storyService.findStoriesByFilter(title, category, creator);
-        model.addAttribute("stories", stories);
-        if(action.equals("play"))
+
+        if(action.equals("play")){
+            List<Story> stories = storyService.findStoriesByFilter(title, category, creator);
+            model.addAttribute("stories", stories);
+
             return "catalog";
-        else if(action.equals("modify"))
-            return "owner-catalog";
-        else
+        }
+        else if(action.equals("visit")){
+            List<Story> stories = storyService.findStoriesByFilter(title, category, creator);
+            model.addAttribute("stories", stories);
             return "visitor-catalog";
+        }
+        else{
+            List<Story> stories = storyService.findStoriesByFilter(title, category,(String) httpSession.getAttribute("username"));
+            model.addAttribute("stories", stories);
+            return "owner-catalog";
+        }
+
     }
 
     @GetMapping("/owner-catalog")
     public String ownerCatalog(Model model){
-        model.addAttribute("stories", storyService.getStories());
+        model.addAttribute("stories", storyService.getStoriesByCreator((String) httpSession.getAttribute("username")));
+
         return "owner-catalog";
     }
 

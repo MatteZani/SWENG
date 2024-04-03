@@ -5,7 +5,6 @@ public class StoryObject {
     private int id;
     private String name;
     private String description;
-
     private int storyId;
 
     public StoryObject(int id, String name, String description, int storyId) {

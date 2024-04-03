@@ -142,7 +142,8 @@ public class ScenarioService {
             String sql = "UPDATE SCENARI SET DESCRIZIONE = ? WHERE ID = ?";
             jdbcTemplate.update(sql, newDescription, scenarioId);
         } catch (DataAccessException e) {
-            // Gestisci l'eccezione
+            logger.error("Errore nell'eccezione al database nel metodo updateDescription della classe ScenarioService." +
+                    "Messaggio: {}, Causa: {}",e.getMessage(), e.getCause());
         }
     }
 

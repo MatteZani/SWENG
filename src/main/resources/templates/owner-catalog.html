@@ -16,10 +16,14 @@
   </form>
 </div>
 
+<div th:if ="${successMessage} != null">
+  <p th:text = "${successMessage}"> </p>
+</div>
 
 <div class="container my-4">
   <h4>Ricerca Storie</h4>
   <form th:action="@{/search-stories}" method="get">
+    <input type="hidden" th:name = "action" th:value = "modify">
     <div class="form-row">
       <div class="col">
         <input type="text" class="form-control" placeholder="Titolo" name="title">

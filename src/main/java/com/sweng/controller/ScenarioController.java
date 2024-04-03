@@ -128,14 +128,14 @@ public class ScenarioController {
 
     @PostMapping("/update-scenario")
     public String updateScenario(@RequestParam("scenarioId") Integer scenarioId,
-                                 @RequestParam("newDescription") String newDescription) {
+                                 @RequestParam("newDescription") String newDescription,Model model) {
 
         scenarioService.updateDescription(scenarioId, newDescription);
 
         // Aggiunge un messaggio di successo al modello
-        //model.addAttribute("successMessage", "Scenario modificato con successo");
+        model.addAttribute("successMessage", "Scenario modificato con successo!");
 
-        return "redirect:/owner-catalog";
+        return "owner-catalog";
     }
 
 

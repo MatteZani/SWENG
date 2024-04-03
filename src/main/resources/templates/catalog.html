@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalogo</title>
-    <!-- Link per Bootstrap CSS -->
+
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Collegamento al file CSS personalizzato -->
     <link rel="stylesheet" type="text/css" href="../styles/styles.css">
 </head>
 <body>
@@ -18,7 +17,7 @@
     </form>
 </div>
 
-<!-- Form di Ricerca -->
+
 <div class="container my-4">
     <h4>Ricerca Storie</h4>
     <form th:action="@{/search-stories}" method="get">
@@ -27,19 +26,41 @@
                 <input type="text" class="form-control" placeholder="Titolo" name="title">
             </div>
             <div class="col">
-                <input type="text" class="form-control" placeholder="Categoria" name="category">
+                <select class="form-control" name="category">
+                    <option value="" disabled selected hidden>Seleziona categoria</option>
+                    <option value="Horror">Horror</option>
+                    <option value="Azione">Azione</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Comica">Comica</option>
+                    <option value="Drammatica">Drammatica</option>
+                </select>
             </div>
             <div class="col">
                 <input type="text" class="form-control" placeholder="Creatore" name="creator">
             </div>
             <div class="col">
                 <button type="submit" class="btn btn-primary">Cerca</button>
+                <a href="/catalog" class="btn btn-secondary">Rimuovi filtri</a>
             </div>
         </div>
     </form>
 </div>
 
 <div class="container">
+    <div class="row">
+        <div class="col-md-4" th:each="story : ${stories}">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${story.title}"></h5>
+                    <p class="card-text" th:text="${story.plot}"></p>
+                    <a class="btn btn-primary" th:href="@{/play-story(storyId=${story.id})}">Gioca questa Storia</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div class="container">
     <ol>
         <li th:each="story : ${stories}">
             <div class="story">
@@ -49,7 +70,7 @@
             </div>
         </li>
     </ol>
-</div>
+</div>-->
 
 <footer th:insert="fragments/footer.html :: footer"></footer>
 

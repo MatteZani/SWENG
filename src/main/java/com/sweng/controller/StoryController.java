@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class StoryController {
@@ -113,7 +114,17 @@ public class StoryController {
 
         Scenario initialScenario = storyScenarios.get(0);
         return gameService.loadScenario(initialScenario, model);
+    }
 
+    @GetMapping("/search-stories")
+    public String searchStories(@RequestParam(required = false) String title, @RequestParam(required = false) String category, @RequestParam(required = false) String creator, Model model) {
 
+        // Esegue la ricerca basata sui filtri forniti dall'utente
+        List<Story> stories = storyService.findStoriesByFilter(title, category, creator);
+
+        // Aggiunge i risultati della ricerca al modello
+        model.addAttribute("stories", stories);
+
+        return "catalog";
     }
 }

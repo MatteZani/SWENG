@@ -4,14 +4,19 @@
     <meta charset="UTF-8">
     <title>Modifica Scenario</title>
 
-  <!-- Link per Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="../styles/styles.css">
 </head>
 <body>
 
-<div class="container">
+<div class="header">
   <h2>Modifica uno Scenario</h2>
+  <form action="/owner-catalog">
+    <button type="submit" class="btn btn-outline-light">Torna a selezione scenario</button>
+  </form>
+</div>
+
+<div class="container">
 
   <form th:action="@{/update-scenario}" method="post">
     <div class="form-group">
@@ -28,7 +33,5 @@
   </form>
 </div>
 
-<!-- Link per Bootstrap JS (opzionale, necessario solo se si utilizzano componenti JS di Bootstrap) -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

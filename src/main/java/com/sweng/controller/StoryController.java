@@ -128,15 +128,19 @@ public class StoryController {
         return "catalog";
     }
 
-    @PostMapping("/edit-scenario")
-    public String editScenario(@RequestParam("storyId") Integer storyId, Model model) {
-        // Qui dovresti recuperare gli scenari associati alla storia con l'ID specificato
-        List<Scenario> scenarios = scenarioService.getScenariosByStoryId(storyId);
+    @GetMapping("/owner-catalog")
+    public String ownerCatalog(Model model){
+        model.addAttribute("stories", storyService.getStories());
+        return "owner-catalog";
+    }
 
-        // Passa gli scenari al model per renderli nella pagina di modifica dello scenario
+    @GetMapping("/edit-scenario")
+    public String editScenario(@RequestParam("storyId") Integer storyId, Model model) {
+
+        List<Scenario> scenarios = scenarioService.getScenariosByStoryId(storyId);
         model.addAttribute("scenarios", scenarios);
 
-        return "edit-scenario"; // Sostituisci con il nome della tua pagina di modifica dello scenario
+        return "edit-scenario";
     }
 
 

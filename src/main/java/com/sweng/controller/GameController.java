@@ -7,6 +7,7 @@ import com.sweng.entity.User;
 import com.sweng.utilities.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,7 +43,7 @@ public class GameController {
     @GetMapping("/start/{storyId}")
     public String startGame(int storyId, Model model, HttpSession session) {
         String username = (String) httpSession.getAttribute("username");
-        if(username==null){
+        if (username == null) {
             return "login";
         }
 
@@ -56,7 +57,7 @@ public class GameController {
 
 
     @PostMapping("/pagina-prova")
-    public String prova(@RequestParam String response, Model model){
+    public String prova(@RequestParam String response, Model model) {
         model.addAttribute("Risposta", response);
 
         return "prova";
@@ -67,7 +68,7 @@ public class GameController {
 
         String username = (String) httpSession.getAttribute("username");
 
-        if(username == null){
+        if (username == null) {
             return "redirect:/login";
         }
         //logger.info("Choosing next scenario with ID: {}", scenarioId);
@@ -97,14 +98,12 @@ public class GameController {
     }
 
 
-
-
     @PostMapping("/process-choice")
-    public String processChoice(@RequestParam int scenarioId, @RequestParam String response, Model model){
+    public String processChoice(@RequestParam int scenarioId, @RequestParam String response, Model model) {
 
         String username = (String) httpSession.getAttribute("username");
 
-        if(username == null){
+        if (username == null) {
             return "redirect:/login";
         }
         Scenario scenario = scenarioService.getScenarioById(scenarioId);
@@ -113,13 +112,43 @@ public class GameController {
         Scenario scenarioGiusto = scenarioService.getScenarioGiusto(scenarioId);
         Scenario scenarioSbagliato = scenarioService.getScenarioSbagliato(scenarioId);
 
-        if(response.equals(riddle.getAnswer())){
+        if (response.equals(riddle.getAnswer())) {
             return chooseNextScenario(scenarioGiusto.getId(), model);
-        }
-        else{
+        } else {
             return chooseNextScenario(scenarioSbagliato.getId(), model);
         }
     }
 
+    @PostMapping("/save-game")
+    public ResponseEntity<String> saveGame(@RequestParam("storyId") int storyId) {
+
+        User user = (User) httpSession.getAttribute("user");
+        GameSession gameSession = (GameSession) httpSession.getAttribute("gameSession");
+        gameService.saveGameSession(gameSession);
+
+        return ResponseEntity.ok("Sessione di gioco salvata con successo.");
+    }
+
+    @GetMapping("/load-game")
+    public String loadGame(@RequestParam("storyId") int storyId, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "login";
+        }
+
+        GameSession gameSession = gameService.loadGameSession(user.getUsername(), storyId);
+        if (gameSession == null) {
+            model.addAttribute("error", "Impossibile trovare una sessione di gioco salvata.");
+            return "catalog";
+        }
+
+        // Aggiorna la sessione HTTP con la sessione di gioco
+        session.setAttribute("gameSession", gameSession);
+
+        model.addAttribute("scenario", gameSession.getCurrentScenario());
+        return "play-story";
+
+
+    }
 
 }

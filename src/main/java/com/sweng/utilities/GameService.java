@@ -75,4 +75,42 @@ public class GameService {
         return "play-story";
     }
 
+    public void saveGameSession(GameSession gameSession) {
+        String checkSql = "SELECT COUNT(*) FROM sessione WHERE username = ? AND story_id = ?";
+        int count = jdbcTemplate.queryForObject(checkSql, new Object[]{gameSession.getUser().getUsername(), gameSession.getStoryId()}, Integer.class);
+
+        if (count > 0) {
+            // Aggiorna la sessione esistente
+            String updateSql = "UPDATE sessione SET current_scenario_id = ? WHERE username = ? AND story_id = ?";
+            jdbcTemplate.update(updateSql, gameSession.getCurrentScenario(), gameSession.getUser().getUsername(), gameSession.getStoryId());
+        } else {
+            // Crea una nuova sessione
+            String insertSql = "INSERT INTO sessione (username, story_id, current_scenario_id) VALUES (?, ?, ?)";
+            jdbcTemplate.update(insertSql, gameSession.getUser().getUsername(), gameSession.getStoryId(), gameSession.getCurrentScenario());
+        }
+    }
+
+    public GameSession loadGameSession(String username, int storyId) {
+        try {
+            String sql = "SELECT * FROM sessione WHERE username = ? AND story_id = ?";
+            return jdbcTemplate.queryForObject(sql, new Object[]{username, storyId}, (rs, rowNum) -> {
+                User user = new User(); // Dovresti avere un modo per caricare l'utente basato su username
+                user.setUsername(rs.getString("username"));
+
+                Story story = new Story(); // Dovresti avere un modo per caricare la storia basato su storyId
+                story.setId(rs.getInt("story_id"));
+
+                GameSession gameSession = new GameSession(user, story);
+                gameSession.setCurrentScenario(rs.getInt("current_scenario_id"));
+                // logica inventario??
+
+                return gameSession;
+            });
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
+
 }

@@ -19,12 +19,11 @@ public class GameSession {
         this.storyId = story.getId();
     }
 
-
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUsername(User user) {
         this.user = user;
     }
 
@@ -44,9 +43,6 @@ public class GameSession {
         this.currentScenario = currentScenario;
     }
 
-    public List<Integer> getInventory() {
-        return inventory;
-    }
 
     public void addToInventory(int objectId) {
         if (!inventory.contains(objectId)) {
@@ -54,20 +50,6 @@ public class GameSession {
         }
     }
 
-    public void removeFromInventory(int objectId) {
-        inventory.remove(objectId);
-    }
-
-    public boolean isObjectInInventory(int objectId) {
-        return inventory.contains(objectId);
-    }
-
-    public void advanceToNextScenario(String scenarioId) {
-    }
-
-    public boolean solveRiddle(String riddleId, String userAnswer) {
-        return false;
-    }
 
     public int getStoryId() {
         return this.storyId;

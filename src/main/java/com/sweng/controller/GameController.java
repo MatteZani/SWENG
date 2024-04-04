@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -115,7 +116,7 @@ public class GameController {
         //return "homepage";
     }
 
-       @GetMapping("/load-game")
+    @GetMapping("/load-game")
     public String loadGame(@RequestParam("storyId") int storyId, Model model) {
         User user = userService.getUserByUsername((String) httpSession.getAttribute("username"));
         if (user == null) {
@@ -126,7 +127,7 @@ public class GameController {
         Integer currentScenarioId = jdbcTemplate.queryForObject(sql, Integer.class, user.getUsername(), storyId);
         Scenario currentScenario = scenarioService.getScenarioById(currentScenarioId);
 
-        return gameService.loadScenario(currentScenario,model);
+        return gameService.loadScenario(currentScenario, model);
 
         /*GameSession gameSession = gameService.loadGameSession(user.getUsername(), storyId);
         if (gameSession == null) {
@@ -136,5 +137,20 @@ public class GameController {
         httpSession.setAttribute("gameSession", gameSession);
         return "redirect:/play-story"; // Usa redirect per caricare lo scenario corrente della storia*/
     }
+
+    @GetMapping("/cancel-game")
+    public String cancelGame(@RequestParam("storyId") int storyId, Model model){
+        String username = (String) httpSession.getAttribute("username");
+        gameService.deleteGameSession(storyId, username);
+        elementService.deleteObjectFromInventory(storyId, username);
+
+        model.addAttribute("stories", storyService.getStories());
+        model.addAttribute("savedStories", storyService.getSavedIdStories(username));
+
+        return "catalog";
+
+
+    }
+
 
 }

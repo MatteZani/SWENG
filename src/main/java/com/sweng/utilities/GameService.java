@@ -53,6 +53,8 @@ public class GameService {
 
         if(scenario.getFoundObjectId() != 0){
             StoryObject foundObject = elementService.getStoryObjectById(scenario.getFoundObjectId());
+            String username = (String) httpSession.getAttribute("username");
+            elementService.addObjectToInventory(storyId, scenario.getFoundObjectId(), username);
             model.addAttribute("foundObjectMessage", "Ti è stato aggiunto all'inventario il seguente oggetto: " + foundObject.getName());
         }
 
@@ -68,17 +70,22 @@ public class GameService {
     public void saveGameSession(GameSession gameSession) {
         String checkSql = "SELECT COUNT(*) FROM PARTITE WHERE USERNAME = ? AND ID_STORIA = ?";
         // Usare gli argomenti direttamente nella chiamata
-        int count = jdbcTemplate.queryForObject(checkSql, Integer.class, gameSession.getUser().getUsername(), gameSession.getStoryId());
+        int count = jdbcTemplate.queryForObject(checkSql, Integer.class, gameSession.getUser().getUsername(), gameSession.getCurrentStory().getId());
 
         if (count > 0) {
             // Aggiorna la sessione esistente
             String updateSql = "UPDATE PARTITE SET SCENARIO_CORRENTE = ? WHERE USERNAME = ? AND ID_STORIA = ?";
-            jdbcTemplate.update(updateSql, gameSession.getCurrentScenario(), gameSession.getUser().getUsername(), gameSession.getStoryId());
+            jdbcTemplate.update(updateSql, gameSession.getCurrentScenario(), gameSession.getUser().getUsername(), gameSession.getCurrentStory().getId());
         } else {
             // Crea una nuova sessione
             String insertSql = "INSERT INTO PARTITE (USERNAME, ID_STORIA, SCENARIO_CORRENTE) VALUES (?, ?, ?)";
-            jdbcTemplate.update(insertSql, gameSession.getUser().getUsername(), gameSession.getStoryId(), gameSession.getCurrentScenario());
+            jdbcTemplate.update(insertSql, gameSession.getUser().getUsername(), gameSession.getCurrentStory().getId(), gameSession.getCurrentScenario());
         }
+    }
+
+    public void deleteGameSession(Integer storyId, String username){
+        String sql = "DELETE FROM PARTITE WHERE USERNAME = ? AND ID_STORIA = ?";
+        jdbcTemplate.update(sql, username, storyId);
     }
 
 }

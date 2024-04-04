@@ -8,6 +8,7 @@ public class GameSession {
     private User user;
     private Story currentStory;
     private int currentScenario;
+
     private List<Integer> inventory;
     private int storyId;
 

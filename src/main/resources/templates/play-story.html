@@ -13,6 +13,16 @@
 <input type="hidden" th:value="${storyScenarios}" th:name="storyScenarios">
 
 <div class="container mt-5">
+
+    <!-- Aggiunto il pulsante "Salva partita" -->
+    <div class="text-right mb-3">
+        <form th:action="@{/save-game}" method="post">
+            <input type="hidden" th:name="storyId" th:value="${storyId}" />
+            <input type="hidden" th:name="scenarioId" th:value="${scenario.id}" />
+            <button type="submit" class="btn btn-success">Salva partita</button>
+        </form>
+    </div>
+
     <div class="card">
         <div class="card-body">
             <h2 class="card-title">Scenario Corrente</h2>

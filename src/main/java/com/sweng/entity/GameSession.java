@@ -11,12 +11,12 @@ public class GameSession {
     private List<Integer> inventory;
     private int storyId;
 
-    public GameSession(User user, Story story) {
+    public GameSession() {
+    }
+    public GameSession(Story story, User user, Integer currentScenario) {
         this.user = user;
         this.currentStory = story;
-        this.currentScenario = story.getInitialScenario();
-        this.inventory = new ArrayList<>();
-        this.storyId = story.getId();
+        this.currentScenario = currentScenario;
     }
 
     public User getUser() {
@@ -42,14 +42,6 @@ public class GameSession {
     public void setCurrentScenario(int currentScenario) {
         this.currentScenario = currentScenario;
     }
-
-
-    public void addToInventory(int objectId) {
-        if (!inventory.contains(objectId)) {
-            inventory.add(objectId);
-        }
-    }
-
 
     public int getStoryId() {
         return this.storyId;

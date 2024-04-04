@@ -17,6 +17,10 @@
     </form>
 </div>
 
+<div th:if ="${savedMessage} != null">
+    <p th:text = "${savedMessage}"> </p>
+</div>
+
 
 <div class="container my-4">
     <h4>Ricerca Storie</h4>
@@ -54,7 +58,13 @@
                 <div class="card-body">
                     <h5 class="card-title" th:text="${story.title}"></h5>
                     <p class="card-text" th:text="${story.plot}"></p>
-                    <a class="btn btn-primary" th:href="@{/play-story(storyId=${story.id})}">Gioca questa Storia</a>
+
+                    <div th:if="${savedStories.contains(story.id)}"> <!--controllo se id di ogni storia c'è negli id di storie salvate-->
+                        <a class="btn btn-primary" th:href="@{/load-game(storyId=${story.id})}">Riprendi</a>
+                    </div>
+                    <div th:unless="${savedStories.contains(story.id)}">
+                        <a class="btn btn-primary" th:href="@{/play-story(storyId=${story.id})}">Gioca questa Storia</a>
+                    </div>
                 </div>
             </div>
         </div>

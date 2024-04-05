@@ -17,6 +17,10 @@ public class Scenario {
     public Scenario(){
 
     }
+
+    public Scenario(String description){
+        this.description = description;
+    }
     public Scenario(String description, int storyId) {
         this.description = description;
         this.storyId = storyId;

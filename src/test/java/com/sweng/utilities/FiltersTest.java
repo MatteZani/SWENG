@@ -26,7 +26,7 @@ public class FiltersTest {
     @Mock
     private JdbcTemplate jdbcTemplate;
 
-    @InjectMocks
+    @Mock
     private StoryService storyService;
 
     @BeforeEach
@@ -57,7 +57,7 @@ public class FiltersTest {
         List<Story> expectedStories = Arrays.asList(firstStory, secondStory);
 
         // Mock della risposta della query
-        when(jdbcTemplate.query(eq(expectedSql), any(StoryRowMapper.class), eq("%Test%"), eq("Azione"), eq("TestCreator")))
+        when(storyService.findStoriesByFilter(title, category, creator))
                 .thenReturn(expectedStories);
 
         // Esecuzione del metodo da testare

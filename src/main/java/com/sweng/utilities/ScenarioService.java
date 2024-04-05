@@ -24,6 +24,7 @@ public class ScenarioService {
 
     @Autowired
     private StoryService storyService;
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

@@ -1,24 +1,23 @@
 package com.sweng.utilities;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import com.sweng.entity.Story;
 import com.sweng.mapper.StoryRowMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class FiltersTest {
@@ -158,21 +157,58 @@ public class FiltersTest {
     }
 
     @Test
-    void testSearchStoriesWithNullFilters() {
-        // given
+    void storiesFilteredByTitleAndCategory() {
+        StoryService storyService = mock(StoryService.class);
+
+        // Definizione dei filtri di ricerca
+        String titleFilter = "Avventura";
+        String categoryFilter = "Fantasy";
+        int initialScenarioId = 1;
+
+        // Creazione di una lista di storie attese come risultato
         List<Story> expectedStories = Arrays.asList(
-                new Story("Title 1", "Plot 1", 1, "Creator 1", "Horror"),
-                new Story("Title 2", "Plot 2", 2, "Creator 2", "Fantasy")
+                new Story(1, "Avventura nel bosco incantato", "Il bosco incantato è pieno di misteri", initialScenarioId, "Fantasy", "Alice"),
+                new Story(2, "Avventura sulle montagne", "Le montagne nascondono segreti antichi", initialScenarioId, "Fantasy", "Bob")
         );
 
-        when(storyService.findStoriesByFilter(null, null, null)).thenReturn(expectedStories);
+        // Configurazione del comportamento atteso del servizio di ricerca storie
+        when(storyService.findStoriesByFilter(titleFilter, categoryFilter, null))
+                .thenReturn(expectedStories);
 
-        // when
-        List<Story> actualStories = storyService.findStoriesByFilter(null, null, null);
+        // When: Esecuzione dell'azione da testare
+        List<Story> actualStories = storyService.findStoriesByFilter(titleFilter, categoryFilter, null);
 
-        // then
-        assertEquals(expectedStories.size(), actualStories.size());
-        assertEquals(expectedStories, actualStories);
+        // Then: Verifica che il risultato sia quello atteso
+        assertFalse(actualStories.isEmpty());
+
+        assertTrue(actualStories.stream()
+                .allMatch(story -> story.getTitle().contains(titleFilter) && story.getCategory().equals(categoryFilter)));
+
+        verify(storyService).findStoriesByFilter(titleFilter, categoryFilter, null);
+    }
+
+    @Test
+    void noStoriesFoundForGivenFilters() {
+
+        StoryService storyService = mock(StoryService.class);
+        // Definizione dei filtri di ricerca che non produrranno risultati
+        String titleFilter = "TitoloInesistente";
+        String categoryFilter = "CategoriaInesistente";
+
+        // Configurazione del mock del StoryService per restituire una lista vuota
+        // quando invocato con i filtri che non corrispondono a nessuna storia
+        when(storyService.findStoriesByFilter(titleFilter, categoryFilter, null))
+                .thenReturn(new ArrayList<>());
+
+        // When: Esecuzione dell'azione da testare
+        List<Story> actualStories = storyService.findStoriesByFilter(titleFilter, categoryFilter, null);
+
+        // Then: Verifica dei risultati
+        // Asserzione che la lista di storie restituita sia effettivamente vuota
+        assertTrue(actualStories.isEmpty());
+
+        // Verifica che il metodo findStoriesByFilter sia stato chiamato con i parametri corretti
+        verify(storyService).findStoriesByFilter(titleFilter, categoryFilter, null);
     }
 
 

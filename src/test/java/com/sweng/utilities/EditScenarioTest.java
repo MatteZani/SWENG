@@ -9,10 +9,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.ui.Model;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 @SpringBootTest
@@ -31,93 +33,50 @@ public class EditScenarioTest {
     private JdbcTemplate jdbcTemplate;
 
     @Test
-    void testUpdateDescription() {
+    void testUpdateDescription() throws SQLException {
         // given
         int scenarioId = 1;
-        String newDescription = "New Description";
+        String expectedDescription = "New Description";
+        String expectedSql = "UPDATE SCENARI SET DESCRIZIONE = ? WHERE ID = ?";
 
         // when
-        scenarioService.updateDescription(scenarioId, newDescription);
-        when(scenarioService.getScenarioById(1)).thenReturn(new Scenario(newDescription));
+        when(scenarioService.updateDescription(scenarioId, expectedDescription)).thenReturn(expectedDescription);
+        String actualDescription = scenarioService.updateDescription(scenarioId, expectedDescription);
         // then
-        assertEquals(newDescription, scenarioService.getScenarioById(1).getDescription());
+        assertEquals(expectedDescription, actualDescription);
     }
-//
-//    @Test
-//    void testUpdateScenario() {
-//        // given
-//        int scenarioId = 1;
-//        String newDescription = "New Description";
-//        List<Story> stories = new ArrayList<>();
-//
-//        when(storyService.getStoriesByCreator("testUser")).thenReturn(stories);
-//
-//        // when
-//        //String result = ScenarioController.updateScenario(scenarioId, newDescription, model);
-//
-//        // then
-//        verify(scenarioService).updateDescription(scenarioId, newDescription);
-//        verify(model).addAttribute("successMessage", "Scenario modificato con successo!");
-//        verify(model).addAttribute("stories", stories);
-//        //assertEquals("owner-catalog", result);
-//    }
-//
-////    @Test
-////    void testUpdateScenarioWithNullDescription() {
-////        // given
-////        int scenarioId = 1;
-////        String newDescription = null;
-////        List<Story> stories = new ArrayList<>();
-////
-////        when(storyService.getStoriesByCreator("testUser")).thenReturn(stories);
-////
-////        // when
-////        String result = ScenarioController.updateScenario(scenarioId, newDescription, model);
-////
-////        // then
-////        verify(scenarioService).updateDescription(scenarioId, newDescription);
-////        verify(model).addAttribute("successMessage", "Scenario modificato con successo!");
-////        verify(model).addAttribute("stories", stories);
-////        assertEquals("owner-catalog", result);
-////    }
-//
-//    @Test
-//    void testUpdateScenarioWithEmptyDescription() {
-//        // given
-//        int scenarioId = 1;
-//        String newDescription = "";
-//        List<Story> stories = new ArrayList<>();
-//
-//        when(storyService.getStoriesByCreator("testUser")).thenReturn(stories);
-//
-//        // when
-//        String result = ScenarioController.updateScenario(scenarioId, newDescription, model);
-//
-//        // then
-//        verify(scenarioService).updateDescription(scenarioId, newDescription);
-//        verify(model).addAttribute("successMessage", "Scenario modificato con successo!");
-//        verify(model).addAttribute("stories", stories);
-//        assertEquals("owner-catalog", result);
-//    }
-//
-//    @Test
-//    void testUpdateScenarioWithInvalidScenarioId() {
-//        // given
-//        int scenarioId = -1;
-//        String newDescription = "New Description";
-//        List<Story> stories = new ArrayList<>();
-//
-//        when(storyService.getStoriesByCreator("testUser")).thenReturn(stories);
-//
-//        // when
-//        String result = ScenarioController.updateScenario(scenarioId, newDescription, model);
-//
-//        // then
-//        verify(scenarioService).updateDescription(scenarioId, newDescription);
-//        verify(model).addAttribute("successMessage", "Scenario modificato con successo!");
-//        verify(model).addAttribute("stories", stories);
-//        assertEquals("owner-catalog", result);
-//    }
-//
-//
+
+
+    @Test
+    void testUpdateScenarioWithNullDescription() throws SQLException {
+        // given
+        int scenarioId = 1;
+        String newDescription = null;
+        List<Story> stories = new ArrayList<>();
+
+        when(storyService.getStoriesByCreator("testUser")).thenReturn(stories);
+
+        // when
+        when(scenarioService.updateDescription(scenarioId, null)).thenThrow(new SQLException());
+
+        Exception exception = assertThrows(SQLException.class, () -> {
+            scenarioService.updateDescription(1, newDescription);
+        });
+    }
+
+    @Test
+    void testUpdateScenarioWithInvalidScenarioId() throws SQLException {
+         //given
+        int scenarioId = -1;
+        String newDescription = "New Description";
+        String expected = null;
+
+        // when
+        when(scenarioService.updateDescription(scenarioId, newDescription)).thenReturn(expected);
+        String result = scenarioService.updateDescription(scenarioId, newDescription);
+
+        // then
+        assertEquals(expected, null);
+    }
+
 }

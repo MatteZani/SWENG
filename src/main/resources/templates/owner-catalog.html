@@ -38,9 +38,7 @@
           <option value="Drammatica">Drammatica</option>
         </select>
       </div>
-<!--      <div class="col">-->
-<!--        <input type="text" class="form-control" placeholder="Creatore" name="creator">-->
-<!--      </div>-->
+
       <div class="col">
         <button type="submit" class="btn btn-primary">Cerca</button>
         <a href="/owner-catalog" class="btn btn-secondary">Rimuovi filtri</a>
@@ -56,24 +54,12 @@
         <div class="card-body">
           <h5 class="card-title" th:text="${story.title}"></h5>
           <p class="card-text" th:text="${story.plot}"></p>
-          <a class="btn btn-secondary mt-2" th:href="@{/edit-scenario(storyId=${story.id})}">Modifica Scenario</a>
+          <a class="btn btn-primary mt-2" th:href="@{/edit-scenario(storyId=${story.id})}">Modifica Scenario</a>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<!--<div class="container">
-    <ol>
-        <li th:each="story : ${stories}">
-            <div class="story">
-                <h3 th:text="${story.title}"></h3>
-                <p th:text="${story.plot}"></p>
-                <a class="btn btn-primary" th:href="@{/play-story(storyId=${story.id})}">Gioca questa Storia</a>
-            </div>
-        </li>
-    </ol>
-</div>-->
 
 <footer th:insert="fragments/footer.html :: footer"></footer>
 

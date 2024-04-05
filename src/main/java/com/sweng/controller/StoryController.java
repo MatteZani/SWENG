@@ -1,6 +1,9 @@
 package com.sweng.controller;
 
-import com.sweng.entity.*;
+import com.sweng.entity.Scenario;
+import com.sweng.entity.Story;
+import com.sweng.entity.StoryBuilder;
+import com.sweng.entity.StoryObject;
 import com.sweng.utilities.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +74,9 @@ public class StoryController {
             return "redirect:/login";
         }
         model.addAttribute("stories", storyService.getStories());
+        //PROVAAAAAA
+        model.addAttribute("savedStories", storyService.getSavedIdStories(username));
+
         httpSession.removeAttribute("currentStoryId");
         httpSession.removeAttribute("currentStoryObjects");
         httpSession.removeAttribute("currentRiddles");
@@ -113,6 +119,8 @@ public class StoryController {
         }
 
         Scenario initialScenario = storyScenarios.get(0);
+
+        model.addAttribute("storyId", storyId);
         return gameService.loadScenario(initialScenario, model);
     }
 

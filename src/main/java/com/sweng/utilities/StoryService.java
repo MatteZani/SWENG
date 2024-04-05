@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -41,9 +42,20 @@ public class StoryService {
             return jdbcTemplate.query("SELECT * FROM STORIE", new StoryRowMapper());
 
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo getStories della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
+            logger.error("Lanciata eccezione nel metodo getStories della classe StoryService. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return null;
 
+        }
+    }
+
+    public List<Integer> getSavedIdStories(String username) { //
+        try {
+            List<Integer> savedIdStories = jdbcTemplate.queryForList("SELECT ID_STORIA FROM PARTITE WHERE USERNAME = ?", Integer.class, username);
+            return savedIdStories;
+            //return jdbcTemplate.query("SELECT * FROM PARTITE WHERE USERNAME = ?",  new StoryRowMapper(), username);
+        } catch (DataAccessException e) {
+            logger.error("Errore nel metodo getSavedStories della classe StoryService. Causa: {}. Messaggio: {}", e.getCause(), e.getMessage());
+            return Collections.emptyList(); // Restituisci una lista vuota in caso di errore o se non ci sono storie salvate
         }
     }
 
@@ -52,9 +64,8 @@ public class StoryService {
             return jdbcTemplate.query("SELECT * FROM STORIE WHERE CREATOR = ?", new StoryRowMapper(), username);
 
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo getStories della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
+            logger.error("Lanciata eccezione nel metodo getStoriesByCreator della classe StoryService.. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return null;
-
         }
 
     }
@@ -124,9 +135,14 @@ public class StoryService {
             params.add(creator);
         }
 
-        return jdbcTemplate.query(sql, new StoryRowMapper(), params.toArray());
+        //return jdbcTemplate.query(sql, new StoryRowMapper(), params.toArray());
+        try { // Aggiunto per test *********************************************************************************
+            return jdbcTemplate.query(sql, new StoryRowMapper(), params.toArray());
+        } catch (DataAccessException e) {
+            // Gestione dell'eccezione di accesso ai dati
+            logger.error("Exception occurred while accessing data: {}", e.getMessage());
+            return new ArrayList<>();
+        }
     }
-
-
 
 }

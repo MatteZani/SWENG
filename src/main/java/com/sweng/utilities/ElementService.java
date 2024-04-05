@@ -104,8 +104,22 @@ public class ElementService {
     }
 
     public void addObjectToInventory(int storyId, int objectId, String username) {
-        String sql = "INSERT INTO INVENTARIO (USERNAME, ID_STORIA, ID_OGGETTO) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, username, storyId, objectId);
+
+        String checkSql = "SELECT COUNT(*) FROM INVENTARIO WHERE USERNAME = ? AND ID_STORIA = ?";
+        // Usare gli argomenti direttamente nella chiamata
+        int count = jdbcTemplate.queryForObject(checkSql, Integer.class, username, storyId);
+
+        if (count == 0) {
+            String sql = "INSERT INTO INVENTARIO (USERNAME, ID_STORIA, ID_OGGETTO) VALUES (?, ?, ?)";
+            jdbcTemplate.update(sql, username, storyId, objectId);
+
+        }
+
+    }
+
+    public void deleteObjectFromInventory(Integer storyId, String username){
+        String sql = "DELETE FROM INVENTARIO WHERE ID_STORIA = ? AND USERNAME = ?";
+        jdbcTemplate.update(sql, storyId, username);
     }
 
 

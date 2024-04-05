@@ -1,12 +1,13 @@
 package com.sweng.utilities;
 
-import com.sweng.entity.*;
-import com.sweng.mapper.StoryRowMapper;
+import com.sweng.entity.GameSession;
+import com.sweng.entity.Riddle;
+import com.sweng.entity.Scenario;
+import com.sweng.entity.StoryObject;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -21,6 +22,10 @@ public class GameService {
 
     @Autowired
     private ScenarioService scenarioService;
+    @Autowired
+    private StoryService storyService;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private ElementService elementService;
@@ -29,25 +34,6 @@ public class GameService {
     private JdbcTemplate jdbcTemplate;
 
     Logger logger = LoggerFactory.getLogger(GameService.class);
-
-    public GameSession startNewGame(int storyId) {
-        try {
-            String sql = "SELECT * FROM STORIE WHERE ID = ?";
-            Story story = jdbcTemplate.queryForObject(sql, new StoryRowMapper(), storyId);
-            User user = (User) httpSession.getAttribute("user"); // Casting da Object a User
-
-            if (user == null) {
-                throw new IllegalStateException("Nessun utente è attualmente loggato.");
-            }
-
-            GameSession gameSession = new GameSession(user, story);
-            httpSession.setAttribute("gameSession", gameSession);
-            return gameSession;
-        } catch (DataAccessException e) {
-            logger.error("Errore nel metodo startNewGame: {}", e.getMessage());
-            throw e;
-        }
-    }
 
     public String loadScenario(Scenario scenario, Model model){
 
@@ -58,11 +44,17 @@ public class GameService {
         }
         scenario.setNextScenarios(nextScenarios);
 
-
         model.addAttribute("scenario", scenario);
+
+
+        int storyId = storyService.getStoryIdByScenarioId(scenario.getId());
+        // Aggiungo l'ID della storia al model
+        model.addAttribute("storyId", storyId);
 
         if(scenario.getFoundObjectId() != 0){
             StoryObject foundObject = elementService.getStoryObjectById(scenario.getFoundObjectId());
+            String username = (String) httpSession.getAttribute("username");
+            elementService.addObjectToInventory(storyId, scenario.getFoundObjectId(), username);
             model.addAttribute("foundObjectMessage", "Ti è stato aggiunto all'inventario il seguente oggetto: " + foundObject.getName());
         }
 
@@ -73,6 +65,27 @@ public class GameService {
         }
 
         return "play-story";
+    }
+
+    public void saveGameSession(GameSession gameSession) {
+        String checkSql = "SELECT COUNT(*) FROM PARTITE WHERE USERNAME = ? AND ID_STORIA = ?";
+        // Usare gli argomenti direttamente nella chiamata
+        int count = jdbcTemplate.queryForObject(checkSql, Integer.class, gameSession.getUser().getUsername(), gameSession.getCurrentStory().getId());
+
+        if (count > 0) {
+            // Aggiorna la sessione esistente
+            String updateSql = "UPDATE PARTITE SET SCENARIO_CORRENTE = ? WHERE USERNAME = ? AND ID_STORIA = ?";
+            jdbcTemplate.update(updateSql, gameSession.getCurrentScenario(), gameSession.getUser().getUsername(), gameSession.getCurrentStory().getId());
+        } else {
+            // Crea una nuova sessione
+            String insertSql = "INSERT INTO PARTITE (USERNAME, ID_STORIA, SCENARIO_CORRENTE) VALUES (?, ?, ?)";
+            jdbcTemplate.update(insertSql, gameSession.getUser().getUsername(), gameSession.getCurrentStory().getId(), gameSession.getCurrentScenario());
+        }
+    }
+
+    public void deleteGameSession(Integer storyId, String username){
+        String sql = "DELETE FROM PARTITE WHERE USERNAME = ? AND ID_STORIA = ?";
+        jdbcTemplate.update(sql, username, storyId);
     }
 
 }

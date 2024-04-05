@@ -1,13 +1,13 @@
 package com.sweng.utilities;
 
-import com.sweng.entity.*;
-import com.sweng.mapper.StoryRowMapper;
+import com.sweng.entity.GameSession;
+import com.sweng.entity.Riddle;
+import com.sweng.entity.Scenario;
+import com.sweng.entity.StoryObject;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;

@@ -1,6 +1,5 @@
 package com.sweng.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GameSession {

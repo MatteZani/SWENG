@@ -124,7 +124,14 @@ public class StoryService {
             params.add(creator);
         }
 
-        return jdbcTemplate.query(sql, new StoryRowMapper(), params.toArray());
+        //return jdbcTemplate.query(sql, new StoryRowMapper(), params.toArray());
+        try { // Aggiunto per test *********************************************************************************
+            return jdbcTemplate.query(sql, new StoryRowMapper(), params.toArray());
+        } catch (DataAccessException e) {
+            // Gestione dell'eccezione di accesso ai dati
+            logger.error("Exception occurred while accessing data: {}", e.getMessage());
+            return new ArrayList<>();
+        }
     }
 
 

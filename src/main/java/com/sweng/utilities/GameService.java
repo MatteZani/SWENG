@@ -83,9 +83,10 @@ public class GameService {
         }
     }
 
-    public void deleteGameSession(Integer storyId, String username){
+    public Integer deleteGameSession(Integer storyId, String username){
         String sql = "DELETE FROM PARTITE WHERE USERNAME = ? AND ID_STORIA = ?";
         jdbcTemplate.update(sql, username, storyId);
+        return storyId;
     }
 
 }

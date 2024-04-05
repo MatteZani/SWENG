@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,13 +139,16 @@ public class ScenarioService {
     }
 
 
-    public void updateDescription(int scenarioId, String newDescription) {
+    public String updateDescription(int scenarioId, String newDescription) throws SQLException {
         try {
             String sql = "UPDATE SCENARI SET DESCRIZIONE = ? WHERE ID = ?";
             jdbcTemplate.update(sql, newDescription, scenarioId);
+
+            return newDescription;
         } catch (DataAccessException e) {
             logger.error("Errore nell'eccezione al database nel metodo updateDescription della classe ScenarioService." +
                     "Messaggio: {}, Causa: {}",e.getMessage(), e.getCause());
+            return "Errore";
         }
     }
 

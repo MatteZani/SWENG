@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,7 +134,7 @@ public class ScenarioController {
 
     @PostMapping("/update-scenario")
     public String updateScenario(@RequestParam("scenarioId") Integer scenarioId,
-                                 @RequestParam("newDescription") String newDescription,Model model) {
+                                 @RequestParam("newDescription") String newDescription,Model model) throws SQLException {
 
         scenarioService.updateDescription(scenarioId, newDescription);
 

@@ -7,9 +7,7 @@ public class ScenarioBuilder {
     private String description;
     private List<Scenario> nextScenarios;
     private int storyId;
-
     private int necessaryObjectId;
-
     private int foundObjectId;
 
     private int riddleId;
@@ -48,8 +46,6 @@ public class ScenarioBuilder {
         this.riddleId = riddleId;
         return this;
     }
-
-
 
     public Scenario build() {
         return new Scenario(id, description, nextScenarios, storyId, necessaryObjectId, foundObjectId, riddleId);

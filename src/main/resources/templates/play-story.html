@@ -8,7 +8,12 @@
 </head>
 <body>
 
-<header id = "header" th:insert="fragments/header.html :: header"></header>
+<div class="header">
+    <h2>SWENG</h2>
+    <form th:action="@{/catalog}" method ="get">
+        <button type="submit" class="btn btn-outline-light">Torna al catalogo</button>
+    </form>
+</div>
 
 <input type="hidden" th:value="${storyScenarios}" th:name="storyScenarios">
 

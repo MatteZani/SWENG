@@ -4,10 +4,11 @@ import com.sweng.entity.Scenario;
 import com.sweng.entity.Story;
 import com.sweng.entity.StoryBuilder;
 import com.sweng.entity.StoryObject;
-import com.sweng.utilities.*;
+import com.sweng.utilities.GameService;
+import com.sweng.utilities.ScenarioService;
+import com.sweng.utilities.StoryService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,6 @@ public class StoryController {
     @Autowired
     private HttpSession httpSession;
 
-    // URL di connessione al database
     @Autowired
     private StoryService storyService;
 
@@ -30,19 +30,15 @@ public class StoryController {
     private ScenarioService scenarioService;
 
     @Autowired
-    private ElementService elementService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
     private GameService gameService;
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
 
     @GetMapping("/create-story")
     public String createStory(Model model){
+        String username = (String) httpSession.getAttribute("username");
+        if(username == null){
+            return "login";
+        }
         return "create-story";
     }
 
@@ -51,14 +47,13 @@ public class StoryController {
                                      @RequestParam("category") String category, Model model) {
 
         String username = (String) httpSession.getAttribute("username");
-
         if(username == null){
-            return "redirect:/login";
+            return "login";
         }
 
-        // Creazione della storia con lo scenario iniziale
         Story story = new StoryBuilder().setTitle(title).setPlot(plot).setInitialScenario(0).setCreator((String) httpSession.getAttribute("username")).setCategory(category).build();
         storyService.createStory(story);
+
         model.addAttribute("message", "Complimenti! Storia creata con successo. Ora crea un oggetto che potrà essere utilizzato all'interno della storia.");
         httpSession.setAttribute("currentStoryObjects", new ArrayList<StoryObject>());
         httpSession.setAttribute("currentStoryId", storyService.getMaxStoryId());
@@ -69,12 +64,10 @@ public class StoryController {
     @GetMapping("/catalog")
     public String catalog(Model model) {
         String username = (String) httpSession.getAttribute("username");
-
         if(username == null){
-            return "redirect:/login";
+            return "login";
         }
         model.addAttribute("stories", storyService.getStories());
-        //PROVAAAAAA
         model.addAttribute("savedStories", storyService.getSavedIdStories(username));
 
         httpSession.removeAttribute("currentStoryId");
@@ -91,7 +84,7 @@ public class StoryController {
         return "visitor-catalog";
     }
 
-    @GetMapping("/catalog/show-story")
+    @GetMapping("/visitor-catalog/show-story")
     public String showStory(@RequestParam("storyId") Integer storyId, Model model){
 
         Story story = storyService.getStoryById(storyId);
@@ -104,11 +97,9 @@ public class StoryController {
 
     @GetMapping("play-story")
     public String playStory(@RequestParam("storyId") Integer storyId, Model model){
-
         String username = (String) httpSession.getAttribute("username");
-
         if(username == null){
-            return "redirect:/login";
+            return "login";
         }
 
         ArrayList<Scenario> storyScenarios = scenarioService.getScenariosByStoryId(storyId);
@@ -127,7 +118,6 @@ public class StoryController {
     @GetMapping("/search-stories")
     public String searchStories(@RequestParam(required = false) String title, @RequestParam(required = false) String category,
                                 @RequestParam(required = false) String creator, @RequestParam String action, Model model) {
-
 
         if(action.equals("play")){
             List<Story> stories = storyService.findStoriesByFilter(title, category, creator);
@@ -150,6 +140,10 @@ public class StoryController {
 
     @GetMapping("/owner-catalog")
     public String ownerCatalog(Model model){
+        String username = (String) httpSession.getAttribute("username");
+        if(username == null){
+            return "login";
+        }
         model.addAttribute("stories", storyService.getStoriesByCreator((String) httpSession.getAttribute("username")));
 
         return "owner-catalog";
@@ -157,6 +151,10 @@ public class StoryController {
 
     @GetMapping("/edit-scenario")
     public String editScenario(@RequestParam("storyId") Integer storyId, Model model) {
+        String username = (String) httpSession.getAttribute("username");
+        if(username == null){
+            return "login";
+        }
 
         List<Scenario> scenarios = scenarioService.getScenariosByStoryId(storyId);
         model.addAttribute("scenarios", scenarios);

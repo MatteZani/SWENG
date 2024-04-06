@@ -1,15 +1,10 @@
 package com.sweng.entity;
 
-import java.util.List;
-
 public class GameSession {
 
     private User user;
     private Story currentStory;
     private int currentScenario;
-
-    private List<Integer> inventory;
-    private int storyId;
 
     public GameSession() {
     }
@@ -43,7 +38,4 @@ public class GameSession {
         this.currentScenario = currentScenario;
     }
 
-    public int getStoryId() {
-        return this.storyId;
-    }
 }

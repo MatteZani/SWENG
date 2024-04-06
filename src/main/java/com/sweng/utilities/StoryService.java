@@ -2,7 +2,6 @@ package com.sweng.utilities;
 
 import com.sweng.entity.Story;
 import com.sweng.mapper.StoryRowMapper;
-import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -19,18 +17,13 @@ import java.util.Map;
 public class StoryService {
 
     @Autowired
-    private HttpSession httpSession;
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
-
     Logger logger = LoggerFactory.getLogger(StoryService.class);
 
     public void createStory(Story story) {
         try {
             String sql = "INSERT INTO STORIE(TITLE, PLOT, CATEGORY, CREATOR, INITIAL_SCENARIO) VALUES (?, ?, ?, ?, ?)";
             jdbcTemplate.update(sql, story.getTitle(), story.getPlot(), story.getCategory(), story.getCreator(), null);
-
 
         } catch (DataAccessException e) {
             logger.error("Lanciata eccezione nel metodo createStory della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
@@ -43,8 +36,7 @@ public class StoryService {
 
         } catch (DataAccessException e) {
             logger.error("Lanciata eccezione nel metodo getStories della classe StoryService. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
-            return null;
-
+            return new ArrayList<>();
         }
     }
 
@@ -52,20 +44,18 @@ public class StoryService {
         try {
             List<Integer> savedIdStories = jdbcTemplate.queryForList("SELECT ID_STORIA FROM PARTITE WHERE USERNAME = ?", Integer.class, username);
             return savedIdStories;
-            //return jdbcTemplate.query("SELECT * FROM PARTITE WHERE USERNAME = ?",  new StoryRowMapper(), username);
         } catch (DataAccessException e) {
             logger.error("Errore nel metodo getSavedStories della classe StoryService. Causa: {}. Messaggio: {}", e.getCause(), e.getMessage());
-            return Collections.emptyList(); // Restituisci una lista vuota in caso di errore o se non ci sono storie salvate
+            return new ArrayList<>();
         }
     }
 
     public List<Story> getStoriesByCreator(String username){
         try {
             return jdbcTemplate.query("SELECT * FROM STORIE WHERE CREATOR = ?", new StoryRowMapper(), username);
-
         } catch (DataAccessException e) {
             logger.error("Lanciata eccezione nel metodo getStoriesByCreator della classe StoryService.. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
-            return null;
+            return new ArrayList<>();
         }
 
     }
@@ -75,7 +65,6 @@ public class StoryService {
         Story story = jdbcTemplate.queryForObject(sql, new StoryRowMapper(), storyId);
 
         return story;
-
     }
 
     public int getScenariosNumberByStoryId(int storyId){
@@ -117,7 +106,6 @@ public class StoryService {
         }
     }
 
-
     public List<Story> findStoriesByFilter(String title, String category, String creator) {
         List<Object> params = new ArrayList<>();
         String sql = "SELECT * FROM STORIE WHERE 1=1";
@@ -135,11 +123,9 @@ public class StoryService {
             params.add(creator);
         }
 
-        //return jdbcTemplate.query(sql, new StoryRowMapper(), params.toArray());
-        try { // Aggiunto per test *********************************************************************************
+        try {
             return jdbcTemplate.query(sql, new StoryRowMapper(), params.toArray());
         } catch (DataAccessException e) {
-            // Gestione dell'eccezione di accesso ai dati
             logger.error("Exception occurred while accessing data: {}", e.getMessage());
             return new ArrayList<>();
         }

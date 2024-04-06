@@ -53,7 +53,7 @@
                 <div class="card-body">
                     <h5 class="card-title" th:text="${story.title}"></h5>
                     <p class="card-text" th:text="${story.plot}"></p>
-                    <a class="btn btn-primary" th:href="@{/catalog/show-story?storyId={storyId}(storyId=${story.id})}">Leggi di più</a>
+                    <a class="btn btn-primary" th:href="@{/visitor-catalog/show-story?storyId={storyId}(storyId=${story.id})}">Leggi di più</a>
                 </div>
             </div>
         </div>

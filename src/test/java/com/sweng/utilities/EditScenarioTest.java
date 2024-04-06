@@ -1,13 +1,9 @@
 package com.sweng.utilities;
 
-import com.sweng.controller.ScenarioController;
-import com.sweng.entity.Scenario;
 import com.sweng.entity.Story;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.ui.Model;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,7 +11,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 @SpringBootTest
 public class EditScenarioTest {
@@ -25,12 +20,6 @@ public class EditScenarioTest {
 
     @Mock
     private StoryService storyService;
-
-    @Mock
-    private Model model;
-
-    @Mock
-    private JdbcTemplate jdbcTemplate;
 
     @Test
     void testUpdateDescription() throws SQLException {

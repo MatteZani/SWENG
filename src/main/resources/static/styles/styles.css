@@ -10,15 +10,15 @@ body {
     color: #fff;
 }
 
-.header h1 {
-    font-size: 100px;
-    margin-bottom: 20px;
-    letter-spacing: 2px;
-}
-
-.header button{
+.header .logout {
     position: absolute;
     right: 1rem;
+    top: 4%;
+}
+
+.header form {
+    position: absolute;
+    left: 1rem;
     top: 4%;
 }
 
@@ -49,22 +49,16 @@ body {
 }
 
 .alert-danger {
-            margin: auto;
-            border-color: red;
-            color: red;
+    margin: auto;
+    border-color: red;
+    color: red;
 }
 
 .story-container {
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            margin-top: 50px;
-}
-
-.story-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    margin-top: 50px;
 }
 
 .story-info {

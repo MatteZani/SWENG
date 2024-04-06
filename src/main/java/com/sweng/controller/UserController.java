@@ -4,7 +4,6 @@ import com.sweng.entity.User;
 import com.sweng.utilities.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,13 +15,18 @@ public class UserController {
 
     @Autowired
     private HttpSession httpSession;
-
-    // URL di connessione al database
     @Autowired
     private UserService userService;
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+    @GetMapping("/menu")
+    public String menu(Model model){
+        String username = (String) httpSession.getAttribute("username");
+        if(username != null){
+            model.addAttribute("username", username);
+            return "homepage";
+        }
+        return "menu";
+    }
 
     @GetMapping("/login")
     public String login() {
@@ -42,7 +46,7 @@ public class UserController {
         } else {
             // Reindirizza alla pagina di login con un messaggio di errore se le credenziali non sono valide
             model.addAttribute("error", "Credenziali non valide");
-            return "login"; // Assicurati che "login" sia il nome corretto della tua pagina di login
+            return "login";
         }
     }
 
@@ -64,12 +68,19 @@ public class UserController {
         return "homepage";
     }
 
+    @GetMapping ("/logout")
+    public String logout() {
+        httpSession.removeAttribute("username");
+        httpSession.removeAttribute("password");
+
+        return "login";
+    }
+
     @GetMapping("/home")
     public String home(Model model){
         String username = (String) httpSession.getAttribute("username");
-
         if(username == null){
-            return "redirect:/login";
+            return "login";
         }
         model.addAttribute("username", username);
         return "homepage";

@@ -1,37 +1,18 @@
 package com.sweng.utilities;
 
-import com.sweng.controller.GameController;
-import com.sweng.entity.GameSession;
-import com.sweng.entity.Story;
-import com.sweng.entity.User;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.ui.Model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class GameTests {
 
     @Mock
     private GameService gameService;
-    @InjectMocks
-    private GameController gameController;
-
-    @Mock
-    private ElementService elementService;
-
-    @Mock
-    private StoryService storyService;
-    @Mock
-    private Model model;
-    @Mock
-    private JdbcTemplate jdbcTemplate;
 
     @Test
     void testDeleteGameSession() {

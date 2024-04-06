@@ -9,7 +9,6 @@ public class Scenario {
     private List<Scenario> nextScenarios;
     private int storyId;
     private int necessaryObjectId;
-
     private int foundObjectId;
 
     private int riddleId;
@@ -42,19 +41,15 @@ public class Scenario {
         this.riddleId = riddleId;
     }
 
-    // Metodi getter e setter
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
-
     public List<Scenario> getNextScenarios() {
         return nextScenarios;
     }
-
     public void setNextScenarios(List<Scenario> nextScenarios) {
         this.nextScenarios = nextScenarios;
     }

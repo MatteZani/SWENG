@@ -1,9 +1,6 @@
 package com.sweng.utilities;
 
 import com.sweng.controller.GameController;
-import com.sweng.entity.GameSession;
-import com.sweng.entity.Story;
-import com.sweng.entity.User;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -13,7 +10,7 @@ import org.springframework.ui.Model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class GameTests {

@@ -1,7 +1,5 @@
 package com.sweng.utilities;
 
-import com.sweng.controller.ScenarioController;
-import com.sweng.entity.Scenario;
 import com.sweng.entity.Story;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -15,7 +13,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 @SpringBootTest
 public class EditScenarioTest {

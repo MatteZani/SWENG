@@ -1,6 +1,5 @@
 package com.sweng.entity;
 
-
 public class User {
 
     private int id;
@@ -20,10 +19,6 @@ public class User {
     }
     public User() {
     }
-
-
-    // Metodi getter e setter
-
 
     public void setId(int id) {
         this.id = id;
@@ -49,4 +44,3 @@ public class User {
         this.password = password;
     }
 }
-

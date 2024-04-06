@@ -4,8 +4,6 @@ import com.sweng.entity.Story;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.ui.Model;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,12 +20,6 @@ public class EditScenarioTest {
 
     @Mock
     private StoryService storyService;
-
-    @Mock
-    private Model model;
-
-    @Mock
-    private JdbcTemplate jdbcTemplate;
 
     @Test
     void testUpdateDescription() throws SQLException {

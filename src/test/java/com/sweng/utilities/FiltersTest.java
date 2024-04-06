@@ -35,18 +35,15 @@ public class FiltersTest {
 
     @Test
     void testFindStoriesByFilter() {
-        // Dati di input
         String title = "Test";
         String category = "Azione";
         String creator = "TestCreator";
 
-        // Query SQL attesa
         String expectedSql = "SELECT * FROM STORIE WHERE 1=1";
         expectedSql += " AND TITLE LIKE ?";
         expectedSql += " AND CATEGORY = ?";
         expectedSql += " AND CREATOR = ?";
 
-        // Risultato atteso della query
         Story firstStory = new Story();
         firstStory.setId(1);
 
@@ -61,13 +58,12 @@ public class FiltersTest {
 
         // Esecuzione del metodo da testare
         List<Story> actualStories = storyService.findStoriesByFilter(title, category, creator);
-        // Verifica dell'output
+
         assertEquals(expectedStories, actualStories);
     }
 
     @Test
     void testFilter_DataAccessExceptionHandling() {
-        // Dati di input
         String title = "Test";
         String category = "Azione";
         String creator = "TestCreator";
@@ -79,7 +75,6 @@ public class FiltersTest {
         // Esecuzione del metodo da testare
         List<Story> actualStories = storyService.findStoriesByFilter(title, category, creator);
 
-        // Verifica che la lista restituita sia vuota a causa dell'eccezione
         assertNotNull(actualStories);
         assertTrue(actualStories.isEmpty());
     }
@@ -160,18 +155,15 @@ public class FiltersTest {
     void storiesFilteredByTitleAndCategory() {
         StoryService storyService = mock(StoryService.class);
 
-        // Definizione dei filtri di ricerca
         String titleFilter = "Avventura";
         String categoryFilter = "Fantasy";
         int initialScenarioId = 1;
 
-        // Creazione di una lista di storie attese come risultato
         List<Story> expectedStories = Arrays.asList(
                 new Story(1, "Avventura nel bosco incantato", "Il bosco incantato è pieno di misteri", initialScenarioId, "Fantasy", "Alice"),
                 new Story(2, "Avventura sulle montagne", "Le montagne nascondono segreti antichi", initialScenarioId, "Fantasy", "Bob")
         );
 
-        // Configurazione del comportamento atteso del servizio di ricerca storie
         when(storyService.findStoriesByFilter(titleFilter, categoryFilter, null))
                 .thenReturn(expectedStories);
 
@@ -189,9 +181,8 @@ public class FiltersTest {
 
     @Test
     void noStoriesFoundForGivenFilters() {
-
         StoryService storyService = mock(StoryService.class);
-        // Definizione dei filtri di ricerca che non produrranno risultati
+
         String titleFilter = "TitoloInesistente";
         String categoryFilter = "CategoriaInesistente";
 

@@ -19,10 +19,6 @@ public class ElementService {
 
     @Autowired
     private HttpSession httpSession;
-
-    @Autowired
-    private ScenarioService scenarioService;
-
     Logger logger = LoggerFactory.getLogger(ElementService.class);
 
     @Autowired
@@ -66,7 +62,6 @@ public class ElementService {
         return riddle;
     }
 
-
     public int getMaxObjectId() {
         try {
             String getScenarioId = "SELECT MAX(ID) FROM OGGETTI";
@@ -96,7 +91,6 @@ public class ElementService {
 
     }
 
-
     public boolean checkObjectInInventory(String username, int objectId) {
         String sql = "SELECT COUNT(*) FROM INVENTARIO WHERE USERNAME = ? AND ID_OGGETTO = ?";
         int count = jdbcTemplate.queryForObject(sql, Integer.class, username, objectId);
@@ -104,15 +98,12 @@ public class ElementService {
     }
 
     public void addObjectToInventory(int storyId, int objectId, String username) {
-
         String checkSql = "SELECT COUNT(*) FROM INVENTARIO WHERE USERNAME = ? AND ID_STORIA = ?";
-        // Usare gli argomenti direttamente nella chiamata
         int count = jdbcTemplate.queryForObject(checkSql, Integer.class, username, storyId);
 
         if (count == 0) {
             String sql = "INSERT INTO INVENTARIO (USERNAME, ID_STORIA, ID_OGGETTO) VALUES (?, ?, ?)";
             jdbcTemplate.update(sql, username, storyId, objectId);
-
         }
 
     }
@@ -121,8 +112,6 @@ public class ElementService {
         String sql = "DELETE FROM INVENTARIO WHERE ID_STORIA = ? AND USERNAME = ?";
         jdbcTemplate.update(sql, storyId, username);
     }
-
-
 
 
 }

@@ -22,7 +22,6 @@ public class ElementController {
     @Autowired
     private HttpSession httpSession;
 
-    // URL di connessione al database
     @Autowired
     private ElementService elementService;
 

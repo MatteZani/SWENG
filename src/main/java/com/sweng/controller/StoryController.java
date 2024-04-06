@@ -23,7 +23,6 @@ public class StoryController {
     @Autowired
     private HttpSession httpSession;
 
-    // URL di connessione al database
     @Autowired
     private StoryService storyService;
 
@@ -36,6 +35,10 @@ public class StoryController {
 
     @GetMapping("/create-story")
     public String createStory(Model model){
+        String username = (String) httpSession.getAttribute("username");
+        if(username == null){
+            return "login";
+        }
         return "create-story";
     }
 
@@ -45,7 +48,7 @@ public class StoryController {
 
         String username = (String) httpSession.getAttribute("username");
         if(username == null){
-            return "redirect:/login";
+            return "login";
         }
 
         Story story = new StoryBuilder().setTitle(title).setPlot(plot).setInitialScenario(0).setCreator((String) httpSession.getAttribute("username")).setCategory(category).build();
@@ -61,9 +64,8 @@ public class StoryController {
     @GetMapping("/catalog")
     public String catalog(Model model) {
         String username = (String) httpSession.getAttribute("username");
-        if(username != null){
-            model.addAttribute("username", username);
-            return "homepage";
+        if(username == null){
+            return "login";
         }
         model.addAttribute("stories", storyService.getStories());
         model.addAttribute("savedStories", storyService.getSavedIdStories(username));
@@ -82,7 +84,7 @@ public class StoryController {
         return "visitor-catalog";
     }
 
-    @GetMapping("/catalog/show-story")
+    @GetMapping("/visitor-catalog/show-story")
     public String showStory(@RequestParam("storyId") Integer storyId, Model model){
 
         Story story = storyService.getStoryById(storyId);
@@ -96,9 +98,8 @@ public class StoryController {
     @GetMapping("play-story")
     public String playStory(@RequestParam("storyId") Integer storyId, Model model){
         String username = (String) httpSession.getAttribute("username");
-        if(username != null){
-            model.addAttribute("username", username);
-            return "homepage";
+        if(username == null){
+            return "login";
         }
 
         ArrayList<Scenario> storyScenarios = scenarioService.getScenariosByStoryId(storyId);
@@ -117,7 +118,6 @@ public class StoryController {
     @GetMapping("/search-stories")
     public String searchStories(@RequestParam(required = false) String title, @RequestParam(required = false) String category,
                                 @RequestParam(required = false) String creator, @RequestParam String action, Model model) {
-
 
         if(action.equals("play")){
             List<Story> stories = storyService.findStoriesByFilter(title, category, creator);
@@ -140,6 +140,10 @@ public class StoryController {
 
     @GetMapping("/owner-catalog")
     public String ownerCatalog(Model model){
+        String username = (String) httpSession.getAttribute("username");
+        if(username == null){
+            return "login";
+        }
         model.addAttribute("stories", storyService.getStoriesByCreator((String) httpSession.getAttribute("username")));
 
         return "owner-catalog";
@@ -147,6 +151,10 @@ public class StoryController {
 
     @GetMapping("/edit-scenario")
     public String editScenario(@RequestParam("storyId") Integer storyId, Model model) {
+        String username = (String) httpSession.getAttribute("username");
+        if(username == null){
+            return "login";
+        }
 
         List<Scenario> scenarios = scenarioService.getScenariosByStoryId(storyId);
         model.addAttribute("scenarios", scenarios);

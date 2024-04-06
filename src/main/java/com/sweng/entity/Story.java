@@ -77,5 +77,3 @@ public class Story {
         this.creator = creator;
     }
 }
-
-

@@ -19,14 +19,10 @@ public class GameService {
 
     @Autowired
     private HttpSession httpSession;
-
     @Autowired
     private ScenarioService scenarioService;
     @Autowired
     private StoryService storyService;
-    @Autowired
-    private UserService userService;
-
     @Autowired
     private ElementService elementService;
 
@@ -46,9 +42,8 @@ public class GameService {
 
         model.addAttribute("scenario", scenario);
 
-
         int storyId = storyService.getStoryIdByScenarioId(scenario.getId());
-        // Aggiungo l'ID della storia al model
+
         model.addAttribute("storyId", storyId);
 
         if(scenario.getFoundObjectId() != 0){
@@ -69,15 +64,12 @@ public class GameService {
 
     public void saveGameSession(GameSession gameSession) {
         String checkSql = "SELECT COUNT(*) FROM PARTITE WHERE USERNAME = ? AND ID_STORIA = ?";
-        // Usare gli argomenti direttamente nella chiamata
         int count = jdbcTemplate.queryForObject(checkSql, Integer.class, gameSession.getUser().getUsername(), gameSession.getCurrentStory().getId());
 
         if (count > 0) {
-            // Aggiorna la sessione esistente
             String updateSql = "UPDATE PARTITE SET SCENARIO_CORRENTE = ? WHERE USERNAME = ? AND ID_STORIA = ?";
             jdbcTemplate.update(updateSql, gameSession.getCurrentScenario(), gameSession.getUser().getUsername(), gameSession.getCurrentStory().getId());
         } else {
-            // Crea una nuova sessione
             String insertSql = "INSERT INTO PARTITE (USERNAME, ID_STORIA, SCENARIO_CORRENTE) VALUES (?, ?, ?)";
             jdbcTemplate.update(insertSql, gameSession.getUser().getUsername(), gameSession.getCurrentStory().getId(), gameSession.getCurrentScenario());
         }

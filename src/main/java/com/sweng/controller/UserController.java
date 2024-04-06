@@ -4,7 +4,6 @@ import com.sweng.entity.User;
 import com.sweng.utilities.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,13 +15,8 @@ public class UserController {
 
     @Autowired
     private HttpSession httpSession;
-
-    // URL di connessione al database
     @Autowired
     private UserService userService;
-
-    @Autowired
-    JdbcTemplate jdbcTemplate;
 
     @GetMapping("/menu")
     public String menu(Model model){
@@ -85,7 +79,6 @@ public class UserController {
     @GetMapping("/home")
     public String home(Model model){
         String username = (String) httpSession.getAttribute("username");
-
         if(username == null){
             return "login";
         }

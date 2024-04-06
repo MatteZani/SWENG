@@ -23,12 +23,9 @@ public class ScenarioService {
     @Autowired
     private HttpSession httpSession;
     @Autowired
-    private StoryService storyService;
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     Logger logger = LoggerFactory.getLogger(ScenarioService.class);
-
 
     public ResponseEntity<Object> createScenario(Scenario scenario) {
         try {

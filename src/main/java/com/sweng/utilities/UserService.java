@@ -2,7 +2,6 @@ package com.sweng.utilities;
 
 import com.sweng.entity.User;
 import com.sweng.mapper.UserRowMapper;
-import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +18,7 @@ import java.util.Map;
 public class UserService {
 
     @Autowired
-    private HttpSession httpSession;
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
-
     Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public List<Map<String, Object>> getUsers() {

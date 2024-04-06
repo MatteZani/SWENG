@@ -21,15 +21,17 @@ public class ScenarioController {
 
     @Autowired
     private HttpSession httpSession;
-
     @Autowired
     private ScenarioService scenarioService;
-
     @Autowired
     private StoryService storyService;
 
     @GetMapping("/create-scenario")
     public String createInitialScenario(Model model){
+        String username = (String) httpSession.getAttribute("username");
+        if(username == null){
+            return "login";
+        }
         model.addAttribute("message", "Crea lo scenario iniziale della storia");
 
         model.addAttribute("necessaryObjectMessage", "Vuoi rendere un oggetto necessario per entrare in questo scenario?");
@@ -43,9 +45,8 @@ public class ScenarioController {
     @PostMapping("/create-scenario/process")
     public String createScenario(@RequestParam String scenarioDescription, @RequestParam(required = false) Integer necessaryObjectId, @RequestParam(required = false) Integer foundObjectId, @RequestParam(required = false) Integer riddleId, Model model){
         String username = (String) httpSession.getAttribute("username");
-        if(username != null){
-            model.addAttribute("username", username);
-            return "homepage";
+        if(username == null){
+            return "login";
         }
 
         int storyId = (Integer) httpSession.getAttribute("currentStoryId");
@@ -79,9 +80,8 @@ public class ScenarioController {
     @PostMapping("connect-scenarios")
     public String connectScenarios(Model model){
         String username = (String) httpSession.getAttribute("username");
-        if(username != null){
-            model.addAttribute("username", username);
-            return "homepage";
+        if(username == null){
+            return "login";
         }
 
         model.addAttribute("message", "Connetti gli scenari che hai creato");
@@ -98,9 +98,8 @@ public class ScenarioController {
                                     Model model) {
 
         String username = (String) httpSession.getAttribute("username");
-        if(username != null){
-            model.addAttribute("username", username);
-            return "homepage";
+        if(username == null){
+            return "login";
         }
 
         Integer currentStoryId = (Integer) httpSession.getAttribute("currentStoryId");
@@ -130,9 +129,8 @@ public class ScenarioController {
                                  @RequestParam("newDescription") String newDescription,Model model) throws SQLException {
 
         String username = (String) httpSession.getAttribute("username");
-        if(username != null){
-            model.addAttribute("username", username);
-            return "homepage";
+        if(username == null){
+            return "login";
         }
 
         scenarioService.updateDescription(scenarioId, newDescription);

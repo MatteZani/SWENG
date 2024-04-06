@@ -19,16 +19,12 @@ public class GameController {
 
     @Autowired
     private HttpSession httpSession;
-
     @Autowired
     private GameService gameService;
-
     @Autowired
     private ScenarioService scenarioService;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private ElementService elementService;
     @Autowired

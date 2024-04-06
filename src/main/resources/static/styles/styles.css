@@ -10,15 +10,15 @@ body {
     color: #fff;
 }
 
-.header h1 {
-    font-size: 100px;
-    margin-bottom: 20px;
-    letter-spacing: 2px;
-}
-
-.header button{
+.header .logout {
     position: absolute;
     right: 1rem;
+    top: 4%;
+}
+
+.header form {
+    position: absolute;
+    left: 1rem;
     top: 4%;
 }
 

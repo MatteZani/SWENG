@@ -64,12 +64,20 @@ public class UserController {
         return "homepage";
     }
 
+    @GetMapping ("/logout")
+    public String logout() {
+        httpSession.removeAttribute("username");
+        httpSession.removeAttribute("password");
+
+        return "login";
+    }
+
     @GetMapping("/home")
     public String home(Model model){
         String username = (String) httpSession.getAttribute("username");
 
         if(username == null){
-            return "redirect:/login";
+            return "login";
         }
         model.addAttribute("username", username);
         return "homepage";

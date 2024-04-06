@@ -30,16 +30,8 @@ public class StoryController {
     private ScenarioService scenarioService;
 
     @Autowired
-    private ElementService elementService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
     private GameService gameService;
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
 
     @GetMapping("/create-story")
     public String createStory(Model model){
@@ -51,14 +43,13 @@ public class StoryController {
                                      @RequestParam("category") String category, Model model) {
 
         String username = (String) httpSession.getAttribute("username");
-
         if(username == null){
             return "redirect:/login";
         }
 
-        // Creazione della storia con lo scenario iniziale
         Story story = new StoryBuilder().setTitle(title).setPlot(plot).setInitialScenario(0).setCreator((String) httpSession.getAttribute("username")).setCategory(category).build();
         storyService.createStory(story);
+
         model.addAttribute("message", "Complimenti! Storia creata con successo. Ora crea un oggetto che potrà essere utilizzato all'interno della storia.");
         httpSession.setAttribute("currentStoryObjects", new ArrayList<StoryObject>());
         httpSession.setAttribute("currentStoryId", storyService.getMaxStoryId());
@@ -69,12 +60,11 @@ public class StoryController {
     @GetMapping("/catalog")
     public String catalog(Model model) {
         String username = (String) httpSession.getAttribute("username");
-
-        if(username == null){
-            return "redirect:/login";
+        if(username != null){
+            model.addAttribute("username", username);
+            return "homepage";
         }
         model.addAttribute("stories", storyService.getStories());
-        //PROVAAAAAA
         model.addAttribute("savedStories", storyService.getSavedIdStories(username));
 
         httpSession.removeAttribute("currentStoryId");
@@ -104,11 +94,10 @@ public class StoryController {
 
     @GetMapping("play-story")
     public String playStory(@RequestParam("storyId") Integer storyId, Model model){
-
         String username = (String) httpSession.getAttribute("username");
-
-        if(username == null){
-            return "redirect:/login";
+        if(username != null){
+            model.addAttribute("username", username);
+            return "homepage";
         }
 
         ArrayList<Scenario> storyScenarios = scenarioService.getScenariosByStoryId(storyId);

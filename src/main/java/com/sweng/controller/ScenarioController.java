@@ -29,11 +29,6 @@ public class ScenarioController {
     @Autowired
     private StoryService storyService;
 
-
-    @Autowired
-    JdbcTemplate jdbcTemplate;
-
-
     @GetMapping("/create-scenario")
     public String createInitialScenario(Model model){
         model.addAttribute("message", "Crea lo scenario iniziale della storia");
@@ -46,9 +41,14 @@ public class ScenarioController {
         return "create-initial-scenario";
     }
 
-
     @PostMapping("/create-scenario/process")
     public String createScenario(@RequestParam String scenarioDescription, @RequestParam(required = false) Integer necessaryObjectId, @RequestParam(required = false) Integer foundObjectId, @RequestParam(required = false) Integer riddleId, Model model){
+        String username = (String) httpSession.getAttribute("username");
+        if(username != null){
+            model.addAttribute("username", username);
+            return "homepage";
+        }
+
         int storyId = (Integer) httpSession.getAttribute("currentStoryId");
 
         // se non viene selezionato alcun oggetto
@@ -60,7 +60,6 @@ public class ScenarioController {
 
         Scenario scenario = scenarioService.createScenario(storyId, scenarioDescription, finalNecessaryObjectId, finalFoundObjectId, finalRiddleId);
 
-        // Aggiorna la lista degli scenari in sessione
         ArrayList<Scenario> scenarios = (ArrayList<Scenario>) httpSession.getAttribute("scenarios");
         if (scenarios == null) {
             scenarios = new ArrayList<>();
@@ -69,7 +68,6 @@ public class ScenarioController {
         scenarios.add(scenario);
         httpSession.setAttribute("scenarios", scenarios);
 
-        // Prepara il modello per la vista
         model.addAttribute("necessaryObjectMessage", "Vuoi rendere un oggetto necessario per entrare in questo scenario?");
         model.addAttribute("gainObjectMessage", "Vuoi aggiungere un oggetto all'inventario dei giocatori che entrano in questo scenario?");
         model.addAttribute("riddleMessage", "Vuoi associare un indovinello a questo scenario? La scelta del giocatore condizionerà il suo percorso");
@@ -81,20 +79,16 @@ public class ScenarioController {
 
     @PostMapping("connect-scenarios")
     public String connectScenarios(Model model){
-
         String username = (String) httpSession.getAttribute("username");
-
-        if(username == null){
-            return "redirect:/login";
+        if(username != null){
+            model.addAttribute("username", username);
+            return "homepage";
         }
 
         model.addAttribute("message", "Connetti gli scenari che hai creato");
-
         model.addAttribute("scenarios", httpSession.getAttribute("scenarios"));
 
-
         return "connect-scenarios";
-
     }
 
     @PostMapping("connect-scenarios/process")
@@ -105,9 +99,9 @@ public class ScenarioController {
                                     Model model) {
 
         String username = (String) httpSession.getAttribute("username");
-
-        if(username == null){
-            return "redirect:/login";
+        if(username != null){
+            model.addAttribute("username", username);
+            return "homepage";
         }
 
         Integer currentStoryId = (Integer) httpSession.getAttribute("currentStoryId");
@@ -136,9 +130,14 @@ public class ScenarioController {
     public String updateScenario(@RequestParam("scenarioId") Integer scenarioId,
                                  @RequestParam("newDescription") String newDescription,Model model) throws SQLException {
 
+        String username = (String) httpSession.getAttribute("username");
+        if(username != null){
+            model.addAttribute("username", username);
+            return "homepage";
+        }
+
         scenarioService.updateDescription(scenarioId, newDescription);
 
-        // Aggiunge un messaggio di successo al modello
         model.addAttribute("successMessage", "Scenario modificato con successo!");
 
         List<Story> stories = storyService.getStoriesByCreator((String) httpSession.getAttribute("username"));

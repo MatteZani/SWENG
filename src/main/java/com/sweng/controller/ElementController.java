@@ -19,7 +19,6 @@ import java.util.ArrayList;
 @Controller
 public class ElementController {
 
-
     Logger logger = LoggerFactory.getLogger(ElementController.class);
     @Autowired
     private HttpSession httpSession;
@@ -28,17 +27,12 @@ public class ElementController {
     @Autowired
     private ElementService elementService;
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
-
-
     @PostMapping("create-object/process")
     public String processCreateObject(@RequestParam("title") String title, @RequestParam("description") String description, Model model){
 
         String username = (String) httpSession.getAttribute("username");
-
         if(username == null){
-            return "redirect:/login";
+            return "login";
         }
 
         StoryObject storyObject = new StoryObject(title, description);
@@ -58,12 +52,11 @@ public class ElementController {
     public String showCreateRiddleForm(Model model) {
 
         String username = (String) httpSession.getAttribute("username");
-
         if(username == null){
-            return "redirect:/login";
+            return "login";
         }
-        httpSession.setAttribute("currentRiddles", new ArrayList<Riddle>());
 
+        httpSession.setAttribute("currentRiddles", new ArrayList<Riddle>());
         return "create-riddle";
     }
 
@@ -72,16 +65,15 @@ public class ElementController {
     public String processCreateRiddle(@RequestParam("quest") String quest, @RequestParam("rightAnswer") String rightAnswer, Model model){
 
         String username = (String) httpSession.getAttribute("username");
-
         if(username == null){
-            return "redirect:/login";
+            return "login";
         }
 
         try {
             Riddle riddle = new Riddle(quest, rightAnswer);
             elementService.createRiddle(riddle);
             riddle.setId(elementService.getMaxRiddleId());
-            //riddle.setId(dbHandler.getMaxObjectId());
+
             ArrayList<Riddle> riddles = (ArrayList<Riddle>) httpSession.getAttribute("currentRiddles");
             riddles.add(riddle);
             httpSession.setAttribute("currentRiddles", riddles);
@@ -92,7 +84,6 @@ public class ElementController {
         }
 
         model.addAttribute("message", "Storia creata con successo, crea un indovinello che potrà essere risolto all'interno della storia");
-
         return "create-riddle";
     }
 

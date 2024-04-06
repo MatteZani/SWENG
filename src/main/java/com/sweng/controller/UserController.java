@@ -24,6 +24,16 @@ public class UserController {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    @GetMapping("/menu")
+    public String menu(Model model){
+        String username = (String) httpSession.getAttribute("username");
+        if(username != null){
+            model.addAttribute("username", username);
+            return "homepage";
+        }
+        return "menu";
+    }
+
     @GetMapping("/login")
     public String login() {
         return "login";
@@ -42,7 +52,7 @@ public class UserController {
         } else {
             // Reindirizza alla pagina di login con un messaggio di errore se le credenziali non sono valide
             model.addAttribute("error", "Credenziali non valide");
-            return "login"; // Assicurati che "login" sia il nome corretto della tua pagina di login
+            return "login";
         }
     }
 

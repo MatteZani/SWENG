@@ -21,7 +21,6 @@ import java.util.Map;
     @RequestMapping("/api/home")
     public class RestController {
 
-
         @Autowired
         private UserService userService;
         @Autowired

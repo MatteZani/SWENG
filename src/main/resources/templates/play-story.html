@@ -30,51 +30,58 @@
 
     <div class="card">
         <div class="card-body">
-            <h2 class="card-title">Scenario Corrente</h2>
 
             <!-- Visualizza il messaggio di errore se il giocatore non ha l'oggetto richiesto -->
             <div th:if="${error} != null" class="alert alert-danger" role="alert">
                 <p th:text="${error}"></p>
-            </div>
-
-            <p class="card-text" th:text="${scenario.description}">Descrizione dello Scenario</p>
-
-            <div th:if="${endStoryMessage} != null">
-                <p class="card-text" th:text="${endStoryMessage}"></p>
-                <form th:action="@{cancel-game}" method="get">
-                    <input type="hidden" th:name="storyId" th:value="${storyId}" />
-                    <button class="btn btn-primary" type="submit">Torna al catalogo</button>
+                <form th:action="@{choose-scenario}" method="post">
+                    <input type="hidden" th:value="${scenario.id}" th:name="previousScenarioId">
+                    <input type="hidden" th:value="0" th:name="scenarioId">
+                    <button type="submit" class="btn btn-primary">Torna indietro</button>
                 </form>
             </div>
 
-            <div th:unless="${endStoryMessage} != null">
-
-                <div th:if="${foundObjectMessage} != null">
-                    <h3 th:text="${foundObjectMessage}"></h3>
-                </div>
-
-                <div th:if="${scenario.riddleId} != 0">
-
-                    <form th:action="@{/process-choice}" method="post">
-                        <h2 class="card-title">Indovinello:</h2>
-                        <p class="card-text" th:text="${riddleMessage}"></p>
-
-                        <textarea class="form-control" th:name="response" rows="4" cols="50"
-                                  placeholder="Inserisci la risposta" required></textarea>
-                        <button type="submit" class="btn btn-info mt-2">Inserisci risposta</button>
-
-                        <input type="hidden" th:value="${scenario.id}" th:name="scenarioId">
-
+            <div th:unless="${error} != null">
+                <h2 class="card-title">Scenario Corrente</h2>
+                <p class="card-text" th:text="${scenario.description}">Descrizione dello Scenario</p>
+                <div th:if="${endStoryMessage} != null">
+                    <p class="card-text" th:text="${endStoryMessage}"></p>
+                    <form th:action="@{cancel-game}" method="get">
+                        <input type="hidden" th:name="storyId" th:value="${storyId}" />
+                        <button class="btn btn-primary" type="submit">Torna al catalogo</button>
                     </form>
                 </div>
 
-                <div th:if="${scenario.riddleId} == 0">
-                    <h2 class="card-title">Scegli la tua prossima mossa:</h2>
-                    <form th:action="@{/choose-scenario}" method="post">
-                        <div th:each="option : ${scenario.nextScenarios}">
-                            <button type="submit" class="btn btn-info mt-2" th:name="scenarioId" th:value="${option.id}" th:text="${option.description}">Opzione Scenario</button>
-                        </div>
-                    </form>
+                <div th:unless="${endStoryMessage} != null">
+
+                    <div th:if="${foundObjectMessage} != null">
+                        <h3 th:text="${foundObjectMessage}"></h3>
+                    </div>
+
+                    <div th:if="${scenario.riddleId} != 0">
+
+                        <form th:action="@{/process-choice}" method="post">
+                            <h2 class="card-title">Indovinello:</h2>
+                            <p class="card-text" th:text="${riddleMessage}"></p>
+
+                            <textarea class="form-control" th:name="response" rows="4" cols="50"
+                                      placeholder="Inserisci la risposta" required></textarea>
+                            <button type="submit" class="btn btn-info mt-2">Inserisci risposta</button>
+
+                            <input type="hidden" th:value="${scenario.id}" th:name="scenarioId">
+
+                        </form>
+                    </div>
+
+                    <div th:if="${scenario.riddleId} == 0">
+                        <h2 class="card-title">Scegli la tua prossima mossa:</h2>
+                        <form th:action="@{/choose-scenario}" method="post">
+                            <div th:each="option : ${scenario.nextScenarios}">
+                                <input type="hidden" th:name="previousScenarioId" th:value="${scenario.id}">
+                                <button type="submit" class="btn btn-info mt-2" th:name="scenarioId" th:value="${option.id}" th:text="${option.description}">Opzione Scenario</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

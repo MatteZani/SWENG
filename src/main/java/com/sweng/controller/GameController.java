@@ -33,20 +33,25 @@ public class GameController {
     JdbcTemplate jdbcTemplate;
 
     @PostMapping("/choose-scenario")
-    public String chooseNextScenario(@RequestParam int scenarioId, Model model) {
+    public String chooseNextScenario(@RequestParam(required = false) int previousScenarioId, @RequestParam int scenarioId, Model model) {
         String username = (String) httpSession.getAttribute("username");
         if (username == null) {
             return "login";
+        }
+
+        if(scenarioId == 0){
+            Scenario previousScenario = scenarioService.getScenarioById(previousScenarioId);
+            return gameService.loadScenario(previousScenario, model);
         }
 
         Scenario scenario = scenarioService.getScenarioById(scenarioId);
 
         if (scenario.getNecessaryObjectId() != 0) {
             if (!elementService.checkObjectInInventory(username, scenario.getNecessaryObjectId())) {
-                model.addAttribute("error", "Non possiedi l'oggetto necessario per accedere a questo scenario.");
+                model.addAttribute("error", "Non possiedi l'oggetto necessario per accedere allo scenario scelto, riprova.");
                 model.addAttribute("scenario", scenario);
-
-                return gameService.loadScenario(scenario, model);
+                Scenario previousScenario = scenarioService.getScenarioById(previousScenarioId);
+                return gameService.loadScenario(previousScenario, model);
             }
         }
 
@@ -72,9 +77,9 @@ public class GameController {
         Scenario scenarioSbagliato = scenarioService.getScenarioSbagliato(scenarioId);
 
         if (response.equals(riddle.getAnswer())) {
-            return chooseNextScenario(scenarioGiusto.getId(), model);
+            return chooseNextScenario(scenarioId, scenarioGiusto.getId(), model);
         } else {
-            return chooseNextScenario(scenarioSbagliato.getId(), model);
+            return chooseNextScenario(scenarioId, scenarioSbagliato.getId(), model);
         }
     }
 

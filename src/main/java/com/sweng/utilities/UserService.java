@@ -31,7 +31,7 @@ public class UserService {
             jdbcTemplate.update(sql, user.getUsername(), user.getPassword());
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (DataAccessException e) {
-            logger.error("Lanciata DataAccessException nel metodo postUser della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
+            logger.error("Lanciata DataAccessException nel metodo postUser della classe UserService. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
         }
     }

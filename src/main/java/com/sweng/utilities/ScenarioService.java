@@ -33,7 +33,7 @@ public class ScenarioService {
             jdbcTemplate.update(sql, scenario.getDescription(), scenario.getStoryId());
             return new ResponseEntity<>(scenario, HttpStatus.OK);
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo createScenario della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
+            logger.error("Lanciata eccezione nel metodo createScenario della classe ScenarioService. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
         }
     }
@@ -58,7 +58,7 @@ public class ScenarioService {
             return scenario;
 
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo createScenario della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
+            logger.error("Lanciata eccezione nel metodo createScenario della classe ScenarioService. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return new Scenario();
         }
 
@@ -81,7 +81,7 @@ public class ScenarioService {
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }catch(NullPointerException e){
-            logger.error("NullPointerException nel metodo getMaxScenarioId della classe DBHandler");
+            logger.error("NullPointerException nel metodo getMaxScenarioId della classe ScenarioService");
             return 1;
         }
 
@@ -92,7 +92,7 @@ public class ScenarioService {
             return (ArrayList<Scenario>) jdbcTemplate.query("SELECT * FROM SCENARI WHERE ID_STORIA = ?", new ScenarioRowMapper(), storyId);
 
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo getScenariosByStoryId della classe DBHandler. Causa dell'" +
+            logger.error("Lanciata eccezione nel metodo getScenariosByStoryId della classe ScenarioService. Causa dell'" +
                     "eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return null;
         }

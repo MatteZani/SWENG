@@ -26,7 +26,7 @@ public class StoryService {
             jdbcTemplate.update(sql, story.getTitle(), story.getPlot(), story.getCategory(), story.getCreator(), null);
 
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo createStory della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
+            logger.error("Lanciata eccezione nel metodo createStory della classe StoryService. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             throw e;
         }
     }
@@ -54,7 +54,7 @@ public class StoryService {
         try {
             return jdbcTemplate.query("SELECT * FROM STORIE WHERE CREATOR = ?", new StoryRowMapper(), username);
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo getStoriesByCreator della classe StoryService.. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
+            logger.error("Lanciata eccezione nel metodo getStoriesByCreator della classe StoryService. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return new ArrayList<>();
         }
 
@@ -80,7 +80,7 @@ public class StoryService {
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         } catch (NullPointerException e) {
-            logger.error("NullPointerException nel metodo getMaxStoryId della classe StoryService");
+            logger.error("NullPointerException nel metodo getMaxStoryId della classe StoryService.");
             return 0;
         }
     }
@@ -90,7 +90,7 @@ public class StoryService {
             return jdbcTemplate.queryForList("SELECT * FROM COLLEGAMENTI WHERE STORIA_APPARTENENZA = ?", storyId);
 
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo getLinksByStoryId della classe DBHandler. Causa dell'" +
+            logger.error("Lanciata eccezione nel metodo getLinksByStoryId della classe StoryService. Causa dell'" +
                     "eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return null;
         }

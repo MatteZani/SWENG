@@ -32,7 +32,7 @@ public class ElementService {
             int maxId = jdbcTemplate.queryForObject(maxIdQuery, Integer.class);
             return maxId;
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo createObject della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
+            logger.error("Lanciata eccezione nel metodo createObject della classe ElementService. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return -1;
         }
     }
@@ -50,7 +50,7 @@ public class ElementService {
             jdbcTemplate.update(sql, riddle.getQuestion(), riddle.getAnswer());
             return new ResponseEntity<>(riddle, HttpStatus.OK);
         } catch (DataAccessException e) {
-            logger.error("Lanciata eccezione nel metodo createRiddle della classe DBHandler. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
+            logger.error("Lanciata eccezione nel metodo createRiddle della classe ElementService. Causa dell'eccezione: {}. Descrizione dell'eccezione: {}", e.getCause(), e.getMessage());
             return new ResponseEntity<>("Errore nel salvataggio dei dati", HttpStatus.valueOf(400));
         }
     }
@@ -71,7 +71,7 @@ public class ElementService {
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         } catch (NullPointerException e) {
-            logger.error("NullPointerException nel metodo getMaxObjectId della classe DBHandler");
+            logger.error("NullPointerException nel metodo getMaxObjectId della classe ElementService");
             return 0;
         }
     }

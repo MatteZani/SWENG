@@ -73,7 +73,7 @@ public class UserController {
         httpSession.removeAttribute("username");
         httpSession.removeAttribute("password");
 
-        return "login";
+        return "menu";
     }
 
     @GetMapping("/home")
